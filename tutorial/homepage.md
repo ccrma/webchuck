@@ -30,10 +30,10 @@ Go ahead. Make some sound on the web.
 
 ### Editor 1
 <div id="editor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
-SinOsc osc => dac;
-220 => osc.freq;
-0.5 => osc.gain;
-1::second => now;
+SinOsc osc => dac;\
+220 => osc.freq;\
+0.5 => osc.gain;\
+1::second => now;\
 </div>
 <input id="run1" type="button" value="Run Code" />
 <br/><br/>
