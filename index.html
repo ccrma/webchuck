@@ -1,0 +1,167 @@
+<!-- 
+    WebChucK Tutorials, by Mike Mulshine et al
+
+    Praise be to Jack Atherton for making ChucK work on the web... As well as getting Ace to work as a miniAudicle like IDE. WOW.
+    
+    Praise be to Matt Wright for suggesting the use of pandoc = markdown to html converter, in which we can embed html/js as well.
+
+    Praise of course to Ge Wang for writing ChucK. 
+
+    <3 
+
+    here we go...
+-->
+<!---
+Include the ACE and ChucK stuff
+-->
+<script type="text/javascript" src="./js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/editor.js"></script>
+<script type="text/javascript" src="./js/defer.js"></script>
+<script type="text/javascript" src="./js/webchuck_host.js"></script>
+<h1 id="webchuck-tutorials">WebChucK Tutorials<br />
+</h1>
+<h4 id="by-mike-mulshine">by Mike Mulshine<br />
+</h4>
+<p>So many thanks to Ge Wang, Jack Atherton, Matt Wright.</p>
+<p>Go ahead. Make some sound on the web.</p>
+<h3 id="editor-1">Editor 1</h3>
+<div id="editor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
+<p>SinOsc osc =&gt; dac; 220 =&gt; osc.freq; 0.5 =&gt; osc.gain; 1::second =&gt; now;</p>
+</div>
+<p><input id="run1" type="button" value="Run Code" /> <br/><br/></p>
+<h3 id="editor-2">Editor 2</h3>
+<div id="editor2" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
+<p>SinOsc osc =&gt; dac;<br />
+330 =&gt; osc.freq;<br />
+0.5 =&gt; osc.gain;<br />
+1::second =&gt; now;<br />
+</p>
+</div>
+<p><input id="run2" type="button" value="Run Code" /> <br/><br/></p>
+<h2 id="running-webchuck-on-your-site">Running WebChucK on Your Site</h2>
+<h3 id="download-webchuck">1. Download WebChucK</h3>
+<p>Download the WebChucK javascript and web assembly dependencies <strong><a href="./webchuck-src.zip">here</a></strong>.</p>
+<h3 id="setup-your-site">2. Setup Your Site</h3>
+<p>Make a <strong>project</strong> folder.<br />
+</p>
+<p>Unzip <strong>webchuck-src.zip</strong>.<br />
+</p>
+<p>Copy <strong>webchuck.wasm</strong>, <strong>webchuck.js</strong>, and <strong>webchuck_host.js</strong> in to a new folder called <strong>js</strong>.<br />
+</p>
+<h3 id="make-a-simple-webpage-or-add-to-your-own">3. Make a simple webpage (or add to your own)</h3>
+<p>This can be <strong>index.html</strong> or whatever you’d like as long as it is in your <strong>project</strong> folder.</p>
+<div id="htmlEditor1" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:200px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Hello WebChucK&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<h3 id="link-webchuck">3. Link WebChucK</h3>
+<p>Link <strong>webchuck_host.js</strong> via the script tag.</p>
+<div id="htmlEditor2" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:200px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Hello WebChucK&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<h3 id="start-webchuck">4. Start WebChucK</h3>
+<p>WebAudio AudioContext cannot be started without user interaction on most browsers. So, we will start WebChucK with a button click.</p>
+<p>Also, you will need to <a href="#toserver">run a local server</a> to start WebChucK and test locally.</p>
+<div id="htmlEditor3" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:350px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Hello WebChucK&lt;/h1&gt;
+
+&lt;input id=&quot;startChucKButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+
+&lt;script&gt;
+    var startChucKButton = document.getElementById( &quot;startChucKButton&quot; );
+    runButton.addEventListener( &quot;click&quot;, async function() {
+        await startChuck();
+        await theChuckReady;
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<h3 id="run-some-chuck-code">5. Run some ChucK Code:</h3>
+<p>You can pass ChucK code in a string to WebChucK runCode() function.</p>
+<div id="htmlEditor4" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:425px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Hello WebChucK&lt;/h1&gt;
+
+&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+
+&lt;script&gt;
+    var startButton = document.getElementById( &quot;startButton&quot; );
+    startButton.addEventListener( &quot;click&quot;, async function() {
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runCode(&quot;\
+            SinOsc osc =&gt; dac;\
+            330 =&gt; osc.freq;\
+            1::second =&gt; now;\
+        &quot;);
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p>Your webpage should look and function like <a href="./basic.html">this</a>.</p>
+<h2 id="appendix-setting-up-a-local-server">Appendix: Setting up a local server <a name="toserver"></a></h2>
+<h3 id="open-terminal">1. Open terminal</h3>
+<h3 id="navigate-to-project-directory">2. Navigate to <strong>project</strong> directory</h3>
+<h3 id="run-this-command">3. Run this command:</h3>
+<p>python -m SimpleHTTPServer <code>[port</code>]</p>
+<p><code>[port</code>] is usually something like 8000 or 8080</p>
+<h3 id="open-this-url-in-a-browser">4. Open this URL in a browser:</h3>
+<p>http://localhost:<code>[port</code>]</p>
+<script>
+    async function prep() {
+        //await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        theChuck.removeLastCode();
+    }
+
+    var editor1 = newChuckEditor("editor1");
+    var run1 = document.getElementById( "run1" );
+    run1.addEventListener( "click", async function() {
+        await prep();
+        await theChuck.runCode(editor1.getValue());
+    });
+
+    var editor2 = newChuckEditor("editor2");
+    var run2 = document.getElementById( "run2" );
+    run2.addEventListener( "click", async function() {
+        await prep();
+        await theChuck.runCode(editor2.getValue());
+    });
+
+    var htmlEditor1 = newHTMLEditor("htmlEditor1", true);
+    var htmlEditor2 = newHTMLEditor("htmlEditor2", true);
+    var htmlEditor2 = newHTMLEditor("htmlEditor3", true);
+    var htmlEditor2 = newHTMLEditor("htmlEditor4", true);
+
+</script>
+<p>Here is some more text that should show up at the bottom of the tutorial.<br />
+</p>
