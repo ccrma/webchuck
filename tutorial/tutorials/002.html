@@ -1,0 +1,93 @@
+<!-- 
+    WebChucK Tutorials, by Mike Mulshine et al
+
+    Praise be to Jack Atherton for making ChucK work on the web... As well as getting Ace to work as a miniAudicle like IDE. WOW.
+    
+    Praise be to Matt Wright for suggesting the use of pandoc = markdown to html converter, in which we can embed html/js as well.
+
+    Praise of course to Ge Wang for writing ChucK. 
+
+    <3 
+
+    here we go...
+-->
+<!---
+Include the ACE and ChucK stuff
+-->
+<script type="text/javascript" src="../js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="../js/editor.js"></script>
+<script type="text/javascript" src="../js/defer.js"></script>
+<script type="text/javascript" src="../js/webchuck_host.js"></script>
+<h2 id="getting-started---running-chuck-on-a-web-page">Getting Started - Running ChucK on a Web Page</h2>
+<h3 id="interfacing-with-chuck">Interfacing with ChucK</h3>
+<p>Audio programming in the browser unveils new modes of interaction between users and sounds on the web.</p>
+<p>In this tutorial we will take a look at mapping user inputs (via buttons, key presses, and more) to sounds and their parameters in ChucK.</p>
+<h3 id="updating-parameters-in-chuck">1. Updating parameters in ChucK</h3>
+<p>This ChucK program plays a sine oscillator at 220Hz for as long as it runs.</p>
+<div id="chuckEditor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
+<p>SinOsc osc =&gt; dac;<br />
+220.0 =&gt; osc.freq;<br />
+<br />
+while (true) {<br />
+1::ms =&gt; now;<br />
+}<br />
+</p>
+</div>
+<p>What if we want to change the frequency of the oscillator while the program runs?</p>
+<p>First, we need a frequency variable to update. The WebChucK javascript API will register the variable with the server if we declare it as <strong>global</strong>.</p>
+<div id="chuckEditor2" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
+<p>SinOsc osc =&gt; dac;<br />
+220.0 =&gt; global float freq;<br />
+<br />
+while (true) {<br />
+freq =&gt; osc.freq;<br />
+1::ms =&gt; now;<br />
+}<br />
+</p>
+</div>
+<p>Let's run this ChucK code from a file called <em>interaction-1.ck</em>, add an "Update Freq" button, and map clicks to randomize the <strong>freq</strong> variable in ChucK (between 220 and 440Hz).</p>
+<div id="htmlEditor1" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:600px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Interfacing With WebChucK&lt;/h1&gt;
+&lt;h2&gt;Update a variable&lt;/h2&gt;
+
+&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+&lt;input id=&quot;updateFreq&quot; type=&quot;button&quot; value=&quot;Update Freq&quot; /&gt;
+
+&lt;script&gt;
+    var serverFilesToPreload = [
+            {
+                serverFilename: &#39;./interaction-1.ck&#39;,
+                virtualFilename: &#39;interaction-1.ck&#39;
+            }
+        ];
+    var startButton = document.getElementById( &quot;startButton&quot; );
+    startButton.addEventListener( &quot;click&quot;, async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( &quot;interaction-1.ck&quot; );
+        startButton.disabled = true;
+    });
+    var updateFreqButton = document.getElementById( &quot;updateFreq&quot; );
+    updateFreqButton.addEventListener( &quot;click&quot;, async function() {
+        // Randomize frequency between 220 and 440Hz
+        var newFreq = 220.0 + Math.random() * 220.0;
+        theChuck.setFloat(&quot;freq&quot;, newFreq);
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p>We reference the ChucK code's <strong>freq</strong> variable as a string ("freq") and request that it's value be updated via the WebChucK API's <strong>setFloat()</strong> function.</p>
+<p><a href="../examples/interaction-1.html">Here</a> is the website in action. Click away and you can tell we are really making "Computer Music" now ;)</p>
+<script>
+    var htmlEditor1 = newHTMLEditor("htmlEditor1", true);
+
+    var chuckEditor1 = newChuckEditor("chuckEditor1", true);
+    var chuckEditor2 = newChuckEditor("chuckEditor2", true);
+</script>

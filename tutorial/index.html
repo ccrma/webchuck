@@ -18,22 +18,28 @@ Include the ACE and ChucK stuff
 <script type="text/javascript" src="./js/editor.js"></script>
 <script type="text/javascript" src="./js/defer.js"></script>
 <script type="text/javascript" src="./js/webchuck_host.js"></script>
-<h1 id="webchuck-tutorials">WebChucK Tutorials<br />
-</h1>
-<h4 id="by-mike-mulshine">by Mike Mulshine<br />
-</h4>
-<p>So many thanks to Ge Wang, Jack Atherton, Matt Wright.</p>
-<p>Go ahead. Make some sound on the web.</p>
-<h3 id="editor-1">Editor 1</h3>
+<h1 id="webchuck">WebChucK</h1>
+<p>WebChucK brings the strongly-timed audio programming language, <a href="https://chuck.stanford.edu/">ChucK</a>, to your web browser.</p>
+<h2 id="what-is-webchuck">What is WebChucK?</h2>
+<p>WebChucK wraps a web-assembly compiled version of ChucK's <a href="https://chuck.cs.princeton.edu/doc/program/vm.html">virtual machine</a> in a javascript API that enables communication between the browser UI and underlying ChucK <a href="https://chuck.cs.princeton.edu/doc/language/spork.html">shreds</a>.</p>
+<h2 id="compatible-browsers">Compatible Browsers</h2>
+<ul>
+<li>Chrome and other <a href="https://en.wikipedia.org/wiki/Chromium_(web_browser)">Chromium</a>-based browsers</li>
+<li>Firefox</li>
+<li>Edge</li>
+<li>Opera</li>
+<li><em>NOT</em> Safari (<a href="">yet</a>)</li>
+</ul>
+<h2 id="demo">Demo</h2>
+<p>Here is a simple ChucK program that plays a sine wave for 1 second at 220Hz. Click <q>Run Code</q> to run this ChucK program and hear the resulting sound. If you don't hear anything, check out our <a href="">troubleshooting guide</a>.</p>
 <div id="editor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
 <p>SinOsc osc =&gt; dac;<br />
 220 =&gt; osc.freq;<br />
-0.5 =&gt; osc.gain;<br />
 1::second =&gt; now;<br />
 </p>
 </div>
 <p><input id="run1" type="button" value="Run Code" /> <br/><br/></p>
-<h3 id="editor-2">Editor 2</h3>
+<p>Let's do something more complicated.</p>
 <div id="editor2" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
 <p>SinOsc osc =&gt; dac;<br />
 330 =&gt; osc.freq;<br />
@@ -42,103 +48,12 @@ Include the ACE and ChucK stuff
 </p>
 </div>
 <p><input id="run2" type="button" value="Run Code" /> <br/><br/></p>
-<h2 id="running-webchuck-on-your-site">Running WebChucK on Your Site</h2>
-<h3 id="download-webchuck">1. Download WebChucK</h3>
-<p>Download the WebChucK javascript and web assembly dependencies <strong><a href="./webchuck-src.zip">here</a></strong>.</p>
-<h3 id="setup-your-site">2. Setup Your Site</h3>
-<p>Make a <strong>project</strong> folder.<br />
-</p>
-<p>Unzip <strong>webchuck-src.zip</strong>.<br />
-</p>
-<p>Copy <strong>webchuck.wasm</strong>, <strong>webchuck.js</strong>, and <strong>webchuck_host.js</strong> in to a new folder called <strong>js</strong>.<br />
-</p>
-<h3 id="make-a-simple-webpage-or-add-to-your-own">3. Make a simple webpage (or add to your own)</h3>
-<p>This can be <strong>index.html</strong> or whatever you’d like as long as it is in your <strong>project</strong> folder.</p>
-<div id="htmlEditor1" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:200px">
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;body&gt;
-
-&lt;h1&gt;Hello WebChucK&lt;/h1&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</div>
-<h3 id="link-webchuck">3. Link WebChucK</h3>
-<p>Link <strong>webchuck_host.js</strong> via the script tag.</p>
-<div id="htmlEditor2" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:200px">
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;body&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
-
-&lt;h1&gt;Hello WebChucK&lt;/h1&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</div>
-<h3 id="start-webchuck">4. Start WebChucK</h3>
-<p>WebAudio AudioContext cannot be started without user interaction on most browsers. So, we will start WebChucK with a button click.</p>
-<p>Also, you will need to <a href="#toserver">run a local server</a> to start WebChucK and test locally.</p>
-<div id="htmlEditor3" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:350px">
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;body&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
-
-&lt;h1&gt;Hello WebChucK&lt;/h1&gt;
-
-&lt;input id=&quot;startChucKButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
-
-&lt;script&gt;
-    var startChucKButton = document.getElementById( &quot;startChucKButton&quot; );
-    runButton.addEventListener( &quot;click&quot;, async function() {
-        await startChuck();
-        await theChuckReady;
-    });
-&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</div>
-<h3 id="run-some-chuck-code">5. Run some ChucK Code:</h3>
-<p>You can pass ChucK code in a string to WebChucK runCode() function.</p>
-<div id="htmlEditor4" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:425px">
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;body&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
-
-&lt;h1&gt;Hello WebChucK&lt;/h1&gt;
-
-&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
-
-&lt;script&gt;
-    var startButton = document.getElementById( &quot;startButton&quot; );
-    startButton.addEventListener( &quot;click&quot;, async function() {
-        await startChuck();
-        await theChuckReady;
-        await theChuck.runCode(&quot;\
-            SinOsc osc =&gt; dac;\
-            330 =&gt; osc.freq;\
-            1::second =&gt; now;\
-        &quot;);
-    });
-&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</div>
-<p>Your webpage should look and function like <a href="./basic.html">this</a>.</p>
-<h2 id="appendix-setting-up-a-local-server">Appendix: Setting up a local server <a name="toserver"></a></h2>
-<h3 id="open-terminal">1. Open terminal</h3>
-<h3 id="navigate-to-project-directory">2. Navigate to <strong>project</strong> directory</h3>
-<h3 id="run-this-command">3. Run this command:</h3>
-<p>python -m SimpleHTTPServer <code>[port</code>]</p>
-<p><code>[port</code>] is usually something like 8000 or 8080</p>
-<h3 id="open-this-url-in-a-browser">4. Open this URL in a browser:</h3>
-<p>http://localhost:<code>[port</code>]</p>
+<h2 id="tutorials">Tutorials</h2>
+<ul>
+<li><a href="./tutorials/001.html">Tutorial 1</a>: Getting Started - Running ChucK on a Web Page</li>
+<li><a href="./tutorials/002.html">Tutorial 2</a>: Interfacing with ChucK - Updating Variables + Events</li>
+<li><a href="./tutorials/002.html">Tutorial 3</a>: Interfacing with ChucK - Listening for Variables + Events</li>
+</ul>
 <script>
     async function prep() {
         //await preloadFilenames( serverFilesToPreload );
@@ -160,12 +75,4 @@ Include the ACE and ChucK stuff
         await prep();
         await theChuck.runCode(editor2.getValue());
     });
-
-    var htmlEditor1 = newHTMLEditor("htmlEditor1", true);
-    var htmlEditor2 = newHTMLEditor("htmlEditor2", true);
-    var htmlEditor2 = newHTMLEditor("htmlEditor3", true);
-    var htmlEditor2 = newHTMLEditor("htmlEditor4", true);
-
 </script>
-<p>Here is some more text that should show up at the bottom of the tutorial.<br />
-</p>

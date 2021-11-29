@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script type="text/javascript" src="./js/webchuck_host.js"></script>
+
+<h1>Hello WebChucK</h1>
+<h2>Audio File Playback</h2>
+
+<input id="startButton" type="button" value="Start ChucK" />
+
+<script>
+    var serverFilesToPreload = [
+        {
+            serverFilename: './my-audio.wav',
+            virtualFilename: 'my-audio.wav'
+        },
+        {
+            serverFilename: './play-my-audio.ck',
+            virtualFilename: 'play-my-audio.ck'
+        }
+    ];
+    var startButton = document.getElementById( "startButton" );
+    startButton.addEventListener( "click", async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile("play-my-audio.ck");
+    });
+</script>
+</body>
+</html>
