@@ -14,6 +14,11 @@
 <!---
 Include the ACE and ChucK stuff
 -->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="../css/editor.css">
+</head>
 <script type="text/javascript" src="../js/ace.js" charset="utf-8"></script>
 <script type="text/javascript" src="../js/editor.js"></script>
 <h2 id="getting-started---running-chuck-on-a-web-page">Getting Started - Running ChucK on a Web Page</h2>
@@ -30,7 +35,7 @@ Include the ACE and ChucK stuff
 </ul>
 <h3 id="make-a-simple-webpage-or-add-to-your-own">3. Make a simple webpage (or add to your own)</h3>
 <p>Make a file called <em>index.html</em> or whatever you'd like as long as it is in your <strong>project</strong> folder.</p>
-<div id="htmlEditor1" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:200px">
+<div id="htmlEditor1" style="height:200px">
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;body&gt;
@@ -42,7 +47,7 @@ Include the ACE and ChucK stuff
 </div>
 <h3 id="link-webchuck">4. Link WebChucK</h3>
 <p>Link <em>webchuck_host.js</em> via the script tag.</p>
-<div id="htmlEditor2" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:200px">
+<div id="htmlEditor2" style="height:200px">
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;body&gt;
@@ -57,7 +62,7 @@ Include the ACE and ChucK stuff
 <h3 id="start-webchuck">5. Start WebChucK</h3>
 <p>WebAudio AudioContext cannot be started without user interaction on most browsers. So, we will start WebChucK with a button click.</p>
 <p>Also, you will need to <a href="../help/local-server.html">setup a local server</a> to start WebChucK and test locally.</p>
-<div id="htmlEditor3" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:350px">
+<div id="htmlEditor3" style="height:350px">
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;body&gt;
@@ -80,7 +85,7 @@ Include the ACE and ChucK stuff
 </div>
 <h3 id="run-some-chuck-code-inline">6. Run some ChucK Code (inline):</h3>
 <p>You can pass ChucK code in a string to WebChucK runCode() function.</p>
-<div id="htmlEditor4" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:425px">
+<div id="htmlEditor4" style="height:425px">
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;body&gt;
@@ -110,7 +115,7 @@ Include the ACE and ChucK stuff
 <h3 id="or-run-some-chuck-code-from-a-file">7. OR Run some Chuck Code (from a file)</h3>
 <p>It is likely easier / cleaner to edit your ChucK code in a separate file and IDE (possibly <a href="https://chuck.stanford.edu/">miniAudicle</a>). All you need to do is register the file with the ChucK server with a WebChucK function called <strong>preloadFilenames()</strong>.</p>
 <p>In this example, <a href="../examples/my-file.ck">my-file.ck</a> contains the same ChucK code we embedded inline above.</p>
-<div id="htmlEditor5" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:450px">
+<div id="htmlEditor5" style="height:450px">
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;body&gt;
@@ -146,16 +151,15 @@ Include the ACE and ChucK stuff
 <source src="../examples/my-audio.wav" type="audio/wav">
 </audio>
 <p>Here is some ChucK code in a file called <em>play-my-audio.ck</em>:</p>
-<div id="chuckEditor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
-<p>SndBuf buf =&gt; dac;<br />
-me.sourceDir() + "my-audio.wav" =&gt; buf.read;<br />
-0 =&gt; buf.pos;<br />
-1 =&gt; buf.rate;<br />
-buf.length() / buf.rate() =&gt; now;<br />
-</p>
-</div>
+<pre><div id="chuckEditor1">
+SndBuf buf => dac;
+me.sourceDir() + "my-audio.wav" => buf.read;
+0 => buf.pos;
+1 => buf.rate;
+buf.length() / buf.rate() => now;
+</div></pre>
 <p>And here they are configured to load and run in WebChucK on a simple web page:</p>
-<div id="htmlEditor6" class="ace_editor ace_hidpi ace-html" style="font-size: 13px; height:550px">
+<div id="htmlEditor6" style="height:550px">
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;body&gt;

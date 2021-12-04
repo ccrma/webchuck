@@ -11,6 +11,11 @@
 
     here we go...
 -->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="./css/editor.css">
+</head>
 <!---
 Include the ACE and ChucK stuff
 -->
@@ -32,21 +37,19 @@ Include the ACE and ChucK stuff
 </ul>
 <h2 id="demo">Demo</h2>
 <p>Here is a simple ChucK program that plays a sine wave for 1 second at 220Hz. Click <q>Run Code</q> to run this ChucK program and hear the resulting sound. If you don't hear anything, check out our <a href="">troubleshooting guide</a>.</p>
-<div id="editor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
-<p>SinOsc osc =&gt; dac;<br />
-220 =&gt; osc.freq;<br />
-1::second =&gt; now;<br />
-</p>
-</div>
+<pre><div id="editor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">// Sine oscillator at 220Hz
+SinOsc osc => dac;\
+220 => osc.freq;\
+1::second => now;\
+</div></pre>
 <p><input id="run1" type="button" value="Run Code" /> <br/><br/></p>
 <p>Let's do something more complicated.</p>
-<div id="editor2" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
-<p>SinOsc osc =&gt; dac;<br />
-330 =&gt; osc.freq;<br />
-0.5 =&gt; osc.gain;<br />
-1::second =&gt; now;<br />
-</p>
-</div>
+<pre><div id="editor2" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">// Something a little more complicated
+SinOsc osc => dac;\
+330 => osc.freq;\
+0.5 => osc.gain;\
+1::second => now;\
+</div></pre>
 <p><input id="run2" type="button" value="Run Code" /> <br/><br/></p>
 <h2 id="tutorials">Tutorials</h2>
 <ul>

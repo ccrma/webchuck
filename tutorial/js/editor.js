@@ -1,11 +1,14 @@
 var chuckEditors = [];
 var htmlEditors = [];
+var jsEditors = [];
 
 function newChuckEditor(divId, readonly=false) {
-    var chuckEditor = ace.edit(divId);
-    chuckEditor.setTheme("ace/theme/chuck");
-    chuckEditor.session.setMode("ace/mode/chuck");
-    chuckEditor.setOptions({
+    var editor = ace.edit(divId);
+    editor.setTheme("ace/theme/chuck");
+    editor.session.setMode("ace/mode/chuck");
+    editor.setOptions({
+        fontSize: "13px",
+        fontFamily: "Monaco",
         cursorStyle: "ace",
         useSoftTabs: true,
         showFoldWidgets: true,
@@ -13,24 +16,37 @@ function newChuckEditor(divId, readonly=false) {
         maxLines: 50,
         minLines: 5,
     }); 
-    chuckEditor.container.style.lineHeight = 1.25;
-    chuckEditor.renderer.updateFontSize();
-    chuckEditor.session.setUseWrapMode(true);
-    chuckEditor.setReadOnly(readonly);
-    chuckEditors.push(chuckEditor);
+    editor.container.style.lineHeight = 1.25;
+    editor.renderer.updateFontSize();
+    editor.session.setUseWrapMode(true);
+    editor.setReadOnly(readonly);
+    chuckEditors.push(editor);
 
     return chuckEditors[chuckEditors.length - 1];
 }
 
 function newHTMLEditor(divId, readonly=true) {
-    var htmlEditor = ace.edit(divId);
-    htmlEditor.setTheme("ace/theme/clouds");
-    htmlEditor.session.setMode("ace/mode/html");
-    htmlEditor.container.style.lineHeight = 1.25;
-    htmlEditor.renderer.updateFontSize();
-    htmlEditor.session.setUseWrapMode(true);
-    htmlEditor.setReadOnly(readonly);
-    htmlEditors.push(htmlEditor);
+    var editor = ace.edit(divId);
+    editor.setTheme("ace/theme/clouds");
+    editor.session.setMode("ace/mode/html");
+    editor.container.style.lineHeight = 1.25;
+    editor.renderer.updateFontSize();
+    editor.session.setUseWrapMode(true);
+    editor.setReadOnly(readonly);
+    htmlEditors.push(editor);
 
     return htmlEditors[htmlEditors.length - 1];
+}
+
+function newJSEditor(divId, readonly=true) {
+    var editor = ace.edit(divId);
+    editor.setTheme("ace/theme/chrome");
+    editor.session.setMode("ace/mode/javascript");
+    editor.container.style.lineHeight = 1.25;
+    editor.renderer.updateFontSize();
+    editor.session.setUseWrapMode(true);
+    editor.setReadOnly(readonly);
+    jsEditors.push(editor);
+
+    return jsEditors[jsEditors.length - 1];
 }

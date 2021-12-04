@@ -12,6 +12,13 @@
 	here we go...
 -->
 
+<head>
+	<meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="./css/editor.css">
+</head>
+
+
 <!---
 Include the ACE and ChucK stuff
 -->
@@ -40,22 +47,22 @@ WebChucK wraps a web-assembly compiled version of ChucK\'s [virtual machine](htt
 
 Here is a simple ChucK program that plays a sine wave for 1 second at 220Hz. Click <q>Run Code</q> to run this ChucK program and hear the resulting sound. If you don\'t hear anything, check out our  [troubleshooting guide](). 
 
-<div id="editor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
+<pre><div id="editor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">// Sine oscillator at 220Hz
 SinOsc osc => dac;\
 220 => osc.freq;\
 1::second => now;\
-</div>
+</div></pre>
 <input id="run1" type="button" value="Run Code" />
 <br/><br/>
 
 Let\'s do something more complicated. 
 
-<div id="editor2" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">
+<pre><div id="editor2" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">// Something a little more complicated
 SinOsc osc => dac;\
 330 => osc.freq;\
 0.5 => osc.gain;\
 1::second => now;\
-</div>
+</div></pre>
 <input id="run2" type="button" value="Run Code" />
 <br/><br/>
 
