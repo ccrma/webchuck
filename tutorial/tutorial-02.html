@@ -21,11 +21,11 @@ Include the ACE and ChucK stuff
 </head>
 <script type="text/javascript" src="../js/ace.js" charset="utf-8"></script>
 <script type="text/javascript" src="../js/editor.js"></script>
-<h2 id="getting-started---running-chuck-on-a-web-page">Getting Started - Running ChucK on a Web Page</h2>
-<h3 id="interfacing-with-chuck">Interfacing with ChucK</h3>
+<h2 id="tutorial-2-communicating-with-chuck">Tutorial 2: Communicating with ChucK</h2>
+<p><a href="../tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="../tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="../tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
 <p>Audio programming in the browser unveils new modes of interaction between users and sounds on the web.</p>
 <p>In this tutorial we will take a look at mapping user inputs (via buttons, key presses, and more) to sounds and their parameters in ChucK.</p>
-<h3 id="updating-chuck-variables">1. Updating ChucK variables</h3>
+<h3 id="updating-a-chuck-variable-float">1. Updating a ChucK variable (<strong>float</strong>)</h3>
 <p>This ChucK program plays a sine oscillator at 220Hz for as long as it runs.</p>
 <pre><div id="chuckEditor1">// Sine oscillator at 220 Hz
 SinOsc osc => dac;
@@ -85,7 +85,8 @@ while (true) {
 &lt;/html&gt;</code></pre>
 </div>
 <p>We reference the ChucK code's <strong>freq</strong> variable as a string id ("freq") and request that it's value be updated via the WebChucK API's <strong>setFloat()</strong> function. <a href="../examples/interaction-1.html">Here</a> is the website in action. Click away and you can tell we are really making "Computer Music" now ;)</p>
-<p>There are several similar set functions:</p>
+<h3 id="setting-chuck-variables-of-other-types">2. Setting ChucK variables (of other types)</h3>
+<p>There are several other <strong>set…()</strong> functions:</p>
 <ul>
 <li><strong>setInt</strong>("<em>variable</em>", <strong>value</strong>)</li>
 <li><strong>setIntArray</strong>("<em>variable</em>", <strong>values</strong>)</li>
@@ -173,14 +174,82 @@ while (true) {
 &lt;/html&gt;</code></pre>
 </div>
 <p>Check the working site out <a href="../examples/interaction-2.html">here</a>.</p>
-<h3 id="sending-chuck-events">2. Sending ChucK events</h3>
+<h3 id="triggering-events-in-chuck">3. Triggering Events in ChucK</h3>
 <p>What if we just want to trigger an event in ChucK? Like, play a note, start a sample, reset a metronome…</p>
 <p>Simply create a <strong>global</strong> instance of the ChucK native <strong>Event</strong> class (in ChucK) and call <strong>broadcastEvent</strong>("<em>event</em>") (in JavaScript).</p>
+<p>The following ChucK code is in a file called <a href="../examples/interaction-3.ck"><em>interaction-3.ck</em></a>. It arpeggiates a chord upward continuously.</p>
+<pre><div id="chuckEditor4">// Note triggered by global event
+global Event playNote;
+
+// Sawtooth through a low pass filter and envelope
+SawOsc osc => LPF filter => ADSR env => dac;
+env.set(2::ms, 500::ms, 0.0, 0::ms);
+
+// A little LFO modulation on the filter freq
+SinOsc filterMod => blackhole;
+3.5 => filterMod.freq;
+
+function void filterModProcess() {
+    while (true) {
+        300 + filterMod.last() * 150 => filter.freq;
+        1::samp => now;
+    }
+}
+
+spork ~ filterModProcess(); 
+
+while (true) {
+    playNote => now;
+    0 => filterMod.phase;
+    env.keyOn();
+}
+</div></pre>
+<p>Below we run <em>interaction-3.ck</em> and broadcast a “playNote” event when a button labeled <strong>“Play Note”</strong> is clicked.</p>
+<div id="htmlEditor3" style="height:570px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Interfacing With WebChucK&lt;/h1&gt;
+&lt;h2&gt;Mapping button to Event&lt;/h2&gt;
+
+&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+&lt;input id=&quot;playNote&quot; type=&quot;button&quot; value=&quot;Play Note&quot; /&gt;
+
+&lt;script&gt;
+    var serverFilesToPreload = [
+            {
+                serverFilename: &#39;./interaction-3.ck&#39;,
+                virtualFilename: &#39;interaction-3.ck&#39;
+            }
+        ];
+    var startButton = document.getElementById( &quot;startButton&quot; );
+    startButton.addEventListener( &quot;click&quot;, async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( &quot;interaction-3.ck&quot; );
+        startButton.disabled = true;
+    });
+
+    var playNoteButton = document.getElementById( &quot;playNote&quot; );
+    playNoteButton.addEventListener( &quot;click&quot;, async function() {
+        theChuck.broadcastEvent(&quot;playNote&quot;);
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p><em>Note: As with <strong>setInt()</strong>, <strong>setFloat()</strong>, etc., make sure the name of the broadcasted event is identical to the global <strong>Event</strong> instance variable name.</em></p>
+<p><a href="../index.html">Home</a> ~ <a href="../tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="../tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="../tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
 <script>
     var htmlEditor1 = newHTMLEditor("htmlEditor1", true);
     var htmlEditor2 = newHTMLEditor("htmlEditor2", true);
+    var htmlEditor3 = newHTMLEditor("htmlEditor3", true);
 
     var chuckEditor1 = newChuckEditor("chuckEditor1", true);
     var chuckEditor2 = newChuckEditor("chuckEditor2", true);
     var chuckEditor3 = newChuckEditor("chuckEditor3", true);
+    var chuckEditor4 = newChuckEditor("chuckEditor4", true);
 </script>

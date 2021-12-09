@@ -27,7 +27,7 @@ function newChuckEditor(divId, readonly=false) {
 
 function newHTMLEditor(divId, readonly=true) {
     var editor = ace.edit(divId);
-    editor.setTheme("ace/theme/clouds");
+    editor.setTheme("ace/theme/dreamweaver");
     editor.session.setMode("ace/mode/html");
     editor.container.style.lineHeight = 1.25;
     editor.renderer.updateFontSize();

@@ -9,31 +9,34 @@
 <script type="text/javascript" src="./js/webchuck_host.js"></script>
 
 <h1>Interfacing With WebChucK</h1>
-<h2>Update a variable</h2>
+<h2>Mapping button to Event</h2>
 
 <input id="startButton" type="button" value="Start ChucK" />
-<input id="updateFreq" type="button" value="Update Freq" />
+<input id="playNote" type="button" value="Play Note" />
 
 <script>
 	var serverFilesToPreload = [
 	        {
-	            serverFilename: './interaction-1.ck',
-	            virtualFilename: 'interaction-1.ck'
+	            serverFilename: './interaction-3.ck',
+	            virtualFilename: 'interaction-3.ck'
 	        }
 	    ];
     var startButton = document.getElementById( "startButton" );
+    var playNoteButton = document.getElementById( "playNote" );
+
+    playNoteButton.disabled = true;
     startButton.addEventListener( "click", async function() {
         await preloadFilenames( serverFilesToPreload );
         await startChuck();
         await theChuckReady;
-        await theChuck.runFile( "interaction-1.ck" );
+        await theChuck.runFile( "interaction-3.ck" );
         startButton.disabled = true;
+        playNoteButton.disabled = false;
     });
-    var updateFreqButton = document.getElementById( "updateFreq" );
-    updateFreqButton.addEventListener( "click", async function() {
-    	// Randomize frequency between 220 and 440Hz
-    	var newFreq = 220.0 + Math.random() * 220.0;
-    	theChuck.setFloat("freq", newFreq);
+
+   
+    playNoteButton.addEventListener( "click", async function() {
+    	theChuck.broadcastEvent("playNote");
     });
 </script>
 </body>

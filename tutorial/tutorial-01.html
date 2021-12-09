@@ -21,7 +21,9 @@ Include the ACE and ChucK stuff
 </head>
 <script type="text/javascript" src="../js/ace.js" charset="utf-8"></script>
 <script type="text/javascript" src="../js/editor.js"></script>
-<h2 id="getting-started---running-chuck-on-a-web-page">Getting Started - Running ChucK on a Web Page</h2>
+<h2 id="tutorial-1-getting-started">Tutorial 1: Getting Started</h2>
+<p><a href="../tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="../tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="../tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
+<h2 id="running-chuck-on-a-web-page">Running ChucK on a Web Page</h2>
 <h3 id="download-webchuck">1. Download WebChucK</h3>
 <p>Download the WebChucK javascript and web assembly dependencies <strong><a href="../webchuck-src.zip">here</a></strong>.</p>
 <h3 id="setup-your-site">2. Setup Your Site</h3>
@@ -101,10 +103,10 @@ Include the ACE and ChucK stuff
     startButton.addEventListener( &quot;click&quot;, async function() {
         await startChuck();
         await theChuckReady;
-        await theChuck.runCode(&quot;\
-            SinOsc osc =&gt; dac;\
-            330 =&gt; osc.freq;\
-            1::second =&gt; now;\
+        await theChuck.runCode(&quot;
+            SinOsc osc =&gt; dac;
+            330 =&gt; osc.freq;
+            1::second =&gt; now;
         &quot;);
     });
 &lt;/script&gt;
@@ -151,7 +153,7 @@ Include the ACE and ChucK stuff
 <source src="../examples/my-audio.wav" type="audio/wav">
 </audio>
 <p>Here is some ChucK code in a file called <em>play-my-audio.ck</em>:</p>
-<pre><div id="chuckEditor1">
+<pre><div id="chuckEditor1"> // Load and play an audio
 SndBuf buf => dac;
 me.sourceDir() + "my-audio.wav" => buf.read;
 0 => buf.pos;
@@ -193,6 +195,7 @@ buf.length() / buf.rate() => now;
 &lt;/html&gt;</code></pre>
 </div>
 <p>Check it out in action <a href="../examples/basic-file-audio.html">here</a>.</p>
+<p><a href="../index.html">Home</a> ~ <a href="../tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="../tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="../tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
 <script>
     var htmlEditor1 = newHTMLEditor("htmlEditor1", true);
     var htmlEditor2 = newHTMLEditor("htmlEditor2", true);
