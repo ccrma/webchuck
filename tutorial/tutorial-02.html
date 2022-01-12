@@ -17,10 +17,10 @@ Include the ACE and ChucK stuff
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="../css/editor.css">
+<link rel="stylesheet" href="./css/editor.css">
 </head>
-<script type="text/javascript" src="../js/ace.js" charset="utf-8"></script>
-<script type="text/javascript" src="../js/editor.js"></script>
+<script type="text/javascript" src="./js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/editor.js"></script>
 <h2 id="tutorial-2-communicating-with-chuck">Tutorial 2: Communicating with ChucK</h2>
 <p><a href="./index.html">Home</a> ~ <a href="./tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="./tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="./tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
 <p>Audio programming in the browser unveils new modes of interaction between users and sounds on the web.</p>
@@ -84,7 +84,7 @@ while (true) {
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
-<p>We reference the ChucK code's <strong>freq</strong> variable as a string id ("freq") and request that it's value be updated via the WebChucK API's <strong>setFloat()</strong> function. <a href="../examples/interaction-1.html">Here</a> is the website in action. Click away and you can tell we are really making "Computer Music" now ;)</p>
+<p>We reference the ChucK code's <strong>freq</strong> variable as a string id ("freq") and request that it's value be updated via the WebChucK API's <strong>setFloat()</strong> function. <a href="./examples/interaction-1.html">Here</a> is the website in action. Click away and you can tell we are really making "Computer Music" now ;)</p>
 <h3 id="setting-chuck-variables-of-other-types">2. Setting ChucK variables (of other types)</h3>
 <p>There are several other <strong>set…()</strong> functions:</p>
 <ul>
@@ -99,7 +99,7 @@ while (true) {
 <li><strong>setString</strong>("<em>variable</em>", <strong>value</strong>)</li>
 </ul>
 <p>Let's take a look at an example that employs a few of these methods at once.</p>
-<p>The following ChucK code is in a file called <a href="../examples/interaction-2.ck"><em>interaction-2.ck</em></a>. It arpeggiates a chord upward continuously.</p>
+<p>The following ChucK code is in a file called <a href="./examples/interaction-2.ck"><em>interaction-2.ck</em></a>. It arpeggiates a chord upward continuously.</p>
 <pre><div id="chuckEditor3">// Chord arpeggiator
 SinOsc osc => ADSR adsr => dac;
 adsr.set(10::ms, 400::ms, 0.0, 3::ms);
@@ -173,11 +173,11 @@ while (true) {
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
-<p>Check the working site out <a href="../examples/interaction-2.html">here</a>.</p>
+<p>Check the working site out <a href="./examples/interaction-2.html">here</a>.</p>
 <h3 id="triggering-events-in-chuck">3. Triggering Events in ChucK</h3>
 <p>What if we just want to trigger an event in ChucK? Like, play a note, start a sample, reset a metronome…</p>
 <p>Simply create a <strong>global</strong> instance of the ChucK native <strong>Event</strong> class (in ChucK) and call <strong>broadcastEvent</strong>("<em>event</em>") (in JavaScript).</p>
-<p>The following ChucK code is in a file called <a href="../examples/interaction-3.ck"><em>interaction-3.ck</em></a>. It arpeggiates a chord upward continuously.</p>
+<p>The following ChucK code is in a file called <a href="./examples/interaction-3.ck"><em>interaction-3.ck</em></a>. It arpeggiates a chord upward continuously.</p>
 <pre><div id="chuckEditor4">// Note triggered by global event
 global Event playNote;
 
