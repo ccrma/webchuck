@@ -17,15 +17,15 @@ Include the ACE and ChucK stuff
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="../css/editor.css">
+<link rel="stylesheet" href="./css/editor.css">
 </head>
-<script type="text/javascript" src="../js/ace.js" charset="utf-8"></script>
-<script type="text/javascript" src="../js/editor.js"></script>
+<script type="text/javascript" src="./js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/editor.js"></script>
 <h2 id="tutorial-1-getting-started">Tutorial 1: Getting Started</h2>
-<p><a href="./tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="./tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="./tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
+<p><a href="./index.html">Home</a> ~ <a href="./tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="./tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="./tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
 <h2 id="running-chuck-on-a-web-page">Running ChucK on a Web Page</h2>
 <h3 id="download-webchuck">1. Download WebChucK</h3>
-<p>Download the WebChucK javascript and web assembly dependencies <strong><a href="../webchuck-src.zip">here</a></strong>.</p>
+<p>Download the WebChucK javascript and web assembly dependencies <strong><a href="./webchuck-src.zip">here</a></strong>.</p>
 <h3 id="setup-your-site">2. Setup Your Site</h3>
 <ul>
 <li><p>Make a <strong>project</strong> folder.<br />
@@ -63,7 +63,7 @@ Include the ACE and ChucK stuff
 </div>
 <h3 id="start-webchuck">5. Start WebChucK</h3>
 <p>WebAudio AudioContext cannot be started without user interaction on most browsers. So, we will start WebChucK with a button click.</p>
-<p>Also, you will need to <a href="../help/local-server.html">setup a local server</a> to start WebChucK and test locally.</p>
+<p>Also, you will need to <a href="./help/local-server.html">setup a local server</a> to start WebChucK and test locally.</p>
 <div id="htmlEditor3" style="height:350px">
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -113,10 +113,10 @@ Include the ACE and ChucK stuff
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
-<p>Your webpage should look and function like <a href="../examples/basic.html">this</a> at this point.</p>
+<p>Your webpage should look and function like <a href="./examples/basic.html">this</a> at this point.</p>
 <h3 id="or-run-some-chuck-code-from-a-file">7. OR Run some Chuck Code (from a file)</h3>
 <p>It is likely easier / cleaner to edit your ChucK code in a separate file and IDE (possibly <a href="https://chuck.stanford.edu/">miniAudicle</a>). All you need to do is register the file with the ChucK server with a WebChucK function called <strong>preloadFilenames()</strong>.</p>
-<p>In this example, <a href="../examples/my-file.ck">my-file.ck</a> contains the same ChucK code we embedded inline above.</p>
+<p>In this example, <a href="./examples/my-file.ck">my-file.ck</a> contains the same ChucK code we embedded inline above.</p>
 <div id="htmlEditor5" style="height:450px">
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -145,12 +145,12 @@ Include the ACE and ChucK stuff
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
-<p><a href="../examples/basic-file.html">Here it is</a> in action.</p>
+<p><a href="./examples/basic-file.html">Here it is</a> in action.</p>
 <h3 id="extra-loading-audio-and-other-file-types">EXTRA: Loading audio and other file types</h3>
 <p>The same file loading technique applies to audio, MIDI, txt, and other file types.</p>
 <p>Here is an audio file <em>my-audio.wav</em> (actually <em>geetar.wav</em> from the ChucK examples):</p>
 <audio controls>
-<source src="../examples/my-audio.wav" type="audio/wav">
+<source src="./examples/my-audio.wav" type="audio/wav">
 </audio>
 <p>Here is some ChucK code in a file called <em>play-my-audio.ck</em>:</p>
 <pre><div id="chuckEditor1"> // Load and play an audio
@@ -194,7 +194,7 @@ buf.length() / buf.rate() => now;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
-<p>Check it out in action <a href="../examples/basic-file-audio.html">here</a>.</p>
+<p>Check it out in action <a href="./examples/basic-file-audio.html">here</a>.</p>
 <p><a href="./index.html">Home</a> ~ <a href="./tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="./tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="./tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
 <script>
     var htmlEditor1 = newHTMLEditor("htmlEditor1", true);
