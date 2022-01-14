@@ -29,6 +29,13 @@ function newHTMLEditor(divId, readonly=true) {
     var editor = ace.edit(divId);
     editor.setTheme("ace/theme/dreamweaver");
     editor.session.setMode("ace/mode/html");
+    editor.setOptions({
+        useSoftTabs: true,
+        showFoldWidgets: true,
+        foldStyle: "markbeginend",
+        maxLines: 100,
+        minLines: 5,
+    }); 
     editor.container.style.lineHeight = 1.25;
     editor.renderer.updateFontSize();
     editor.session.setUseWrapMode(true);
