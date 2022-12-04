@@ -1,0 +1,66 @@
+/* Spectre.css v0.5.8 | MIT License | github.com/picturepan2/spectre */
+@import url('https://unpkg.com/spectre.css/dist/spectre.min.css');
+@import url('https://unpkg.com/spectre.css/dist/spectre-icons.min.css');
+
+html, body 
+{
+  height: 100%;
+}
+
+.ide 
+{
+
+}
+
+.logo 
+{
+  line-height: 1;
+  padding: 0 0.4rem;
+  margin: 0 0.1rem 0 0;
+}
+
+.chuck-nav
+{
+  padding: 0.4rem;
+  background-color: bisque;
+}
+
+.ide,
+.editor-panel
+{
+  height: 100%;
+  display: flex;
+  flex-flow:column;
+}
+
+.editor,
+.panel
+{
+  flex: 1 1 auto;
+}
+
+.zero-pad
+{
+  padding: 0; 
+}
+
+
+/* ---------------------------------- */
+
+th, td 
+{
+  text-align:left;
+  border: 1px solid #dddddd;
+  padding: 3px 5px;
+}
+
+.clearfix 
+{
+    clear: both;
+}
+
+.hidden 
+{
+    display: none;
+}
+

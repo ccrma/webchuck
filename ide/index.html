@@ -1,3 +1,7 @@
+<!--
+    WebChucK IDE, by Terry Feng
+    Special thanks to Mike Mulshine, Jack Atherton, Chris Chafe, and Ge Wang
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,12 +9,160 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- TITLE -->
     <title>WebChucK IDE</title>
     <meta name="description"
         content="A web IDE for ChucK, a programming language for real-time sound synthesis and music creation! It's fun and easy to learn, and offers composers, researchers, and performers a powerful and accessible programming tool for building, experimenting, and sharing complex audio synthesis/analysis programs and real-time interactive music.">
+    <!-- FAVICON -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="./favicon_io/site.webmanifest">
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/webchuck.css">
 </head>
 
 <body>
+    <div class="container ide zero-pad">
+
+        <!-- NAV BAR -->
+        <header class="navbar">
+            <section class="navbar-section">
+                <!-- WebChucK Logo -->
+                <div class="logo">
+                    <img src="assets/chuck_logo.png" alt="logo" width="50" height="50">
+                </div>
+
+
+                <!-- File -->
+                <div class="dropdown">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                        File<i class="icon icon-caret"></i>
+                    </a>
+                    <ul class="menu">
+                        <li>hi</li>
+                        <li>bye</li>
+                        <li>test</li>
+                    </ul>
+                </div>
+                <!-- Edit -->
+                <div class="dropdown">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                        Edit<i class="icon icon-caret"></i>
+                    </a>
+                    <ul class="menu">
+                        <li>hi</li>
+                        <li>bye</li>
+                        <li>test</li>
+                    </ul>
+                </div>
+                 <!-- View -->
+                <div class="dropdown">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                        View<i class="icon icon-caret"></i>
+                    </a>
+                    <ul class="menu">
+                        <li>Dark Theme</li>
+                    </ul>
+                </div>          <!-- Help -->
+                <div class="dropdown">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                        Help<i class="icon icon-caret"></i>
+                    </a>
+                    <ul class="menu">
+                        <a href="https://chuck.stanford.edu" class="btn btn-link" target="_blank">ChucK
+                            Documentation</a>
+                    </ul>
+                </div>
+
+            </section>
+        </header>
+
+        <!-- CHUCK BAR -->
+        <div class="container chuck-nav">
+
+            <div class="columns col-gapless">
+                <div class="column col-2">
+                    <a href="#" class="btn btn-primary">Start WebChucK</a>
+                </div>
+                <div class="column col-10">
+                    <a href="#" class="btn btn-primary">Start</a>
+                    <a href="#" class="btn btn-primary">Replace</a>
+                    <a href="#" class="btn btn-primary">Remove</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEBCHUCK EDITOR -->
+        <div class="container editor">
+            <div class="columns col-gapless" style="height: 100%">
+                <!-- File Explorer -->
+                <div class="column col-2 editor-panel">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">File Explorer</div>
+                        </div>
+                        <div class="panel-nav">
+                            <!-- navigation components: tabs, breadcrumbs or pagination -->
+                        </div>
+                        <div class="panel-body">
+                            <!-- contents -->
+                            Hi
+                        </div>
+                        <div class="panel-footer">
+                            <!-- buttons or inputs -->
+                            Footer
+                        </div>
+                    </div>
+                </div>
+                <!-- Ace Editor -->
+                <div class="column col-6 editor-panel">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">Ace Editor</div>
+                        </div>
+                        <div class="panel-nav">
+                            <!-- navigation components: tabs, breadcrumbs or pagination -->
+                        </div>
+                        <div class="panel-body">
+                            <!-- contents -->
+                            Hi
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shreds + Console -->
+                <div class="column col-4 editor-panel">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">Shreds</div>
+                        </div>
+                        <div class="panel-nav">
+                            <!-- navigation components: tabs, breadcrumbs or pagination -->
+                        </div>
+                        <div class="panel-body">
+                            <!-- contents -->
+                            Hi
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">Console</div>
+                        </div>
+                        <div class="panel-nav">
+                            <!-- navigation components: tabs, breadcrumbs or pagination -->
+                        </div>
+                        <div class="panel-body">
+                            <!-- contents -->
+                            Hi
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </body>
 
