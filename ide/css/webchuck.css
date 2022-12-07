@@ -2,6 +2,7 @@
 @import url('https://unpkg.com/spectre.css/dist/spectre.min.css');
 @import url('https://unpkg.com/spectre.css/dist/spectre-icons.min.css');
 
+/* IDE LAYOUT */
 html, body 
 {
   height: 100%;
@@ -9,20 +10,8 @@ html, body
 
 .ide 
 {
-
-}
-
-.logo 
-{
-  line-height: 1;
-  padding: 0 0.4rem;
-  margin: 0 0.1rem 0 0;
-}
-
-.chuck-nav
-{
-  padding: 0.4rem;
-  background-color: bisque;
+  /* color */
+  background-color: lightblue;
 }
 
 .ide,
@@ -42,6 +31,50 @@ html, body
 .zero-pad
 {
   padding: 0; 
+}
+
+.logo 
+{
+  line-height: 1;
+  padding: 0 0.4rem;
+  margin: 0 0.1rem 0 0;
+}
+
+.chuck-nav
+{
+  padding: 0.4rem;
+  background-color: bisque;
+}
+
+.chuck-vm
+{
+  display: flex;
+  align-items: center;
+}
+
+.vm-button
+{
+  margin: auto;
+  width: 100%;
+}
+
+.chuckButton 
+{
+  padding: 0 0.4rem;
+  vertical-align: middle;
+  transition-duration: 0.3s;
+}
+
+.chuckButton.disabled
+{
+  color: #999;
+  cursor: not-allowed;
+}
+
+
+.chuckButton:hover
+{
+  -webkit-filter: invert(20%);
 }
 
 

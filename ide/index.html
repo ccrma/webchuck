@@ -23,6 +23,7 @@
 </head>
 
 <body>
+    <!-- IDE -->
     <div class="container ide zero-pad">
 
         <!-- NAV BAR -->
@@ -30,7 +31,7 @@
             <section class="navbar-section">
                 <!-- WebChucK Logo -->
                 <div class="logo">
-                    <img src="assets/chuck_logo.png" alt="logo" width="50" height="50">
+                    <img src="assets/chuck_logo.png" alt="chuck-logo" height="50px" width="50px">
                 </div>
 
 
@@ -81,14 +82,14 @@
         <!-- CHUCK BAR -->
         <div class="container chuck-nav">
 
-            <div class="columns col-gapless">
-                <div class="column col-2">
-                    <a href="#" class="btn btn-primary">Start WebChucK</a>
+            <div class="columns">
+                <div class="column col-2 chuck-vm">
+                    <a href="#" class="btn btn-primary vm-button">Start WebChucK </a>
                 </div>
                 <div class="column col-10">
-                    <a href="#" class="btn btn-primary">Start</a>
-                    <a href="#" class="btn btn-primary">Replace</a>
-                    <a href="#" class="btn btn-primary">Remove</a>
+                    <input class="chuckButton" type="image" src="./assets/icons/play.png" name="play" id="playButton" />
+                    <input class="chuckButton" type="image" src="./assets/icons/replace.png" name="play" id="replaceButton" />
+                    <input class="chuckButton" type="image" src="./assets/icons/remove.png" name="play" id="removeButton" />
                 </div>
             </div>
         </div>
@@ -118,15 +119,9 @@
                 <!-- Ace Editor -->
                 <div class="column col-6 editor-panel">
                     <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">Ace Editor</div>
-                        </div>
-                        <div class="panel-nav">
-                            <!-- navigation components: tabs, breadcrumbs or pagination -->
-                        </div>
                         <div class="panel-body">
-                            <!-- contents -->
-                            Hi
+                            <!-- Chuck Program goes here -->
+                            <div id="program"></div>
                         </div>
                     </div>
                 </div>
@@ -162,6 +157,10 @@
             </div>
         </div>
     </div>
+
+    <!-- POST SCRIPTS -->
+    <script src="./js/ace-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/editor.js"></script>
 
 
 </body>
