@@ -20,6 +20,8 @@
     <link rel="manifest" href="./favicon_io/site.webmanifest">
     <!-- CSS -->
     <link rel="stylesheet" href="./css/webchuck.css">
+    <!-- PRE SCRIPTS -->
+    <script src="./js/ace-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body>
@@ -52,12 +54,10 @@
                         Edit<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <li>hi</li>
-                        <li>bye</li>
-                        <li>test</li>
+                        <button class="btn btn-link" onclick="toggleVimMode()" id="vimModeButton"></button>
                     </ul>
                 </div>
-                 <!-- View -->
+                <!-- View -->
                 <div class="dropdown">
                     <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
                         View<i class="icon icon-caret"></i>
@@ -65,7 +65,7 @@
                     <ul class="menu">
                         <li>Dark Theme</li>
                     </ul>
-                </div>          <!-- Help -->
+                </div> <!-- Help -->
                 <div class="dropdown">
                     <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
                         Help<i class="icon icon-caret"></i>
@@ -81,24 +81,23 @@
 
         <!-- CHUCK BAR -->
         <div class="container chuck-nav">
-
-            <div class="columns">
+            <div class="columns col-gapless">
                 <div class="column col-2 chuck-vm">
-                    <a href="#" class="btn btn-primary vm-button">Start WebChucK </a>
+                    <button class="btn btn-primary vm-button" id="startChuck" disabled>Start WebChucK</button>
                 </div>
                 <div class="column col-10">
-                    <input class="chuckButton" type="image" src="./assets/icons/play.png" name="play" id="playButton" />
-                    <input class="chuckButton" type="image" src="./assets/icons/replace.png" name="play" id="replaceButton" />
-                    <input class="chuckButton" type="image" src="./assets/icons/remove.png" name="play" id="removeButton" />
+                    <input class="chuckButton" id="playButton" type="image" src="./assets/icons/play.png" disabled/>
+                    <input class="chuckButton" id="replaceButton" type="image" src="./assets/icons/replace.png" disabled/>
+                    <input class="chuckButton" id="removeButton" type="image" src="./assets/icons/remove.png" disabled/>
                 </div>
             </div>
         </div>
 
         <!-- WEBCHUCK EDITOR -->
-        <div class="container editor">
+        <div class="container main-editor">
             <div class="columns col-gapless" style="height: 100%">
                 <!-- File Explorer -->
-                <div class="column col-2 editor-panel">
+                <div class="column col-2 main-panel">
                     <div class="panel">
                         <div class="panel-header">
                             <div class="panel-title">File Explorer</div>
@@ -117,39 +116,33 @@
                     </div>
                 </div>
                 <!-- Ace Editor -->
-                <div class="column col-6 editor-panel">
+                <div class="column col-6 main-panel">
                     <div class="panel">
-                        <div class="panel-body">
-                            <!-- Chuck Program goes here -->
-                            <div id="program"></div>
+                        <div class="panel-body parent">
+                            <div id="editor">/* Loading ChucK File*/</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Shreds + Console -->
-                <div class="column col-4 editor-panel">
+                <div class="column col-4 main-panel">
                     <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">Shreds</div>
-                        </div>
-                        <div class="panel-nav">
-                            <!-- navigation components: tabs, breadcrumbs or pagination -->
-                        </div>
                         <div class="panel-body">
-                            <!-- contents -->
-                            Hi
+                            <table class="table" id="shredsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Shred</th>
+                                        <th>Code</th>
+                                        <th>Time</th>
+                                        <th style="width:15%">Remove</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                     <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">Console</div>
-                        </div>
-                        <div class="panel-nav">
-                            <!-- navigation components: tabs, breadcrumbs or pagination -->
-                        </div>
                         <div class="panel-body">
-                            <!-- contents -->
-                            Hi
+                            <textarea id="console" readonly>Output Console</textarea>
                         </div>
                     </div>
 
@@ -159,8 +152,14 @@
     </div>
 
     <!-- POST SCRIPTS -->
-    <script src="./js/ace-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" src="./js/editor.js"></script>
+    <script> var whereIsChuck = "./js"; </script> <!-- Specify where ChucK is -->
+    <script type="text/javascript" src="./js/editor.js"></script> <!-- Load our editor config -->
+    <script type="text/javascript" src="./js/defer.js"></script> <!-- JS to allow deferring of Promises -->
+    <script type="text/javascript" src="./js/webchuck_host.js"></script> <!-- Connect Web Audio API, Connect Webchuck.js and WASM -->
+    <!--
+
+    <script type="text/javascript" src="./js/host.js"></script> 
+    --><!-- Hook up our IDE to WebChucK -->
 
 
 </body>

@@ -10,12 +10,8 @@ chuckEditor.setOptions({
     showFoldWidgets: true,
     foldStyle: "markbeginend",
     maxLines: 23,
-    minLines: 3
+    minLines: 23,
 }); 
 chuckEditor.container.style.lineHeight = 1.25;
 chuckEditor.renderer.updateFontSize();
-chuckEditor.session.setUseWrapMode(true);
-
-/* Toggle Vim mode */
-
-chuckEditor.setKeyboardHandler("ace/keyboard/vim");
+chuckEditor.session.setUseWrapMode(false);
