@@ -1,6 +1,6 @@
 /* Connect IDE buttons to WebChucK */
 var startButton = document.getElementById("startChuck");
-var compileButton= document.getElementById("compileButton");
+var compileButton = document.getElementById("compileButton");
 var replaceButton = document.getElementById("replaceButton");
 var removeButton = document.getElementById("removeButton");
 var micButton = document.getElementById("micButton");
@@ -8,7 +8,7 @@ var micButton = document.getElementById("micButton");
 /* Connect Shreds and Console to WebChucK */
 var shredsToRows = {};
 var shredsTable = document.getElementById("shredsTable");
-var console = document.getElementById("console");
+var outputConsole = document.getElementById("console");
 
 /* File handling */
 /*
@@ -25,53 +25,45 @@ var preloadedFilesReady = preloadFilenames(serverFilesToPreload);
 
 // use named functions instead of anonymous ones
 // so they can be replaced later if desired
-var chuckCompileButton = function ()
-{
-  // send message to compile and play code
-  theChuck.runCode(chuckEditor.getValue()).then(
-    function (shredID)
-    {
-      addShredRow(shredID);
-    },
-    function (failure) { }
-  );
+var chuckCompileButton = function () {
+    // send message to compile and play code
+    theChuck.runCode(chuckEditor.getValue()).then(
+        function (shredID) {
+            addShredRow(shredID);
+        },
+        function (failure) { }
+    );
 };
 
-var chuckReplaceButton = function ()
-{
-  // send message to replace last shred with this code
-  theChuck.replaceCode(chuckEditor.getValue()).then(
-    function (shreds)
-    {
-      removeShredRow(shreds.oldShred);
-      addShredRow(shreds.newShred);
-    },
-    function (failure) { }
-  );
+var chuckReplaceButton = function () {
+    // send message to replace last shred with this code
+    theChuck.replaceCode(chuckEditor.getValue()).then(
+        function (shreds) {
+            removeShredRow(shreds.oldShred);
+            addShredRow(shreds.newShred);
+        },
+        function (failure) { }
+    );
 };
 
-var chuckRemoveButton = function ()
-{
-  // send message to remove most recent shred
-  theChuck.removeLastCode().then(
-    function (shred)
-    {
-      removeShredRow(shred);
-    },
-    function (failure) { }
-  );
+var chuckRemoveButton = function () {
+    // send message to remove most recent shred
+    theChuck.removeLastCode().then(
+        function (shred) {
+            removeShredRow(shred);
+        },
+        function (failure) { }
+    );
 };
 
-var chuckMicButton = function ()
-{
-  navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
-    .then(function (stream)
-    {
-      micButton.disabled = true;
-      const source = audioContext.createMediaStreamSource(stream);
-      source.connect(theChuck);
-    });
+var chuckMicButton = function () {
+    navigator.mediaDevices
+        .getUserMedia({ audio: true, video: false })
+        .then(function (stream) {
+            micButton.disabled = true;
+            const source = audioContext.createMediaStreamSource(stream);
+            source.connect(theChuck);
+        });
 };
 
 /*
@@ -96,11 +88,10 @@ var chuckUploadButton = function ()
 };
 */
 
-startButton.addEventListener("click", async function ()
-{
-  startButton.disabled = true;
-  await preloadedFilesReady;
-  await startChuck();
+startButton.addEventListener("click", async function () {
+    startButton.disabled = true;
+    await preloadedFilesReady;
+    await startChuck();
 });
 
 // Button initial states
@@ -116,14 +107,13 @@ removeButton.addEventListener("click", chuckRemoveButton);
 micButton.addEventListener("click", chuckMicButton);
 //uploadButton.addEventListener("click", chuckUploadButton);
 
-theChuckReady.then(function ()
-{
-  compileButton.disabled = false;
-  replaceButton.disabled = false;
-  removeButton.disabled = false;
-  micButton.disabled = false;
-  //uploadButton.disabled = false;
-  console.value += "WebChucK is ready!\n";
+theChuckReady.then(function () {
+    compileButton.disabled = false;
+    replaceButton.disabled = false;
+    removeButton.disabled = false;
+    micButton.disabled = false;
+    //uploadButton.disabled = false;
+    outputConsole.value += "WebChucK is ready!\n";
 });
 
 /*
@@ -147,112 +137,105 @@ theChuckReady.then(function ()
 */
 
 // self invoking function
-chuckPrint = function ()
-{
-  if (console) console.value = ""; // clear browser cache
-  return function (text)
-  {
-    if (arguments.length > 1)
-    {
-      text = Array.prototype.slice.call(arguments).join(" ");
-    }
-   
-    if (console) 
-    {
-      console.value += text + "\n";
-      console.scrollTop = console.scrollHeight; // focus on bottom
-    }
-  };
+chuckPrint = function () {
+    if (outputConsole) outputConsole.value = ""; // clear browser cache
+    return function (text) {
+        if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+        }
+
+        if (outputConsole) {
+            outputConsole.value += text + "\n";
+            outputConsole.scrollTop = outputConsole.scrollHeight; // focus on bottom
+        }
+    };
 }();
 
-function addShredRow(theShred)
-{
-  var row = shredsTable.insertRow();
-  var cell0 = row.insertCell(0);
-  var cell1 = row.insertCell(1);
-  var cell2 = row.insertCell(2);
-  var cell3 = row.insertCell(3);
+function addShredRow(theShred) {
+    var row = shredsTable.insertRow();
+    var cell0 = row.insertCell(0);
+    var cell1 = row.insertCell(1);
+    var cell2 = row.insertCell(2);
+    var cell3 = row.insertCell(3);
 
-  shredsToRows[theShred] = row;
+    shredsToRows[theShred] = row;
 
-  cell0.innerHTML = "" + theShred;
-  cell1.innerHTML = chuckEditor.getValue().substring(0, 20) + "...";
-  (function (cell, myShred)
-  {
-    var getTime = function ()
-    {
-      return Math.floor(Date.now() / 1000);
-    };
-    var formatTime = function (i)
-    {
-      // add zero in front of numbers < 10
-      if (i < 10) {
-        i = "0" + i;
-      }
-      return i;
-    };
+    cell0.innerHTML = "" + theShred;
+    cell1.innerHTML = chuckEditor.getValue().substring(0, 20) + "...";
+    (function (cell, myShred) {
+        var getTime = function () {
+            return Math.floor(Date.now() / 1000);
+        };
+        var formatTime = function (i) {
+            // add zero in front of numbers < 10
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        };
 
-    var startTime = getTime();
-    var removed = false;
-    function updateTime()
-    {
-      var now = getTime();
-      var elapsed = now - startTime;
-      var m = Math.floor(elapsed / 60);
-      var s = Math.floor(elapsed % 60);
+        var startTime = getTime();
+        var removed = false;
+        function updateTime() {
+            var now = getTime();
+            var elapsed = now - startTime;
+            var m = Math.floor(elapsed / 60);
+            var s = Math.floor(elapsed % 60);
 
-      // piggyback off time keeper to remove row
-      // if it stops running
-      if (!(myShred in shredsToRows)) {
-        removed = true;
-      }
-      theChuck.isShredActive(myShred).then(function (result)
-      {
-        if (!result && !removed) {
-          removed = true;
-          removeShredRow(myShred);
-          return;
+            // piggyback off time keeper to remove row
+            // if it stops running
+            if (!(myShred in shredsToRows)) {
+                removed = true;
+            }
+            theChuck.isShredActive(myShred).then(function (result) {
+                if (!result && !removed) {
+                    removed = true;
+                    removeShredRow(myShred);
+                    return;
+                }
+            });
+
+            // only keep updating time if row still exists
+            if (!removed && document.contains(cell)) {
+                cell.innerHTML = formatTime(m) + ":" + formatTime(s);
+                setTimeout(updateTime, 1000);
+            }
         }
-      });
+        updateTime();
+    })(cell2, theShred);
+    /* Create a remove button for the shread */
+    /*
+    var removeButton = document.createElement("BUTTON");
+    removeButton.innerHTML = "Remove";
+    cell3.appendChild(removeButton);
+    */
+    var removeButton = document.createElement("INPUT");
+    removeButton.setAttribute("type", "image"); 
+    removeButton.setAttribute("src", "./assets/icons/remove.png");
+    removeButton.classList.add("chuckButton");
+    removeButton.setAttribute("alt", "remove button");
+    cell3.appendChild(removeButton);
 
-      // only keep updating time if row still exists
-      if (!removed && document.contains(cell)) {
-        cell.innerHTML = formatTime(m) + ":" + formatTime(s);
-        setTimeout(updateTime, 1000);
-      }
-    }
-    updateTime();
-  })(cell2, theShred);
-  /* Create a remove button for the shread */
-  var removeButton = document.createElement("BUTTON");
-  removeButton.innerHTML = "Remove";
-  cell3.appendChild(removeButton);
-
-  removeButton.addEventListener(
-    "click",
-    (function (shredID)
-    {
-      return function ()
-      {
-        theChuck.removeShred(shredID).then(
-          function (removedShred)
-          {
-            removeShredRow(theShred);
-          },
-          function (failure)
-          {
-            console.log(failure);
-          }
-        );
-      };
-    })(theShred)
-  );
+    removeButton.addEventListener(
+        "click",
+        (function (shredID) {
+            return function () {
+                theChuck.removeShred(shredID).then(
+                    function (removedShred) {
+                        removeShredRow(theShred);
+                    },
+                    function (failure) {
+                        console.log(failure);
+                    }
+                );
+            };
+        })(theShred)
+    );
 }
 
-function removeShredRow(theShred)
-{
-  if (theShred in shredsToRows) {
-    shredsToRows[theShred].parentNode.removeChild(shredsToRows[theShred]);
-    delete shredsToRows[theShred];
-  }
+function removeShredRow(theShred) {
+    if (theShred in shredsToRows) {
+        shredsToRows[theShred].parentNode.removeChild(shredsToRows[theShred]);
+        delete shredsToRows[theShred];
+    }
 }

@@ -26,7 +26,7 @@
 
 <body>
     <!-- IDE -->
-    <div class="container ide zero-pad">
+    <div class="container ide zero-pad" id="ide">
 
         <!-- NAV BAR -->
         <header class="navbar">
@@ -43,9 +43,7 @@
                         File<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <li>hi</li>
-                        <li>bye</li>
-                        <li>test</li>
+                        <button class="btn btn-link" id="exportChuckButton">Export as ChucK file</button>
                     </ul>
                 </div>
                 <!-- Edit -->
@@ -54,7 +52,7 @@
                         Edit<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <button class="btn btn-link" onclick="toggleVimMode()" id="vimModeButton"></button>
+                        <button class="btn btn-link" id="vimModeButton">Vim Mode: Off</button>
                     </ul>
                 </div>
                 <!-- View -->
@@ -63,7 +61,7 @@
                         View<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <li>Dark Theme</li>
+                        <button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button>
                     </ul>
                 </div> <!-- Help -->
                 <div class="dropdown">
@@ -80,7 +78,7 @@
         </header>
 
         <!-- CHUCK BAR -->
-        <div class="container chuck-nav">
+        <div class="container chuck-nav" id="chuck-nav">
             <div class="columns col-gapless">
                 <div class="column col-2 chuck-vm">
                     <button class="btn btn-primary vm-button" id="startChuck" disabled>Start WebChucK</button>

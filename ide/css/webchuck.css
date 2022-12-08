@@ -14,6 +14,17 @@ body
   background-color: #def;
 }
 
+.ide.dark
+{
+  background-color: #1f1f1f;
+  color: #def;
+}
+
+.ace_editor.dark
+{
+  filter: invert(90%);
+}
+
 .ide,
 .main-panel
 {
@@ -46,6 +57,11 @@ body
   background-color: bisque;
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
+}
+
+.chuck-nav.dark
+{
+  background-color: #2f2f2f;
 }
 
 .chuck-vm
@@ -102,7 +118,9 @@ body
   border-collapse: collapse;
 }
 
-th, td{
+td .chuckButton 
+{
+  width: 2rem;
 }
 
 #console
@@ -120,7 +138,6 @@ th, td{
 }
 
 /* ---------------------------------- */
-
 .clearfix
 {
   clear: both;
