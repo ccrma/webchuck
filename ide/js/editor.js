@@ -15,10 +15,11 @@ chuckEditor.session.setUseWrapMode(true);
 
 
 /* Load default chuck file */
+var globalFileName = "untitled.ck";
 var loadChuckFile = function (fileName) {
     // Check if the file is a .ck file
     if (fileName.split('.').pop() != "ck") {
-        console.log(fileName + "is not a .ck file");
+        console.log(fileName + " is not a .ck file");
         return;
     }
 
@@ -31,45 +32,58 @@ var loadChuckFile = function (fileName) {
             chuckEditor.gotoLine(0, 0, true);
         });
 };
-// Load default chuck file
-loadChuckFile("./template/helloSine.ck");
+/* Load chuck file from string data */
+var loadChuckFileFromString = function (fileData) {
+    chuckEditor.setValue(fileData);
+    chuckEditor.clearSelection();
+    chuckEditor.gotoLine(0, 0, true);
+};
+
 
 
 /* Toggle vim mode */
-var vimMode = false; // default state
+var vimMode = (localStorage['vimMode'] === 'true') || false; // default state
 var vimModeButton = document.getElementById("vimModeButton");
-var toggleVimMode = function () {
-    if (vimMode = !vimMode) {
-        chuckEditor.setKeyboardHandler("ace/keyboard/vim");
-        // update vim mode button text
+function setVimMode (vim)
+{
+    if (vim) {
+        // Set vim mode
         vimModeButton.innerHTML = "Vim Mode: On";
+        chuckEditor.setKeyboardHandler("ace/keyboard/vim");
+        localStorage['vimMode'] = 'true';
     } else {
-        chuckEditor.setKeyboardHandler("");
-        // update vim mode button text
+        // Set normal mode
         vimModeButton.innerHTML = "Vim Mode: Off";
+        chuckEditor.setKeyboardHandler(null);
+        localStorage['vimMode'] = 'false';
     }
-};
+}
+var toggleVimMode = function () { setVimMode(vimMode = !vimMode); };
 vimModeButton.addEventListener("click", toggleVimMode);
 
 
 /* Toggle dark mode */
-var darkMode = false; // default state
+var darkMode = (localStorage['darkMode'] === 'true') || false; // default state
 var darkModeButton = document.getElementById("darkModeButton");
-var toggleDarkMode = function () {
-    if (darkMode = !darkMode) {
+function setDarkMode (dark) 
+{
+    if (dark) {
         // Set dark mode
         darkModeButton.innerHTML = "Dark Mode: On";
         document.getElementById("ide").classList.add("dark")
         document.getElementById("editor").classList.add("dark")
         document.getElementById("chuck-nav").classList.add("dark")
+        localStorage['darkMode'] = 'true';
     } else {
         // Set light mode
         darkModeButton.innerHTML = "Dark Mode: Off";
         document.getElementById("ide").classList.remove("dark")
         document.getElementById("editor").classList.remove("dark")
         document.getElementById("chuck-nav").classList.remove("dark")
+        localStorage['darkMode'] = 'false';
     }
-}
+};
+var toggleDarkMode = function () { setDarkMode(darkMode = !darkMode); };
 darkModeButton.addEventListener("click", toggleDarkMode);
 
 /* Export editor contents to chuck file */
@@ -80,13 +94,21 @@ var exportChuckFile = function () {
     var chuckFileBlob = new Blob([chuckFile], { type: "text/plain" });
     window.URL = window.URL || window.webkitURL;
     var chuckFileURL = window.URL.createObjectURL(chuckFileBlob);
-    exportChuckButton.setAttribute("href", chuckFileURL);
-    exportChuckButton.setAttribute("download", "myFile.ck");
+    // Create invisible download link
+    var downloadLink = document.createElement("a");
+    downloadLink.href = chuckFileURL;
+    downloadLink.download = globalFileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
     console.log("Exported chuck file");
 }
 exportChuckButton.addEventListener("click", exportChuckFile);
 
-
+// Run this on startup
+loadChuckFile("./template/untitled.ck");
+setDarkMode(darkMode);
+setVimMode(vimMode);
 
 /* Check if the editor has unsaved changes */
 var isDirty = function () {

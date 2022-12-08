@@ -39,11 +39,6 @@ body
   flex: 1 1 auto;
 }
 
-.zero-pad
-{
-  padding: 0;
-}
-
 .logo
 {
   line-height: 1;
@@ -90,6 +85,11 @@ body
   filter: invert(20%);
 }
 
+.chuckButton:focus
+{
+  outline: none;
+}
+
 .chuckButton:disabled
 {
   color: #999;
@@ -98,6 +98,24 @@ body
 }
 
 /* EDITOR CSS + Panels */
+#drop_zone
+{
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+  text-align: center;
+  padding: 0.4rem;
+  font-size: 1.2rem;
+  color: #999;
+}
+
+#file-explorer-title
+{
+  font-weight: bold;
+  padding: 0.6rem 0.4rem;
+  border-bottom: .1rem solid #dadee4;
+}
+
 #editor
 {
   height: 100%;
@@ -146,4 +164,9 @@ td .chuckButton
 .hidden
 {
   display: none;
+}
+
+.zero-pad
+{
+  padding: 0 !important;
 }
