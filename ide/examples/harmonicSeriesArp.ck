@@ -1,18 +1,19 @@
 // Harmonic Series Arpeggiator
 // Written by Terry Feng
-12 => int numHarmonics; // number of harmonics to traverse
+// CHANGE ME!
+220 => float baseFrequency; // starting frequency
+12 => int numHarmonics; // number of harmonics to play
 125::ms => dur noteDur; // note duration
 
 // Unit Generator
 SinOsc osc => dac;
-220 => int baseFrequency;
 
 while (true) 
 {
-    // Loop through the number of Harmonics
+    // Loop through the number of harmonics
     for (0 => int i; i < numHarmonics; i++)
     {
-        // Compute the next harmonic
+        // Update the oscillator frequency to the next harmonic
         baseFrequency + (i * baseFrequency)  => osc.freq; 
         // Advance time to play the note
         noteDur => now;

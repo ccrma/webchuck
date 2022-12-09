@@ -13,24 +13,63 @@ chuckEditor.container.style.lineHeight = 1.25;
 chuckEditor.renderer.updateFontSize();
 chuckEditor.session.setUseWrapMode(true);
 
+/* Set up and allow printing to console */
+var outputConsole = document.getElementById("console");
+var printToOutputConsole = function (text) {
+    outputConsole.value += text + "\n";
+    outputConsole.scrollTop = outputConsole.scrollHeight; // focus on bottom
+    console.log(text); // print to console.log as well
+}
 
-/* Load default chuck file */
+/* Handle preUpload and server files before Chuck is ready */
+var preUploadFiles = new Set(); // File type
+
+/* Default filename is untitled.ck */
 var globalFileName = "untitled.ck";
-var loadChuckFile = function (fileName) {
-    // Check if the file is a .ck file
-    if (fileName.split('.').pop() != "ck") {
-        console.log(fileName + " is not a .ck file");
-        return;
+/* Load a file from server */
+var loadServerFile = function (fileName) {
+    // If file is a .ck file, load it into editor
+    if (fileName.split('.').pop() == "ck") {
+        fetch(fileName)
+            .then(response => response.text())
+            .then(text => {
+                if (fileName.split)
+                fileName = fileName.split("/").pop();
+                chuckEditor.setValue(text);
+                chuckEditor.clearSelection();
+                chuckEditor.gotoLine(0, 0, true);
+                globalFileName = fileName;
+                if (fileName !== "untitled.ck") {
+                    printToOutputConsole("Loaded chuck file: " + fileName);
+                }
+            });
+    } else {
+        // If file is not a .ck file, load it into chuck or add it to preLoadServerFiles
+        fetch(fileName)
+            .then(response => response.blob())
+            .then(blob => {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var data = new Uint8Array(e.target.result);
+                    // If chuck is already running, create file
+                    if (theChuck !== undefined) {
+                        theChuck.createFile("", fileName.split("/").pop(), data);
+                        printToOutputConsole("Loaded file: " + fileName.split("/").pop());
+                    } else {
+                        // If chuck is not running, add file to preUploadFiles
+                        // convert blob to file and add to preUploadFiles
+                        var file = new File([blob], fileName.split("/").pop(), { type: blob.type });
+                        preUploadFiles.add(file);
+                        printToOutputConsole("Preloaded file: " + fileName.split("/").pop());
+                    }
+                    // Print to console
+                };
+                reader.readAsArrayBuffer(blob);
+            });
+
     }
 
     // Read the contents of the file into the editor
-    fetch(fileName)
-        .then(response => response.text())
-        .then(text => {
-            chuckEditor.setValue(text);
-            chuckEditor.clearSelection();
-            chuckEditor.gotoLine(0, 0, true);
-        });
 };
 /* Load chuck file from string data */
 var loadChuckFileFromString = function (fileData) {
@@ -40,12 +79,10 @@ var loadChuckFileFromString = function (fileData) {
 };
 
 
-
 /* Toggle vim mode */
 var vimMode = (localStorage['vimMode'] === 'true') || false; // default state
 var vimModeButton = document.getElementById("vimModeButton");
-function setVimMode (vim)
-{
+function setVimMode(vim) {
     if (vim) {
         // Set vim mode
         vimModeButton.innerHTML = "Vim Mode: On";
@@ -65,8 +102,7 @@ vimModeButton.addEventListener("click", toggleVimMode);
 /* Toggle dark mode */
 var darkMode = (localStorage['darkMode'] === 'true') || false; // default state
 var darkModeButton = document.getElementById("darkModeButton");
-function setDarkMode (dark) 
-{
+function setDarkMode(dark) {
     if (dark) {
         // Set dark mode
         darkModeButton.innerHTML = "Dark Mode: On";
@@ -106,7 +142,7 @@ var exportChuckFile = function () {
 exportChuckButton.addEventListener("click", exportChuckFile);
 
 // Run this on startup
-loadChuckFile("./template/untitled.ck");
+loadServerFile("./template/untitled.ck");
 setDarkMode(darkMode);
 setVimMode(vimMode);
 

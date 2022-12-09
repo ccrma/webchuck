@@ -84,6 +84,7 @@ function handleFiles()
             reader.onload = e => {
                 globalFileName = file.name;
                 loadChuckFileFromString(e.target.result);
+                printToOutputConsole("Loaded chuck file: " + file.name);
             }
             reader.readAsText(file);
         } 
@@ -92,21 +93,29 @@ function handleFiles()
             reader.onload = function (e)
             {
                 var data = new Uint8Array(e.target.result);
-                theChuck.createFile("", file.name, data);
+                // If chuck is already running, create file
+                if (theChuck !== undefined) {
+                    theChuck.createFile("", file.name, data);
+                    printToOutputConsole("Loaded file: " + file.name);
+                } else {
+                    // If chuck is not running, add file to preUploadFiles
+                    preUploadFiles.add(file);
+                    printToOutputConsole("Preloaded file: " + file.name);
+                }
             };
             reader.readAsArrayBuffer(file);
         }
 
         // Add file to file explorer
         fileExplorer.add(file);
-
-  
     });
     updateFileExplorer();
 }
 fileUploader.addEventListener("change", handleFiles, false);
 
 /* Upload Files via Drag and Drop */
+/* Not yet implemented */
+/*
 function uploadHandler(ev)
 {
     console.log("File(s) dropped");
@@ -133,12 +142,38 @@ function dragOverHandler(ev)
     // Set the dropEffect to move
     ev.dataTransfer.dropEffect = "move";
 }
+*/
 
-// Display file explorer
+// Process pre uploaded files
+var processPreUploadFiles = function () {
+    preUploadFiles.forEach(file => {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var data = new Uint8Array(e.target.result);
+            theChuck.createFile("", file.name, data);
+        };
+        reader.readAsArrayBuffer(file);
+        printToOutputConsole("Loaded file: " + file.name);
+    });
+    preUploadFiles.clear();
+}
+
+
+// Update file explorer display
 function updateFileExplorer()
 {
     var fileExplorerElement = document.getElementById("file-explorer");
     fileExplorerElement.innerHTML = "";
+    /* Add preloaded files to file explorer */
+    serverFilesToPreload.forEach(fileName =>
+    {
+        var fileElement = document.createElement("div");
+        fileElement.classList.add("file");
+        // Add icon before file name
+        var iconElement = "<i class='icon icon-upload'></i> "
+        fileElement.innerHTML = iconElement + fileName;
+    });
+    /* Add files to file explorer */
     fileExplorer.forEach(file =>
     {
         var fileElement = document.createElement("div");
@@ -164,7 +199,6 @@ compileButton.disabled = true;
 replaceButton.disabled = true;
 removeButton.disabled = true;
 micButton.disabled = true;
-fileUploadButton.disabled = true;
 
 // Connect buttons to WebChucK
 compileButton.addEventListener("click", chuckCompileButton);
@@ -180,8 +214,8 @@ theChuckReady.then(function ()
     replaceButton.disabled = false;
     removeButton.disabled = false;
     micButton.disabled = false;
-    //uploadButton.disabled = false;
-    fileUploadButton.disabled = false;
+    // Load preUploadFiles into ChucK
+    processPreUploadFiles();
     outputConsole.value += "WebChucK is ready!\n";
 });
 
@@ -215,7 +249,8 @@ function addShredRow(theShred)
     shredsToRows[theShred] = row;
 
     cell0.innerHTML = "" + theShred;
-    cell1.innerHTML = chuckEditor.getValue().substring(0, 20) + "...";
+    /* cell1.innerHTML = chuckEditor.getValue().substring(0, 30) + "..."; */
+    cell1.innerHTML = globalFileName;
     (function (cell, myShred)
     {
         var getTime = function ()

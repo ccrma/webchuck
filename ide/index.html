@@ -44,7 +44,6 @@
                     </a>
                     <ul class="menu">
                         <input id="fileUploader" type="file" multiple hidden/>
-                        <button class="btn btn-link" id="loadExample" onclick="loadChuckFile('./template/example.ck')">Load Example</button>
                         <button class="btn btn-link" id="fileUploadButton" disabled>Upload Files</button>
                         <button class="btn btn-link" id="exportChuckButton">Export as ChucK file</button>
                     </ul>
@@ -66,7 +65,18 @@
                     <ul class="menu">
                         <button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button>
                     </ul>
-                </div> <!-- Help -->
+                </div> 
+                <!-- Examples -->
+                <div class="dropdown">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                        Examples<i class="icon icon-caret"></i>
+                    </a>
+                    <ul class="menu">
+                        <button class="btn btn-link" id="loadHarmonicSeriesArp" onclick="loadServerFile('./examples/harmonicSeriesArp.ck')">Harmonic Series Arpeggiator</button>
+                        <button class="btn btn-link" id="loadSlammin" onclick="loadServerFile('./examples/slammin/slammin.ck'); loadServerFile('./examples/slammin/were_slammin.wav');">Play Lofi Beats</button>
+                    </ul>
+                </div>
+                <!-- Help -->
                 <div class="dropdown">
                     <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
                         Help<i class="icon icon-caret"></i>
@@ -151,7 +161,6 @@
     <script type="text/javascript" src="./js/defer.js"></script> <!-- JS to allow deferring of Promises -->
     <script type="text/javascript" src="./js/webchuck_host.js"></script> <!-- Connect Web Audio API, Connect Webchuck.js and WASM -->
     <script type="text/javascript" src="./js/host.js"></script> <!-- Hook up our IDE to WebChucK -->
-
 
 </body>
 
