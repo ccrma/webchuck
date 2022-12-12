@@ -2,7 +2,7 @@
 
 A web IDE for ChucK, a programming language for real-time sound synthesis and music creation!
 
-# Things to do
+## Things to do
 
 1. Favicon Redesign
 
@@ -14,14 +14,36 @@ A web IDE for ChucK, a programming language for real-time sound synthesis and mu
 
 4. Connect WASM and JS to index.html
 
-5. File Uploading (Drag and Drop)
+5. ~~File Uploading (Drag and Drop)~~
+
+    - Ignoring this for now for more functional `upload files` button
 
 6. Exporting Webpages
 
 - Save Chuck File
-- Inject Chuck File into html
-- Download Project as zip
+- ~~Inject Chuck File into html~~
+    - ignoring for now, depends on where we want to take webchuck
+- ~~Download Project as zip~~
+    - ignoring for now, depends on where we want to take webchuck
 
-*We'll see how this goes :')*
+## Extra features added
 
-- terry
+- Vim support
+
+- Dark mode support
+
+- Examples
+
+## Future things/thoughts to address
+
+- Better WebChucK console/integration printing
+
+    - Currently doesn't add sporked shreds to the table
+
+    - Doesn't currently print to console the same that native miniAudicle does
+
+
+## Usage
+
+Open `index.html` with a live server, Python HttpServer or the like
+
