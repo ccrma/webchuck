@@ -43,9 +43,16 @@
                         File<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <input id="fileUploader" type="file" multiple hidden/>
-                        <button class="btn btn-link" id="fileUploadButton">Upload Files</button>
-                        <button class="btn btn-link" id="exportChuckButton">Export as ChucK file</button>
+                        <input id="fileUploader" type="file" multiple hidden />
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="newFileButton">New</button>
+                        </li>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="fileUploadButton">Upload Files</button>
+                        </li>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="exportChuckButton">Export as ChucK file</button>
+                        </li>
                     </ul>
                 </div>
                 <!-- Edit -->
@@ -65,15 +72,27 @@
                     <ul class="menu">
                         <button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button>
                     </ul>
-                </div> 
+                </div>
                 <!-- Examples -->
                 <div class="dropdown">
                     <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
                         Examples<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <button class="btn btn-link" id="loadHarmonicSeriesArp" onclick="loadServerFile('./examples/harmonicSeriesArp.ck')">Harmonic Series Arpeggiator</button>
-                        <button class="btn btn-link" id="loadSlammin" onclick="loadServerFile('./examples/slammin/slammin.ck'); loadServerFile('./examples/slammin/were_slammin.wav');">Play Lofi Beats</button>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="Default"
+                                onclick="loadServerFile('./template/untitled.ck')">Hello Sine (default)</button>
+                        </li>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="loadHarmonicSeriesArp"
+                                onclick="loadServerFile('./examples/harmonicSeriesArp.ck')">Harmonic Series
+                                Arpeggiator</button>
+                        </li>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="loadSlammin"
+                                onclick="loadServerFile('./examples/slammin/slammin.ck'); loadServerFile('./examples/slammin/were_slammin.wav');">Play
+                                Lofi Beats</button>
+                        </li>
                     </ul>
                 </div>
                 <!-- Help -->
@@ -95,12 +114,16 @@
             <div class="columns col-gapless">
                 <div class="column col-2 chuck-vm">
                     <button class="btn btn-primary vm-button" id="startChuck" disabled>Start WebChucK</button>
-                    <input class="chuckButton" id="micButton" type="image" src="./assets/icons/mic.png" disabled alt="microphone"/>
+                    <input class="chuckButton" id="micButton" type="image" src="./assets/icons/mic.png" disabled
+                        alt="microphone" />
                 </div>
                 <div class="column col-10">
-                    <input class="chuckButton" id="compileButton" type="image" src="./assets/icons/play.png" disabled alt="compile and play"/> <!-- Compiles and Plays -->
-                    <input class="chuckButton" id="replaceButton" type="image" src="./assets/icons/replace.png" disabled alt="replace shread"/>
-                    <input class="chuckButton" id="removeButton" type="image" src="./assets/icons/remove.png" disabled alt="remove shred"/>
+                    <input class="chuckButton" id="compileButton" type="image" src="./assets/icons/play.png" disabled
+                        alt="compile and play" /> <!-- Compiles and Plays -->
+                    <input class="chuckButton" id="replaceButton" type="image" src="./assets/icons/replace.png" disabled
+                        alt="replace shread" />
+                    <input class="chuckButton" id="removeButton" type="image" src="./assets/icons/remove.png" disabled
+                        alt="remove shred" />
                 </div>
             </div>
         </div>
@@ -159,7 +182,8 @@
     <script> var whereIsChuck = "./js"; </script> <!-- Specify where ChucK is -->
     <script type="text/javascript" src="./js/editor.js"></script> <!-- Load our editor config -->
     <script type="text/javascript" src="./js/defer.js"></script> <!-- JS to allow deferring of Promises -->
-    <script type="text/javascript" src="./js/webchuck_host.js"></script> <!-- Connect Web Audio API, Connect Webchuck.js and WASM -->
+    <script type="text/javascript" src="./js/webchuck_host.js"></script>
+    <!-- Connect Web Audio API, Connect Webchuck.js and WASM -->
     <script type="text/javascript" src="./js/host.js"></script> <!-- Hook up our IDE to WebChucK -->
 
 </body>
