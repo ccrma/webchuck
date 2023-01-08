@@ -82,7 +82,7 @@ function handleFiles()
         var reader = new FileReader();
         if (file.name.endsWith(".ck")) {
             reader.onload = e => {
-                globalFileName = file.name;
+                localStorage['chuckCacheName'] = globalFileName = file.name;
                 loadChuckFileFromString(e.target.result);
                 printToOutputConsole("Loaded chuck file: " + file.name);
             }

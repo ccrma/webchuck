@@ -25,7 +25,39 @@ var printToOutputConsole = function (text) {
 var preUploadFiles = new Set(); // File type
 
 /* Default filename is untitled.ck */
-var globalFileName = "untitled.ck";
+var globalFileName = (localStorage['chuckCacheName'] !== undefined) ? localStorage['chuckCacheName'] : "untitled.ck";
+/* Check if we have a cached chuck file */
+var doesChuckCacheExist = (localStorage['chuckCacheExist'] === 'true') || false; // default state
+
+/* Load in chuck file from cache for edit, or load in the default chuck file */
+var launchChuckFile = function () {
+    if (doesChuckCacheExist) {
+        // Set chuck file to last saved file
+        loadChuckFileFromString(localStorage['chuckCache']);
+        // Wait until the page is loaded to print this to the console
+        window.onload = function () {
+            // Set the chuck file name
+            printToOutputConsole("Loaded autosave: " + localStorage['chuckCacheName'] + " (" + localStorage['chuckCacheDate'] + ")");
+            globalFileName = localStorage['chuckCacheName'];
+        }
+    } else {
+        // Create new chuck file
+        loadServerFile("./template/untitled.ck");
+    }
+}
+
+/* Create a new chuck file */
+var newChuckFileButton = document.getElementById("newFileButton");
+var createNewChuckFile = function () {
+    // Load default chuck file
+    loadChuckFileFromString("");
+    // Wipe chuck cache
+    doesChuckCacheExist = false;
+    localStorage['chuckCacheExist'] = 'false';
+    localStorage['chuckCacheName'] = globalFileName = "untitled.ck";
+}
+newChuckFileButton.addEventListener("click", createNewChuckFile);
+
 /* Load a file from server */
 var loadServerFile = function (fileName) {
     // If file is a .ck file, load it into editor
@@ -38,7 +70,7 @@ var loadServerFile = function (fileName) {
                 chuckEditor.setValue(text);
                 chuckEditor.clearSelection();
                 chuckEditor.gotoLine(0, 0, true);
-                globalFileName = fileName;
+                localStorage['chuckCacheName'] = globalFileName = fileName;
                 if (fileName !== "untitled.ck") {
                     printToOutputConsole("Loaded chuck file: " + fileName);
                 }
@@ -62,16 +94,13 @@ var loadServerFile = function (fileName) {
                         preUploadFiles.add(file);
                         printToOutputConsole("Preloaded file: " + fileName.split("/").pop());
                     }
-                    // Print to console
                 };
                 reader.readAsArrayBuffer(blob);
             });
 
     }
-
-    // Read the contents of the file into the editor
 };
-/* Load chuck file from string data */
+/* Load chuck file from string */
 var loadChuckFileFromString = function (fileData) {
     chuckEditor.setValue(fileData);
     chuckEditor.clearSelection();
@@ -122,7 +151,7 @@ function setDarkMode(dark) {
 var toggleDarkMode = function () { setDarkMode(darkMode = !darkMode); };
 darkModeButton.addEventListener("click", toggleDarkMode);
 
-/* Export editor contents to chuck file */
+/* Save editor contents to chuck file */
 var exportChuckButton = document.getElementById("exportChuckButton");
 var exportChuckFile = function () {
     // Create a chuck file blob
@@ -141,30 +170,18 @@ var exportChuckFile = function () {
 }
 exportChuckButton.addEventListener("click", exportChuckFile);
 
-// Run this on startup
-loadServerFile("./template/untitled.ck");
+// RUN THIS ON STARTUP!!!
+/* This will load in all cached values from localStorage or set defaults */
+launchChuckFile();
 setDarkMode(darkMode);
 setVimMode(vimMode);
 
-/* Check if the editor has unsaved changes */
-var isDirty = function () {
-    var defaultFile = `/* Play a sine wave at 440Hz for 1 week */\nSinOsc osc => dac;\n440 => osc.freq;\n1::week => now;`;
-    return chuckEditor.getValue() !== defaultFile;
-};
-
-/* Detect when the user is about to navigate away from the page */
-/* Kinda hacky and works for now */
-/* https://stackoverflow.com/questions/7317273/warn-user-before-leaving-web-page-with-unsaved-changes */
-/*
-window.addEventListener("beforeunload", function (e) {
-    if (!isDirty()) {
-        console.log("No unsaved changes")
-        return undefined;
-    }
-    var confirmationMessage = 'It looks like you have been editing something. '
-        + 'If you leave before saving, your changes will be lost.';
-
-    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+// Detect editor changes and save to cache
+chuckEditor.on("change", function () {
+    // Save chuck file to cache
+    localStorage['chuckCache'] = chuckEditor.getValue();
+    localStorage['chuckCacheName'] = globalFileName;
+    localStorage['chuckCacheDate'] = new Date().toLocaleString();
+    localStorage['chuckCacheExist'] = 'true';
+    doesChuckCacheExist = true;
 });
-*/
