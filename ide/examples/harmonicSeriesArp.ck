@@ -1,12 +1,13 @@
 // Harmonic Series Arpeggiator
 // Written by Terry Feng
-// CHANGE ME!
+// CHANGE ME! ADD MULTIPLE SHREDS!
 220 => float baseFrequency; // starting frequency
 12 => int numHarmonics; // number of harmonics to play
 125::ms => dur noteDur; // note duration
 
 // Unit Generator
 SinOsc osc => dac;
+osc.gain(0.5);
 
 while (true) 
 {

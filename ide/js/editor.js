@@ -41,7 +41,8 @@ var launchChuckFile = function () {
             globalFileName = localStorage['chuckCacheName'];
         }
     } else {
-        // Create new chuck file
+        // New default chuck file
+        // TODO: Up to interpretation, but I think this should be a default chuck file
         loadServerFile("./template/untitled.ck");
     }
 }
