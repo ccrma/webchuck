@@ -46,10 +46,6 @@ body
   margin: 0 0.1rem 0 0;
 }
 
-.menu-item {
-  padding: 0 !important;
-}
-
 /* CHUCK NAVIGATION */
 .chuck-nav
 {
@@ -106,7 +102,7 @@ body
 {
   height: 100%;
   width: 100%;
-  border-radius: 4px;
+  border-radius: 2px;
   text-align: center;
   padding: 0.4rem;
   font-size: 1.2rem;
@@ -158,6 +154,18 @@ td .chuckButton
   border: none;
   resize: none;
 }
+#p5, #canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 4px;
+  border: none;
+  resize: none;
+  max-height: 42vh;
+  min-height: 42vh;
+  position:fixed;
+  bottom:2px;
+}
 
 /* ---------------------------------- */
 .clearfix
@@ -173,4 +181,5 @@ td .chuckButton
 .zero-pad
 {
   padding: 0 !important;
+  overflow: hidden;
 }

@@ -6,6 +6,9 @@ var theChuckReady = defer();
 var filesToPreload = [];
 var whereIsChuck = whereIsChuck || "./js";
 var currentChuckID = 1;
+let send
+let visual
+let analyser
 
 var chuckPrint = function( text )
 {
@@ -99,9 +102,17 @@ var startChuck = async function()
         var newID = currentChuckID;
         currentChuckID++;
         
+        var cnv = document.getElementById("canvas"),
+        send = new GainNode(audioContext, {gain: 1});
+        analyser = audioContext.createAnalyser();
+        visual = new Visualizer(cnv,analyser)
+        send.connect(analyser);
+        analyser.connect(audioContext.destination);
         theChuck = await createAChuck( newID, theChuckReady );
-        theChuck.connect( audioContext.destination );
+        theChuck.connect(send);
         theChuckAlmostReady.resolve();
+        visual.drawVisualization_()
+        visual.start()
     }
 };
 
