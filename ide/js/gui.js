@@ -86,7 +86,7 @@ textSize(6);
 		declaring += "if(button(" + ((i*60)+10) + ",10,50,50)){"+"theChuck.broadcastEvent("+'"'+buttons[i]+'")}\n'
 	}
 		
-	declaring += "uiupd();\n"
+	declaring += "activateGUI();\n"
 	declaring += `if(mouseIsPressed) {\n`
 	declaring += 'if(theChuck){\n'
 

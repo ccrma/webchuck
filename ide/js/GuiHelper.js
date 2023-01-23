@@ -11,16 +11,12 @@ function hitbox(x, y, w, h, px, py) {
   return px > x && px < x + w && py > y && py < y + h;
 }
 
-function iiil(t,l) {
+function findID(t,l) {
   for (let i of l) {
     if (t == i)
       return true
   }
   return false
-}
-
-function iiis(t,l) {
-  return !!l.split("").find(e=>e==t)
 }
 
 function gridlock(g,m) {
@@ -58,7 +54,7 @@ function hyperect(x,y,w,h,c) {
 
 //general
 
-function uiupd() {
+function activateGUI() {
   pdown = mouseIsPressed
 }
 
@@ -313,7 +309,7 @@ class onelinetext {
       //@note this is where the problem happens
       if (keyIsPressed) {
         // console.log(char(keyCode))
-        if (iiil(key,keys))
+        if (findID(key,keys))
         if (!this.cursorkey || key != this.pcursorkey || this.cursorkeytime > 50) {
           if (keyIsDown(keyCode)) {
             this.cursor++
