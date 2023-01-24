@@ -20,6 +20,21 @@ body
   color: #def;
 }
 
+.canvas
+{
+  background:white;
+}
+
+.canvas.dark
+{
+  filter: invert(100%);
+}
+
+.p5.dark
+{
+  filter: invert(100%);
+}
+
 .ace_editor.dark
 {
   filter: invert(90%);
@@ -141,28 +156,45 @@ td .chuckButton
   width: 2rem;
 }
 
+.console
+{
+  background-color: white;
+  color: black;
+}
+
+.console.dark
+{
+  background-color: black;
+  color: #ddd;
+}
+
 #console
 {
   width: 100%;
   height: 100%;
-  background-color: #1f1f1f;
   display: block;
-  color: #ddd;
   font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
   border-radius: 4px;
   padding: 0.4rem;
   border: none;
   resize: none;
 }
-#p5, #canvas{
+
+#canvas
+{
   width: 100%;
   height: 100%;
   display: block;
-  border-radius: 4px;
   border: none;
   resize: none;
-  max-height: 42vh;
-  min-height: 42vh;
+}
+
+#p5 {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+  resize: none;
   position:fixed;
   bottom:2px;
 }

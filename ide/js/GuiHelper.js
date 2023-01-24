@@ -236,13 +236,6 @@ class onelinetext {
     this.spkeydic[k] = f
   }
   
-  //important
-  
-  salad() {
-    this.text = "salad"
-    this.cursor = 0
-  } //this is the most important function
-  
   update() {
     textSize(this.s)
     

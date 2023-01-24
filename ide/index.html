@@ -74,9 +74,9 @@
                     </a>
                     <ul class="menu">
                         <button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button>
-                        <button class="btn btn-link" id="darkModeButton" onclick="drawing(0)">GUI</button><br>
-                        <button class="btn btn-link" id="darkModeButton" onclick="drawing(1)">Visualizer</button>
-                        <button class="btn btn-link" id="darkModeButton" onclick="drawing(2)">Console</button>
+                        <button class="btn btn-link" onclick="drawing(0)">GUI</button><br>
+                        <button class="btn btn-link" onclick="drawing(1)">Visualizer</button>
+                        <button class="btn btn-link" onclick="drawing(2)">Console</button>
                     </ul>
                 </div>
                 <!-- Examples -->
@@ -173,13 +173,12 @@
                             </table>
                         </div>
                     </div>
-                    <div class="panel">
-                        <div class="panel-body zero-pad" id="panel">
-                            <textarea id="console" readonly></textarea>
-                            <canvas width=800px; height="600px" id="canvas" style="background:rgb(220,220,220); display:none;"></canvas>
+                    <div class="panel" style="max-height: 42vh; position:sticky; top:58vh;">
+                        <div class="panel-body zero-pad" style="overflow:hidden" id="panel">
+                            <canvas class="canvas" id="canvas" style="width:800px; height:600px; display:none;"></canvas>
+                            <textarea class="console" id="console" readonly></textarea>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -194,7 +193,6 @@
     <!-- Connect Web Audio API, Connect Webchuck.js and WASM -->
     <script type="text/javascript" src="./js/host.js"></script> <!-- Hook up our IDE to WebChucK -->
     <script type="text/javascript" src="./js/gui.js"></script>  <!-- Set up the gui generator -->
-
 </body>
 
 </html>

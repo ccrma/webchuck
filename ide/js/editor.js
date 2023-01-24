@@ -139,6 +139,14 @@ function setDarkMode(dark) {
         document.getElementById("ide").classList.add("dark")
         document.getElementById("editor").classList.add("dark")
         document.getElementById("chuck-nav").classList.add("dark")
+        document.getElementById("canvas").classList.add("dark")
+        document.getElementById("console").classList.add("dark")
+        try{
+            document.getElementById("p5").classList.add("dark")
+        } catch (error) 
+        {
+            
+        }
         localStorage['darkMode'] = 'true';
     } else {
         // Set light mode
@@ -146,6 +154,14 @@ function setDarkMode(dark) {
         document.getElementById("ide").classList.remove("dark")
         document.getElementById("editor").classList.remove("dark")
         document.getElementById("chuck-nav").classList.remove("dark")
+        document.getElementById("canvas").classList.remove("dark")
+        document.getElementById("console").classList.remove("dark")
+        try{
+            document.getElementById("p5").classList.remove("dark")
+        } catch (error) 
+        {
+
+        }
         localStorage['darkMode'] = 'false';
     }
 };
