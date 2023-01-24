@@ -30,7 +30,7 @@ body
   filter: invert(100%);
 }
 
-.p5.dark
+.p5Canvas.dark
 {
   filter: invert(100%);
 }

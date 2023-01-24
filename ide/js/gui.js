@@ -61,10 +61,10 @@ let darkOff
 function setup() {
 	//cnv = createCanvas(${Panel.offsetWidth}, ${Panel.offsetHeight})
 	cnv = createCanvas(800, 600)
-	cnv.id("p5")
+	cnv.id("p5Canvas")
 	cnv.parent("panel")
 	cnv.style('display','none')
-	${darkMode ? "cnv.class('p5 dark')" : ""}
+	${darkMode ? "cnv.class('p5Canvas dark')" : ""}
 	cnv.style('position','sticky')
 	cnv.style('top','0px')
 	cnv.style('min-width','100%')
@@ -151,7 +151,7 @@ function drawing(s){
 
 	var console = document.getElementById("console")
 	var visCanvas = document.getElementById("canvas")
-	var p5can = document.getElementById("p5")
+	var p5can = document.getElementById("p5Canvas")
 	graphicStatus = s
 
   	switch(graphicStatus){

@@ -142,7 +142,7 @@ function setDarkMode(dark) {
         document.getElementById("canvas").classList.add("dark")
         document.getElementById("console").classList.add("dark")
         try{
-            document.getElementById("p5").classList.add("dark")
+            document.getElementById("p5Canvas").classList.add("dark")
         } catch (error) 
         {
             
@@ -157,7 +157,7 @@ function setDarkMode(dark) {
         document.getElementById("canvas").classList.remove("dark")
         document.getElementById("console").classList.remove("dark")
         try{
-            document.getElementById("p5").classList.remove("dark")
+            document.getElementById("p5Canvas").classList.remove("dark")
         } catch (error) 
         {
 
