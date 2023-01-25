@@ -187,6 +187,8 @@ td .chuckButton
   display: block;
   border: none;
   resize: none;
+  max-height: 42vh;
+  min-height: 42vh;
 }
 
 #p5 {
