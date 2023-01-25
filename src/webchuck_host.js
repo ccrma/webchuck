@@ -6,9 +6,11 @@ var theChuckReady = defer();
 var filesToPreload = [];
 var whereIsChuck = whereIsChuck || "./src";
 var currentChuckID = 1;
-let send
-let visual
-let analyser
+
+// global variables (clearly marked since globals can get messy fast)
+// these are provided to be used by external .js files (e.g., for visualization)
+var GLOBAL_audioSend;
+var GLOBAL_audioContext;
 
 var chuckPrint = function( text )
 {
@@ -113,22 +115,27 @@ var startChuck = async function()
 {
     if( audioContext === undefined )
     {
+        // set up audio context
         await startAudioContext();
         
+        // keep track of chuck ID
         var newID = currentChuckID;
+        // increment chuck ID
         currentChuckID++;
-        
-        var cnv = document.getElementById("canvas"),
-        send = new GainNode(audioContext, {gain: 1});
-        analyser = audioContext.createAnalyser();
-        visual = new Visualizer(cnv,analyser)
-        send.connect(analyser);
-        analyser.connect(audioContext.destination);
+
+        // create a node between ChucK and the output
+        GLOBAL_audioSend = new GainNode( audioContext, {gain: 1} );
+        // set the global audio context variable
+        GLOBAL_audioContext = audioContext;
+
+        // instantiate a chuck
         theChuck = await createAChuck( newID, theChuckReady );
-        theChuck.connect(send);
+        // connect to audioContext directly
+        theChuck.connect( audioContext.destination );
+        // connect to our global audio send, to be used elsewhere
+        theChuck.connect( GLOBAL_audioSend );
+
         theChuckAlmostReady.resolve();
-        visual.drawVisualization_()
-        visual.start()
     }
 };
 

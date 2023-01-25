@@ -190,7 +190,10 @@ startButton.addEventListener("click", async function ()
 {
     startButton.disabled = true;
     await preloadedFilesReady;
+    // start chuck
     await startChuck();
+    // start visualizer
+    await startVisualizer();
 });
 
 // Button initial states

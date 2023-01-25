@@ -1,3 +1,32 @@
+let send
+let analyser
+let visual
+
+// set up and start visualizer
+// dependency: 'GLOBAL_audioSend' and 'GLOBAL_audioContext'
+//     these are defined and set in src/webchuck_host.js;
+//     this function is designed to be called during initialization
+//     and to be run after startChuck()
+var startVisualizer = async function()
+{
+    // get canvas
+    var cnv = document.getElementById( "canvas" );
+    // get audioSend -- the audio output of chuck
+    send = GLOBAL_audioSend;
+    // create analyser
+    analyser = GLOBAL_audioContext.createAnalyser();
+    // instantiate visualizer
+    visual = new Visualizer( cnv, analyser );
+    // connect chuck output to analyser
+    send.connect( analyser );
+    // connect analyser to audioContext
+    // (ge: seems not needed if startChucK already connects to context destination?)
+    // analyser.connect( audioContext.destination );
+    // start visualizer
+    visual.drawVisualization_();
+    visual.start();
+};
+
 class Visualizer {
   constructor(canvas, analyserNode, visualizerOptions) {
     const visualizerDefaultOptions = {
