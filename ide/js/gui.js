@@ -88,10 +88,10 @@ textSize(6);
 
 	for(var i = 0; i < vsliders.length; i++){
 		declaring += "fill(darkOff)\n"
-		//declaring += 'text("'+vsliders[i].slice(0, 8)+'",'+((35*i)+(hsliders[i] ? 240 : 20))+",80);\n"
-		//declaring += vsliders[i] + " = vslider(" + vsliders[i]+","+((35*i)+(hsliders[i] ? 250 : 30))+",90,"+Panel.offsetHeight*0.7+",0,1);\n"
-		declaring += 'text("'+vsliders[i].slice(0, 8)+'",'+((35*i)+(chkboxs[i] ? Math.ceil(Panel.offsetWidth*0.6) : 20))+",80)\n"
-		declaring += vsliders[i] + " = vslider(" + vsliders[i]+","+((35*i)+(chkboxs[i] ? Math.ceil(Panel.offsetWidth*0.6) : 30))+",90,"+Math.ceil(Panel.offsetHeight*0.7)+",0,1)\n"
+		declaring += 'text("'+vsliders[i].slice(0, 8)+'",'+((35*i)+(hsliders[i] ? 240 : 20))+",80);\n"
+		declaring += vsliders[i] + " = vslider(" + vsliders[i]+","+((35*i)+(hsliders[i] ? 250 : 30))+",90,"+Panel.offsetHeight*0.7+",0,1);\n"
+		//declaring += 'text("'+vsliders[i].slice(0, 8)+'",'+((35*i)+(chkboxs[i] ? Math.ceil(Panel.offsetWidth*0.6) : 20))+",80)\n"
+		//declaring += vsliders[i] + " = vslider(" + vsliders[i]+","+((35*i)+(chkboxs[i] ? Math.ceil(Panel.offsetWidth*0.6) : 30))+",90,"+Math.ceil(Panel.offsetHeight*0.7)+",0,1)\n"
 	}
 
 	for(var i = 0; i < hsliders.length; i++){
