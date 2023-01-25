@@ -4,8 +4,16 @@ var theChuck = undefined;
 var theChuckAlmostReady = defer();
 var theChuckReady = defer();
 var filesToPreload = [];
-var whereIsChuck = whereIsChuck || "./js";
+var whereIsChuck = whereIsChuck || "./src";
 var currentChuckID = 1;
+let send
+let visual
+let analyser
+
+var chuckPrint = function( text )
+{
+    // override me!
+}
 
 // src: http://lea.verou.me/2016/12/resolve-promises-externally-with-this-one-weird-trick/
 function defer() 
@@ -22,12 +30,6 @@ function defer()
 
     return promise;
 }
-
-var chuckPrint = function( text )
-{
-    console.log(text);
-}
-
 
 // START taken from emscripten source
 var readAsync = function( url, onload, onerror )
@@ -116,9 +118,17 @@ var startChuck = async function()
         var newID = currentChuckID;
         currentChuckID++;
         
+        var cnv = document.getElementById("canvas"),
+        send = new GainNode(audioContext, {gain: 1});
+        analyser = audioContext.createAnalyser();
+        visual = new Visualizer(cnv,analyser)
+        send.connect(analyser);
+        analyser.connect(audioContext.destination);
         theChuck = await createAChuck( newID, theChuckReady );
-        theChuck.connect( audioContext.destination );
+        theChuck.connect(send);
         theChuckAlmostReady.resolve();
+        visual.drawVisualization_()
+        visual.start()
     }
 };
 
@@ -852,5 +862,3 @@ var createASubChuck = function( chuck, dacName, initPromise )
     
     return aSubChuck;
 }
-
-

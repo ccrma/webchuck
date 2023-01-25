@@ -1,20 +1,51 @@
-# webchuck-tutorial
-WebChucK Tutorials
+# WebChucK IDE
 
-To edit and test locally:
+A web IDE for ChucK, a programming language for real-time sound synthesis and music creation!
 
-1. Start local server:
+Try it here: [https://ccrma.stanford.edu/~tzfeng/webchuck/ide/](https://ccrma.stanford.edu/~tzfeng/webchuck/ide/)
 
-```
-./run-server.sh [port]
-```
+## Things to do
 
-2. Edit homepage.md (markdown)
+1. Favicon Redesign
 
-3. Run build script
+2. Spectre CSS Import
 
-```
-./build.sh [port]
-```
+3. Layout Design of index.html (from Figma)
 
-The build script runs pandoc to generate index.html file. Then it opens Chrome at http://localhost:[port]. 
+    - Check resizability of ACE editor
+
+4. Connect WASM and JS to index.html
+
+5. ~~File Uploading (Drag and Drop)~~
+
+    - Ignoring this for now for more functional `upload files` button
+
+6. Exporting Webpages
+
+- Save Chuck File
+- ~~Inject Chuck File into html~~
+    - ignoring for now, depends on where we want to take webchuck
+- ~~Download Project as zip~~
+    - ignoring for now, depends on where we want to take webchuck
+
+## Extra features added
+
+- Vim support
+
+- Dark mode support
+
+- Examples
+
+## Future things/thoughts to address
+
+- Better WebChucK console/integration printing
+
+    - Currently doesn't add sporked shreds to the table
+
+    - Doesn't currently print to console the same that native miniAudicle does
+
+
+## Usage
+
+Open `index.html` with a live server, Python HttpServer or the like
+
