@@ -103,6 +103,7 @@ var startAudioContext = async function()
     audioContext = new AudioContext({
         //sampleRate: 48000
     });
+    await audioContext.resume();
     await audioContext.audioWorklet.addModule( whereIsChuck + '/webchuck.js');
 }
 
