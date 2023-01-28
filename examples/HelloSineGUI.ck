@@ -1,4 +1,4 @@
-/* Play a sine wave at 440Hz forever and control the frecuency with the GUI */
+/* Play a sine wave and control the frecuency with the GUI */
 
 /*
 1. Go to Edit/Generate GUI
@@ -13,7 +13,7 @@
 
 SinOsc osc => dac;
 
-0 => global float f;
+0 => global float f; // global variables create a GUI slider
 
 while(samp => now){
     (f * 440)+220 => osc.freq;

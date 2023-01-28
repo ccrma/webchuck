@@ -80,16 +80,17 @@ function handleFiles()
     fileList.forEach(file =>
     {
         var reader = new FileReader();
-        if (file.name.endsWith(".ck")) {
-            reader.onload = e => {
+        if (file.name.endsWith(".ck")) 
+        {
+            reader.onload = e =>
+            {
                 localStorage['chuckCacheName'] = globalFileName = file.name;
                 loadChuckFileFromString(e.target.result);
                 printToOutputConsole("Loaded chuck file: " + file.name);
-            }
+            };
             reader.readAsText(file);
-        } 
-        else 
-        {
+        }
+        else {
             reader.onload = function (e)
             {
                 var data = new Uint8Array(e.target.result);
@@ -145,10 +146,13 @@ function dragOverHandler(ev)
 */
 
 // Process pre uploaded files
-var processPreUploadFiles = function () {
-    preUploadFiles.forEach(file => {
+var processPreUploadFiles = function ()
+{
+    preUploadFiles.forEach(file =>
+    {
         var reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = function (e)
+        {
             var data = new Uint8Array(e.target.result);
             theChuck.createFile("", file.name, data);
         };
@@ -156,7 +160,7 @@ var processPreUploadFiles = function () {
         printToOutputConsole("Loaded file: " + file.name);
     });
     preUploadFiles.clear();
-}
+};
 
 
 // Update file explorer display
@@ -170,7 +174,7 @@ function updateFileExplorer()
         var fileElement = document.createElement("div");
         fileElement.classList.add("file");
         // Add icon before file name
-        var iconElement = "<i class='icon icon-upload'></i> "
+        var iconElement = "<i class='icon icon-upload'></i> ";
         fileElement.innerHTML = iconElement + fileName;
     });
     /* Add files to file explorer */
@@ -179,7 +183,7 @@ function updateFileExplorer()
         var fileElement = document.createElement("div");
         fileElement.classList.add("file");
         // Add icon before file name
-        var iconElement = "<i class='icon icon-upload'></i> "
+        var iconElement = "<i class='icon icon-upload'></i> ";
         fileElement.innerHTML = iconElement + file.name;
 
         fileExplorerElement.appendChild(fileElement);

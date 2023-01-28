@@ -41,7 +41,7 @@
 
                 <!-- File -->
                 <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="File">
                         File<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
@@ -59,34 +59,38 @@
                 </div>
                 <!-- Edit -->
                 <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="Edit">
                         Edit<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <button class="btn btn-link" id="vimModeButton">Vim Mode: Off</button>
-                        <button class="btn btn-link" id="vimModeButton" onclick="UI()">Generate GUI</button>
+                        <li class="menu-item"><button class="btn btn-link" id="vimModeButton">Vim Mode: Off</button></li>
+                        <li class="menu-item"><button class="btn btn-link" id="vimModeButton" onclick="UI()">Generate GUI</button></li>
                     </ul>
                 </div>
                 <!-- View -->
                 <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="View">
                         View<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button>
-                        <button class="btn btn-link" onclick="drawing(0)">GUI</button><br>
-                        <button class="btn btn-link" onclick="drawing(1)">Visualizer</button>
-                        <button class="btn btn-link" onclick="drawing(2)">Console</button>
+                        <li class="menu-item"> <button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button></li>
+                        <li class="menu-item"> <button class="btn btn-link" onclick="drawing(0)">GUI</button><br> </li>
+                        <li class="menu-item"> <button class="btn btn-link" onclick="drawing(1)">Visualizer</button> </li>
+                        <li class="menu-item"> <button class="btn btn-link" onclick="drawing(2)">Console</button> </li>
                     </ul>
                 </div>
                 <!-- Examples -->
                 <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="Examples">
                         Examples<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
                         <li class="menu-item">
                             <button class="btn btn-link" id="Default"
+                                onclick="loadServerFile('./template/untitled.ck')">Hello Sine</button>
+                        </li>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="HelloSineGUI"
                                 onclick="loadServerFile('./examples/HelloSineGUI.ck')">Hello Sine GUI</button>
                         </li>
                         <li class="menu-item">
@@ -98,6 +102,10 @@
                             <button class="btn btn-link" id="loadSlammin"
                                 onclick="loadServerFile('./examples/slammin/slammin.ck'); loadServerFile('./examples/slammin/were_slammin.wav');">Play
                                 Lofi Beats</button>
+                        </li>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="moreExamplesButton">More Examples <i
+                                    class="icon icon-arrow-right"></i></button>
                         </li>
                     </ul>
                 </div>
@@ -182,17 +190,67 @@
                 </div>
             </div>
         </div>
+
+        <!-- MODALS (overlay)-->
+        <!-- More examples -->
+        <div class="modal" id="more-examples">
+            <a href="#" class="modal-overlay" aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#" class="btn btn-clear float-right" aria-label="Close"></a>
+                    <div class="modal-title h5">ChucK Examples</div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="panel">
+                            <!-- Examples file explorer-->
+                            <div class="panel-nav">
+                                <!-- TODO -->
+                                <ul class="breadcrumb" id="examples-breadcrumb"> 
+                                    <li class="breadcrumb-item">
+                                        <a href="#">examples</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="#">basic</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="panel-body">
+                                <!-- TODO -->
+                                <a class="btn btn-link" id="alarm.ck">alarm.ck</a>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div class="panel-title">Example Viewer</div>
+                            </div>
+                            <div class="panel-body" id="example-viewer">
+                                <p id="example-preview">Example Preview</p>
+
+                            </div>
+                        </div>
+                        <!-- content here -->
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a class="btn btn-link" href="#">Cancel</a>
+                    <button class="btn btn-primary" id="loadPreviewButton">Load</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- POST SCRIPTS -->
-    <script> var whereIsChuck = "./src"; </script>  <!-- Specify where ChucK is -->
+    <script> var whereIsChuck = "./src"; </script> <!-- Specify where ChucK is -->
     <!-- Connect Web Audio API, Connect webchuck.js and webchuck.wasm -->
-    <script type="text/javascript" src="./src/webchuck_host.js"></script>
-    <!-- WebChucK IDE modules -->
+    <script type="text/javascript" src="./src/webchuck_host.js"></script> <!-- WebChucK IDE modules -->
     <script type="text/javascript" src="./js/Visualizer.js"></script> <!-- WebChucK to WebAudioAPI -->
     <script type="text/javascript" src="./js/editor.js"></script> <!-- Load our editor config -->
     <script type="text/javascript" src="./js/host.js"></script> <!-- Hook up our IDE to WebChucK -->
-    <script type="text/javascript" src="./js/gui.js"></script>  <!-- Set up the gui generator -->
+    <script type="text/javascript" src="./js/gui.js"></script> <!-- Set up the gui generator -->
+    <script type="text/javascript" src="./js/examples.js"></script> <!-- For loading more examples -->
 </body>
 
 </html>
