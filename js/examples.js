@@ -101,7 +101,7 @@ var renderFolderFiles = function ()
     // Clear folder
     exampleFolder.innerHTML = "";
 
-    // Create folder breadcrumbs
+    // Render folder files from basic list
     for (let i = 0; i < basic.length; i++) {
         var file = document.createElement("a");
         file.classList.add("btn");
