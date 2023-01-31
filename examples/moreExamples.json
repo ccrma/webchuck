@@ -1,0 +1,6 @@
+{
+    "examples": {
+        "basic": ["alarm.ck"],
+        "test": ["test1.ck", "test2.ck"]
+    }
+}
