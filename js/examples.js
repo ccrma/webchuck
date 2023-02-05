@@ -31,14 +31,17 @@ function createFileElement(fileName)
     // If file is a chuck example
     if (fileName.split('.').pop() === "ck")
     {
-        file.addEventListener("onclick", loadExampleFromURL(createURL(fileName)));
         file.innerHTML = file.id = fileName;
+        file.addEventListener("click", function ()
+        {
+            // Load the example to preview window
+            loadExampleFromURL(createURL(fileName));
+        });
     } else
     {
         file.id = fileName;
         // Make folders bold
         file.innerHTML = "<b>" + fileName + "</b>";
-        file.classList.add("font-weight-bold");
         file.addEventListener("click", function ()
         {
             // Update the path to the current folder
@@ -91,7 +94,7 @@ function renderFolderFiles()
  * Load ChucK file from URL, this loads into the preview window
  * @param {String} url 
  */
-function loadExampleFromURL(url)
+var loadExampleFromURL = function (url)
 {
     // Check if URL leads to a .ck file
     if (url.split('.').pop() !== "ck")
