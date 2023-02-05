@@ -207,7 +207,28 @@ td .chuckButton
   padding: 0 0.8rem;
 }
 
-/* flex column */
+/* breadcrumb styles */
+.breadcrumb .breadcrumb-item button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.breadcrumb .breadcrumb-item:not(:last-child) button {
+  color: #66758c;
+}
+
+.breadcrumb .breadcrumb-item:not(:last-child):hover button {
+  color: #5755d9;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.breadcrumb .breadcrumb-item:last-child button {
+  color: #5755d9;
+  pointer-events: none;
+}
+
 #example-folder
 {
   display: flex;
