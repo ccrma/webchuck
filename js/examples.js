@@ -9,6 +9,7 @@ var exampleName = "";
 readJSONExamples().then(() =>
 {
     renderFolderFiles();
+    renderBreadcrumbs();
 });
 
 // More Examples button in Nav Bar
@@ -194,7 +195,6 @@ function renderBreadcrumbs()
         breadcrumbBar.appendChild(document.createTextNode("\u00A0"));
     }
 };
-renderBreadcrumbs();
 
 //---------------------------------------------------------------------
 // PATH MANAGEMENT HELPER FUNCTIONS
@@ -229,7 +229,7 @@ function readJSONExamples()
 
 /**
  * Use path list to retrieve list of files/folders from JSON object 
- * @returns {Array} List of files/folders in current subfolder
+ * @returns {Object} Object with two lists, folders and files
  */
 function retrieveFolderContents()
 {
