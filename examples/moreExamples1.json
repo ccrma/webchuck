@@ -1,6 +1,0 @@
-{
-    "examples": ["basic", "filter", "special"],
-    "basic": ["alarm.ck", "delay.ck"],
-    "special":["readme-LiSa1.ck"],
-    "filter": ["lpf.ck", "hpf.ck"]
-}
