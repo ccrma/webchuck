@@ -2,7 +2,7 @@
 
 A web IDE for ChucK, a programming language for real-time sound synthesis and music creation!
 
-Try it here: [https://ccrma.stanford.edu/~tzfeng/webchuck/ide/](https://ccrma.stanford.edu/~tzfeng/webchuck/ide/)
+Try it here: [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
 ## Things to do
 
