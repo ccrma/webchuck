@@ -201,6 +201,77 @@ td .chuckButton
   bottom:2px;
 }
 
+/* More examples modal */
+#example-breadcrumb
+{
+  padding: 0 0.8rem;
+}
+
+/* breadcrumb styles */
+.breadcrumb .breadcrumb-item button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.breadcrumb .breadcrumb-item:not(:last-child) button {
+  color: #66758c;
+}
+
+.breadcrumb .breadcrumb-item:not(:last-child):hover button {
+  color: #5755d9;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.breadcrumb .breadcrumb-item:last-child button {
+  color: #5755d9;
+  pointer-events: none;
+}
+
+#example-folder
+{
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  text-align: left;
+  height: 100%;
+}
+
+#more-examples .modal-container
+{
+  max-width: 960px;
+  overflow: none;
+}
+
+#example-browser
+{
+  height: 30vh;
+  overflow: none;
+}
+
+#example-preview
+{
+  height: 25vh;
+}
+
+pre
+{
+  margin: 0;
+}
+
+pre code 
+{
+  font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
+  background: #eee;
+  color: #333;
+  border: 1px solid #999;
+  display: block;
+  padding: 0;
+  border: 0;
+  overflow: auto;
+}
+
 /* ---------------------------------- */
 .clearfix
 {
@@ -216,4 +287,9 @@ td .chuckButton
 {
   padding: 0 !important;
   overflow: hidden;
+}
+
+a:visited
+{
+  color: #5755d9;
 }
