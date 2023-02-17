@@ -90,15 +90,18 @@ function handleFiles()
             };
             reader.readAsText(file);
         }
-        else {
+        else
+        {
             reader.onload = function (e)
             {
                 var data = new Uint8Array(e.target.result);
                 // If chuck is already running, create file
-                if (theChuck !== undefined) {
+                if (theChuck !== undefined)
+                {
                     theChuck.createFile("", file.name, data);
                     printToOutputConsole("Loaded file: " + file.name);
-                } else {
+                } else
+                {
                     // If chuck is not running, add file to preUploadFiles
                     preUploadFiles.add(file);
                     printToOutputConsole("Preloaded file: " + file.name);
@@ -233,11 +236,13 @@ chuckPrint = function ()
     if (outputConsole) outputConsole.value = ""; // clear browser cache
     return function (text)
     {
-        if (arguments.length > 1) {
+        if (arguments.length > 1)
+        {
             text = Array.prototype.slice.call(arguments).join(" ");
         }
 
-        if (outputConsole) {
+        if (outputConsole)
+        {
             outputConsole.value += text + "\n";
             outputConsole.scrollTop = outputConsole.scrollHeight; // focus on bottom
         }
@@ -267,7 +272,8 @@ function addShredRow(theShred)
         var formatTime = function (i)
         {
             // add zero in front of numbers < 10
-            if (i < 10) {
+            if (i < 10)
+            {
                 i = "0" + i;
             }
             return i;
@@ -284,12 +290,14 @@ function addShredRow(theShred)
 
             // piggyback off time keeper to remove row
             // if it stops running
-            if (!(myShred in shredsToRows)) {
+            if (!(myShred in shredsToRows))
+            {
                 removed = true;
             }
             theChuck.isShredActive(myShred).then(function (result)
             {
-                if (!result && !removed) {
+                if (!result && !removed)
+                {
                     removed = true;
                     removeShredRow(myShred);
                     return;
@@ -297,7 +305,8 @@ function addShredRow(theShred)
             });
 
             // only keep updating time if row still exists
-            if (!removed && document.contains(cell)) {
+            if (!removed && document.contains(cell))
+            {
                 cell.innerHTML = formatTime(m) + ":" + formatTime(s);
                 setTimeout(updateTime, 1000);
             }
@@ -336,7 +345,8 @@ function addShredRow(theShred)
 // Remove a single shred row from the table
 function removeShredRow(theShred)
 {
-    if (theShred in shredsToRows) {
+    if (theShred in shredsToRows)
+    {
         shredsToRows[theShred].parentNode.removeChild(shredsToRows[theShred]);
         delete shredsToRows[theShred];
     }

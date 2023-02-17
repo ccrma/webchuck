@@ -33,7 +33,8 @@ var doesChuckCacheExist = (localStorage['chuckCacheExist'] === 'true') || false;
 /* Load in chuck file from cache for edit, or load in the default chuck file */
 var launchChuckFile = function ()
 {
-    if (doesChuckCacheExist) {
+    if (doesChuckCacheExist) 
+    {
         // Set chuck file to last saved file
         loadChuckFileFromString(localStorage['chuckCache']);
         // Wait until the page is loaded to print this to the console
@@ -43,7 +44,9 @@ var launchChuckFile = function ()
             printToOutputConsole("Loaded autosave: " + localStorage['chuckCacheName'] + " (" + localStorage['chuckCacheDate'] + ")");
             globalFileName = localStorage['chuckCacheName'];
         };
-    } else {
+    }
+    else
+    {
         // New default chuck file
         // TODO: Up to interpretation, but I think this should be a default chuck file
         loadServerFile("./template/untitled.ck");
@@ -67,22 +70,25 @@ newChuckFileButton.addEventListener("click", createNewChuckFile);
 var loadServerFile = function (fileName)
 {
     // If file is a .ck file, load it into editor
-    if (fileName.split('.').pop() == "ck") {
+    if (fileName.split('.').pop() == "ck")
+    {
         fetch(fileName)
             .then(response => response.text())
             .then(text =>
             {
-                if (fileName.split)
-                    fileName = fileName.split("/").pop();
+                fileName = fileName.split("/").pop();
                 chuckEditor.setValue(text);
                 chuckEditor.clearSelection();
                 chuckEditor.gotoLine(0, 0, true);
                 localStorage['chuckCacheName'] = globalFileName = fileName;
-                if (fileName !== "untitled.ck") {
+                if (fileName !== "untitled.ck")
+                {
                     printToOutputConsole("Loaded chuck file: " + fileName);
                 }
             });
-    } else {
+    }
+    else 
+    {
         // If file is not a .ck file, load it into chuck or add it to preLoadServerFiles
         fetch(fileName)
             .then(response => response.blob())
@@ -93,10 +99,13 @@ var loadServerFile = function (fileName)
                 {
                     var data = new Uint8Array(e.target.result);
                     // If chuck is already running, create file
-                    if (theChuck !== undefined) {
+                    if (theChuck !== undefined)
+                    {
                         theChuck.createFile("", fileName.split("/").pop(), data);
                         printToOutputConsole("Loaded file: " + fileName.split("/").pop());
-                    } else {
+                    }
+                    else
+                    {
                         // If chuck is not running, add file to preUploadFiles
                         // convert blob to file and add to preUploadFiles
                         var file = new File([blob], fileName.split("/").pop(), { type: blob.type });
@@ -123,12 +132,15 @@ var vimMode = (localStorage['vimMode'] === 'true') || false; // default state
 var vimModeButton = document.getElementById("vimModeButton");
 function setVimMode(vim)
 {
-    if (vim) {
+    if (vim)
+    {
         // Set vim mode
         vimModeButton.innerHTML = "Vim Mode: On";
         chuckEditor.setKeyboardHandler("ace/keyboard/vim");
         localStorage['vimMode'] = 'true';
-    } else {
+    }
+    else
+    {
         // Set normal mode
         vimModeButton.innerHTML = "Vim Mode: Off";
         chuckEditor.setKeyboardHandler(null);
@@ -144,7 +156,8 @@ var darkMode = (localStorage['darkMode'] === 'true') || false; // default state
 var darkModeButton = document.getElementById("darkModeButton");
 function setDarkMode(dark)
 {
-    if (dark) {
+    if (dark)
+    {
         // Set dark mode
         darkModeButton.innerHTML = "Dark Mode: On";
         document.getElementById("ide").classList.add("dark");
@@ -152,13 +165,17 @@ function setDarkMode(dark)
         document.getElementById("chuck-nav").classList.add("dark");
         document.getElementById("canvas").classList.add("dark");
         document.getElementById("console").classList.add("dark");
-        try {
+        document.getElementById("examples-container").classList.add("dark");
+        try
+        {
             document.getElementById("p5Canvas").classList.add("dark");
-        } catch (error) {
-
         }
+        catch (error) { }
+
         localStorage['darkMode'] = 'true';
-    } else {
+    }
+    else
+    {
         // Set light mode
         darkModeButton.innerHTML = "Dark Mode: Off";
         document.getElementById("ide").classList.remove("dark");
@@ -166,11 +183,13 @@ function setDarkMode(dark)
         document.getElementById("chuck-nav").classList.remove("dark");
         document.getElementById("canvas").classList.remove("dark");
         document.getElementById("console").classList.remove("dark");
-        try {
+        document.getElementById("examples-container").classList.remove("dark");
+        try
+        {
             document.getElementById("p5Canvas").classList.remove("dark");
-        } catch (error) {
-
         }
+        catch (error) { }
+
         localStorage['darkMode'] = 'false';
     }
 };

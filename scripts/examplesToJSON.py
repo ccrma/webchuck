@@ -3,7 +3,7 @@ import os
 import json
 
 # TODO: Mini Audicle examples path here
-chuckExamplesPath= "PATH_TO_CHUCK_EXAMPLES!!!!!!!!!!!!!!!!"
+chuckExamplesPath= "YOUR_PATH_TO_CHUCK_EXAMPLES!!!"
 outputJSONFile = "../examples/moreExamples.json"
 
 # Exclude directories

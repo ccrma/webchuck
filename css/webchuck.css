@@ -22,7 +22,7 @@ body
 
 .canvas
 {
-  background:white;
+  background: white;
 }
 
 .canvas.dark
@@ -61,7 +61,7 @@ body
   margin: 0 0.1rem 0 0;
 }
 
-/* CHUCK NAVIGATION */
+/* CHUCK BAR */
 .chuck-nav
 {
   background-color: bisque;
@@ -80,10 +80,16 @@ body
   align-items: center;
 }
 
+#chuck-vm
+{
+  overflow: hidden;
+}
+
 .vm-button
 {
   margin: auto;
   width: 100%;
+  overflow: visible;
 }
 
 .chuckButton
@@ -137,7 +143,7 @@ body
   width: 100%;
 }
 
-#shreds 
+#shreds
 {
   height: 10vh;
   width: 100%;
@@ -151,7 +157,7 @@ body
   border-collapse: collapse;
 }
 
-td .chuckButton 
+td .chuckButton
 {
   width: 2rem;
 }
@@ -191,44 +197,49 @@ td .chuckButton
   min-height: 42vh;
 }
 
-#p5 {
+#p5
+{
   width: 100%;
   height: 100%;
   display: block;
   border: none;
   resize: none;
-  position:fixed;
-  bottom:2px;
+  position: fixed;
+  bottom: 2px;
 }
 
-/* More examples modal */
+/* More examples breadcrumb navigation */
 #example-breadcrumb
 {
   padding: 0 0.8rem;
 }
 
-/* breadcrumb styles */
-.breadcrumb .breadcrumb-item button {
+.breadcrumb .breadcrumb-item button
+{
   border: none;
   cursor: pointer;
   background-color: transparent;
 }
 
-.breadcrumb .breadcrumb-item:not(:last-child) button {
+.breadcrumb .breadcrumb-item:not(:last-child) button
+{
   color: #66758c;
 }
 
-.breadcrumb .breadcrumb-item:not(:last-child):hover button {
+.breadcrumb .breadcrumb-item:not(:last-child):hover button
+{
   color: #5755d9;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.breadcrumb .breadcrumb-item:last-child button {
+.breadcrumb .breadcrumb-item:last-child button
+{
   color: #5755d9;
   pointer-events: none;
 }
 
+/* More examples modal */
 #example-folder
 {
   display: flex;
@@ -244,15 +255,32 @@ td .chuckButton
   overflow: none;
 }
 
+.modal-container.dark
+{
+  background-color: #333;
+  color: #eee;
+}
+
+.modal-container.dark .modal-header
+{
+  color: #eee;
+}
+
 #example-browser
 {
   height: 30vh;
   overflow: none;
 }
 
+/* Examples preview window */
 #example-preview
 {
   height: 25vh;
+}
+
+.modal-container.dark pre code
+{
+  filter: invert(90%);
 }
 
 pre
@@ -260,7 +288,7 @@ pre
   margin: 0;
 }
 
-pre code 
+pre code
 {
   font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
   background: #eee;

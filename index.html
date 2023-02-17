@@ -131,14 +131,14 @@
         <!-- CHUCK BAR -->
         <div class="container chuck-nav" id="chuck-nav">
             <div class="columns col-gapless">
-                <div class="column col-2 chuck-vm">
+                <div class="column col-2 chuck-vm" id="chuck-vm">
                     <button class="btn btn-primary vm-button" id="startChuck" disabled>Start WebChucK [beta]</button>
                     <input class="chuckButton" id="micButton" type="image" src="./assets/icons/mic.png" disabled
                         alt="microphone" />
                 </div>
                 <div class="column col-10">
                     <input class="chuckButton" id="compileButton" type="image" src="./assets/icons/play.png" disabled
-                        alt="compile and play" /> <!-- Compiles and Plays -->
+                        alt="compile and play" /> 
                     <input class="chuckButton" id="replaceButton" type="image" src="./assets/icons/replace.png" disabled
                         alt="replace shread" />
                     <input class="chuckButton" id="removeButton" type="image" src="./assets/icons/remove.png" disabled
@@ -200,7 +200,7 @@
         <!-- More Examples Modal -->
         <div class="modal" id="more-examples">
             <a href="#" class="modal-overlay" aria-label="Close"></a>
-            <div class="modal-container">
+            <div class="modal-container" id="examples-container">
                 <div class="modal-header">
                     <a href="#" class="btn btn-clear float-right" aria-label="Close"></a>
                     <div class="modal-title h5">ChucK Examples</div>

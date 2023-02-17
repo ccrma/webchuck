@@ -242,12 +242,6 @@
     "pca": [
         "pca.ck"
     ],
-    "word2vec": [
-        "poem-i-feel.ck",
-        "poem-randomwalk.ck",
-        "poem-spew.ck",
-        "word2vec-basic.ck"
-    ],
     "knn": [
         "knn2-classify.ck",
         "knn2-search.ck",
@@ -267,10 +261,6 @@
         "mfcc-basic.ck",
         "features-combined.ck",
         "flux0.ck"
-    ],
-    "genre-classify": [
-        "x-validate.ck",
-        "genre-classify.ck"
     ],
     "svm": [
         "svm-basic.ck"
@@ -349,10 +339,8 @@
     ],
     "ai": [
         "pca",
-        "word2vec",
         "knn",
         "features",
-        "genre-classify",
         "svm",
         "hmm"
     ]
