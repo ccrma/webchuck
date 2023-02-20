@@ -76,7 +76,8 @@
         "array_sub_assign.ck",
         "array_dynamic.ck",
         "array_mdim.ck",
-        "array_storage.ck"
+        "array_storage.ck",
+        "array_negative.ck"
     ],
     "ctrl": [
         "ctrl_until.ck",
@@ -269,12 +270,27 @@
         "hmm-load.ck",
         "hmm-train.ck"
     ],
+    "mlp": [
+        "mlp.ck",
+        "mlp-manual.ck",
+        "mlp-load.ck",
+        "mlp-save.ck"
+    ],
+    "wekinator": [
+        "wekinator-basic.ck",
+        "wekinator-load.ck"
+    ],
+    "word2vec": [
+        "poem-i-feel.ck",
+        "poem-randomwalk.ck",
+        "poem-spew.ck",
+        "word2vec-basic.ck"
+    ],
     "machine": [
         "eval.ck",
         "intsize.ck",
         "machine-shred.ck",
-        "is-realtime.ck",
-        "crash.ck"
+        "is-realtime.ck"
     ],
     "class": [
         "dinky.ck",
@@ -338,10 +354,13 @@
         "func_obj_arg.ck"
     ],
     "ai": [
-        "pca",
-        "knn",
         "features",
+        "hmm",
+        "knn",
+        "mlp",
+        "pca",
         "svm",
-        "hmm"
+        "wekinator",
+        "word2vec"
     ]
 }
