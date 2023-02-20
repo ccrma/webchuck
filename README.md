@@ -10,7 +10,7 @@ WebChucK enables Chuck to run on the web. Using WebAssembly and the Web Audio AP
 
 *How much web could a WebChucK ChucK if we **all** could ChucK on the web?*
 
-## Creating your own project
+### Creating your own WebChucK project
 
 Link WebChucK in the `<body>` in your index.html
 
@@ -42,7 +42,7 @@ Or create a copy of WebChucK [src](./src/):
 
 - Dark mode
 
-## WebChucK IDE Usage
+### WebChucK IDE Usage
 
 Open `index.html` with a live server, Python http.server or the like
 
