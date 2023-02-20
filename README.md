@@ -1,6 +1,6 @@
 # WebChucK IDE
 
-A web-based integrated development environment for ChucK exploring real-time sound synthesis and music creation!
+A web-based integrated development environment for real-time sound synthesis and music creation with ChucK!
 
 Try it here: [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
