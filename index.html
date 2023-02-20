@@ -48,7 +48,7 @@
 
                 <!-- File -->
                 <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="File">
                         File<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
@@ -66,34 +66,38 @@
                 </div>
                 <!-- Edit -->
                 <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="Edit">
                         Edit<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <button class="btn btn-link" id="vimModeButton">Vim Mode: Off</button>
-                        <button class="btn btn-link" id="vimModeButton" onclick="UI()">Generate GUI</button>
+                        <li class="menu-item"><button class="btn btn-link" id="vimModeButton">Vim Mode: Off</button></li>
+                        <li class="menu-item"><button class="btn btn-link" id="vimModeButton" onclick="UI()">Generate GUI</button></li>
                     </ul>
                 </div>
                 <!-- View -->
                 <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="View">
                         View<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button>
-                        <button class="btn btn-link" onclick="drawing(0)">GUI</button><br>
-                        <button class="btn btn-link" onclick="drawing(1)">Visualizer</button>
-                        <button class="btn btn-link" onclick="drawing(2)">Console</button>
+                        <li class="menu-item"><button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button></li>
+                        <li class="menu-item"><button class="btn btn-link" onclick="drawing(0)">GUI</button></li>
+                        <li class="menu-item"><button class="btn btn-link" onclick="drawing(1)">Visualizer</button></li>
+                        <li class="menu-item"><button class="btn btn-link" onclick="drawing(2)">Console</button></li>
                     </ul>
                 </div>
                 <!-- Examples -->
                 <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="Examples">
                         Examples<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
                         <li class="menu-item">
                             <button class="btn btn-link" id="Default"
+                                onclick="loadServerFile('./template/untitled.ck')">Hello Sine</button>
+                        </li>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="HelloSineGUI"
                                 onclick="loadServerFile('./examples/HelloSineGUI.ck')">Hello Sine GUI</button>
                         </li>
                         <li class="menu-item">
@@ -106,6 +110,9 @@
                                 onclick="loadServerFile('./examples/slammin/slammin.ck'); loadServerFile('./examples/slammin/were_slammin.wav');">Play
                                 Lofi Beats</button>
                         </li>
+                        <li class="menu-item">
+                            <button class="btn btn-link" id="moreExamplesButton">More Examples <i class="icon icon-arrow-right"></i></button>
+                        </li>
                     </ul>
                 </div>
                 <!-- Help -->
@@ -114,8 +121,7 @@
                         Help<i class="icon icon-caret"></i>
                     </a>
                     <ul class="menu">
-                        <a href="https://chuck.stanford.edu" class="btn btn-link" target="_blank">ChucK
-                            Documentation</a>
+                        <a href="https://chuck.stanford.edu" class="btn btn-link" target="_blank">ChucK Documentation</a> 
                     </ul>
                 </div>
 
@@ -125,14 +131,14 @@
         <!-- CHUCK BAR -->
         <div class="container chuck-nav" id="chuck-nav">
             <div class="columns col-gapless">
-                <div class="column col-2 chuck-vm">
+                <div class="column col-2 col-sm-5 chuck-vm">
                     <button class="btn btn-primary vm-button" id="startChuck" disabled>Start WebChucK [beta]</button>
                     <input class="chuckButton" id="micButton" type="image" src="./assets/icons/mic.png" disabled
                         alt="microphone" />
                 </div>
-                <div class="column col-10">
+                <div class="column col-10 col-sm-7">
                     <input class="chuckButton" id="compileButton" type="image" src="./assets/icons/play.png" disabled
-                        alt="compile and play" /> <!-- Compiles and Plays -->
+                        alt="compile and play" /> 
                     <input class="chuckButton" id="replaceButton" type="image" src="./assets/icons/replace.png" disabled
                         alt="replace shread" />
                     <input class="chuckButton" id="removeButton" type="image" src="./assets/icons/remove.png" disabled
@@ -143,9 +149,9 @@
 
         <!-- WEBCHUCK EDITOR -->
         <div class="container main-editor">
-            <div class="columns col-gapless" style="height: 100%">
+            <div class="columns col-gapless webchuckPanels" >
                 <!-- File Explorer -->
-                <div class="column col-2 main-panel">
+                <div class="column col-2 col-sm-12 main-panel" id="filePanel">
                     <div class="panel">
                         <div class="panel-header" style="padding: 0 0.8rem;">
                             <div class="panel-title" id="file-explorer-title">File Explorer</div>
@@ -156,7 +162,7 @@
                     </div>
                 </div>
                 <!-- Ace Editor -->
-                <div class="column col-6 main-panel">
+                <div class="column col-6 col-sm-12 main-panel" id="editorPanel">
                     <div class="panel">
                         <div class="panel-body zero-pad">
                             <div id="editor">/* Loading ChucK File */</div>
@@ -165,7 +171,7 @@
                 </div>
 
                 <!-- Shreds + Console -->
-                <div class="column col-4 main-panel">
+                <div class="column col-4 col-sm-12 main-panel" id="consolePanel">
                     <div class="panel">
                         <div class="panel-body" id="shreds">
                             <table class="table" id="shredsTable">
@@ -189,17 +195,64 @@
                 </div>
             </div>
         </div>
+
+        <!-- MODALS (overlay)-->
+        <!-- More Examples Modal -->
+        <div class="modal" id="more-examples">
+            <a href="#" class="modal-overlay" aria-label="Close"></a>
+            <div class="modal-container" id="examples-container">
+                <div class="modal-header">
+                    <a href="#" class="btn btn-clear float-right" aria-label="Close"></a>
+                    <div class="modal-title h5">ChucK Examples</div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="content">
+                        <!-- Example Browser -->
+                        <div class="panel" id="example-browser">
+                            <div class="panel-nav" id="example-breadcrumb">
+                                <ul class="breadcrumb" id="examples-breadcrumb">
+                                    <!-- Populate dynamic breadcrumbs here
+                                    <li class="breadcrumb-item"><button onClick="console.log('hi')">Hi</button></li>
+                                    -->
+                                </ul>
+                            </div>
+                            <div class="panel-body" id="example-folder">
+                                <!-- Populate dynamic files/folders here 
+                                <a class="btn btn-link" id="alarm.ck">alarm.ck</a>
+                                -->
+                            </div>
+                        </div>
+                        <!-- Example Preview -->
+                        <div class="panel" id="example-preview">
+                            <div class="panel-header">
+                                <div class="panel-title">Example Preview</div>
+                            </div>
+                            <div class="panel-body">
+                                <!-- populate dynamic code preview -->
+                                <pre><code id="example-code"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a class="btn btn-link" href="#">Cancel</a>
+                    <button class="btn btn-primary" id="loadPreviewButton">Load</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- POST SCRIPTS -->
-    <script> var whereIsChuck = "./src"; </script>  <!-- Specify where ChucK is -->
+    <script> var whereIsChuck = "./src"; </script> <!-- Specify where ChucK is -->
     <!-- Connect Web Audio API, Connect webchuck.js and webchuck.wasm -->
-    <script type="text/javascript" src="./src/webchuck_host.js"></script>
-    <!-- WebChucK IDE modules -->
+    <script type="text/javascript" src="./src/webchuck_host.js"></script> <!-- WebChucK IDE modules -->
     <script type="text/javascript" src="./js/Visualizer.js"></script> <!-- WebChucK to WebAudioAPI -->
     <script type="text/javascript" src="./js/editor.js"></script> <!-- Load our editor config -->
     <script type="text/javascript" src="./js/host.js"></script> <!-- Hook up our IDE to WebChucK -->
-    <script type="text/javascript" src="./js/gui.js"></script>  <!-- Set up the gui generator -->
+    <script type="text/javascript" src="./js/gui.js"></script> <!-- Set up the gui generator -->
+    <script type="text/javascript" src="./js/examples.js"></script> <!-- For loading more examples -->
 </body>
 
 </html>

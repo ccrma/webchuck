@@ -9,6 +9,11 @@ body
   height: 100vh;
 }
 
+.webchuckPanels
+{
+  height: 100%;
+}
+
 .ide
 {
   background-color: #def;
@@ -22,7 +27,7 @@ body
 
 .canvas
 {
-  background:white;
+  background: white;
 }
 
 .canvas.dark
@@ -54,6 +59,7 @@ body
   flex: 1 1 auto;
 }
 
+/* NAV BAR */
 .logo
 {
   line-height: 1;
@@ -61,7 +67,7 @@ body
   margin: 0 0.1rem 0 0;
 }
 
-/* CHUCK NAVIGATION */
+/* CHUCK BAR */
 .chuck-nav
 {
   background-color: bisque;
@@ -78,12 +84,15 @@ body
 {
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .vm-button
 {
   margin: auto;
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chuckButton
@@ -137,7 +146,7 @@ body
   width: 100%;
 }
 
-#shreds 
+#shreds
 {
   height: 10vh;
   width: 100%;
@@ -151,7 +160,7 @@ body
   border-collapse: collapse;
 }
 
-td .chuckButton 
+td .chuckButton
 {
   width: 2rem;
 }
@@ -191,14 +200,107 @@ td .chuckButton
   min-height: 42vh;
 }
 
-#p5 {
+#p5
+{
   width: 100%;
   height: 100%;
   display: block;
   border: none;
   resize: none;
-  position:fixed;
-  bottom:2px;
+  position: fixed;
+  bottom: 2px;
+}
+
+/* More examples breadcrumb navigation */
+#example-breadcrumb
+{
+  padding: 0 0.8rem;
+}
+
+.breadcrumb .breadcrumb-item button
+{
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.breadcrumb .breadcrumb-item:not(:last-child) button
+{
+  color: #66758c;
+}
+
+.breadcrumb .breadcrumb-item:not(:last-child):hover button
+{
+  color: #5755d9;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.breadcrumb .breadcrumb-item:last-child button
+{
+  color: #5755d9;
+  pointer-events: none;
+}
+
+/* More examples modal */
+#example-folder
+{
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  text-align: left;
+  height: 100%;
+}
+
+#more-examples .modal-container
+{
+  max-width: 960px;
+  overflow: none;
+}
+
+.modal-container.dark
+{
+  background-color: #333;
+  color: #eee;
+}
+
+.modal-container.dark .modal-header
+{
+  color: #eee;
+}
+
+#example-browser
+{
+  height: 30vh;
+  overflow: none;
+}
+
+/* Examples preview window */
+#example-preview
+{
+  height: 25vh;
+}
+
+.modal-container.dark pre code
+{
+  filter: invert(90%);
+}
+
+pre
+{
+  margin: 0;
+}
+
+pre code
+{
+  font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
+  background: #eee;
+  color: #333;
+  border: 1px solid #999;
+  display: block;
+  padding: 0;
+  border: 0;
+  overflow: auto;
 }
 
 /* ---------------------------------- */
@@ -216,4 +318,33 @@ td .chuckButton
 {
   padding: 0 !important;
   overflow: hidden;
+}
+
+a:visited
+{
+  color: #5755d9;
+}
+
+/* ------------- MOBILE ------------- */
+@media (max-width: 600px)
+{
+  html,
+  body 
+  {
+    height: 170vh;
+  }
+
+  #filePanel
+  {
+    max-height: 20vh;
+  }
+  #editorPanel
+  {
+    max-height: 60vh;
+  }
+  #consolePanel
+  {
+    max-height: 70vh;
+  }
+  
 }
