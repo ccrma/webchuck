@@ -1,51 +1,48 @@
 # WebChucK IDE
 
-A web IDE for ChucK, a programming language for real-time sound synthesis and music creation!
+A web-based integrated development environment for ChucK exploring real-time sound synthesis and music creation!
 
 Try it here: [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
-## Things to do
+## What is WebChucK?
 
-1. Favicon Redesign
+WebChucK enables Chuck to run on the web. Using WebAssembly and the Web Audio API, you can use WebChucK to build your own browser-based audiovisual projects or webapps. Try WebChucK with WebChucK IDE or build your own projects using WebChucK source. 
 
-2. Spectre CSS Import
+*How much web could a WebChucK ChucK if we **all** could ChucK on the web?*
 
-3. Layout Design of index.html (from Figma)
+## Creating your own project
 
-    - Check resizability of ACE editor
+Link WebChucK in the `<body>` in your index.html
 
-4. Connect WASM and JS to index.html
+```html
+<!-- Connect Web Audio API, Connect webchuck.js and webchuck.wasm -->
+<script> var whereIsChuck = "https://cdn.jsdelivr.net/gh/ccrma/webchuck/src"; </script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ccrma/webchuck/src/webchuck_host.js"></script>
+```
 
-5. ~~File Uploading (Drag and Drop)~~
+Or create a copy of WebChucK [src](./src/):
 
-    - Ignoring this for now for more functional `upload files` button
+- `webchuck_host.js`
+- `webchuck.js`
+- `webchuck.wasm`
 
-6. Exporting Webpages
+## WebChucK IDE Features
 
-- Save Chuck File
-- ~~Inject Chuck File into html~~
-    - ignoring for now, depends on where we want to take webchuck
-- ~~Download Project as zip~~
-    - ignoring for now, depends on where we want to take webchuck
+- Monitor runtime of ChucK's virtual machine
 
-## Extra features added
+- Cross platform development for ChucK (mobile, iPad)
 
-- Vim support
+- Audio Visualizer
 
-- Dark mode support
+- Auto-generated GUI
 
-- Examples
+- Access to ChucK's example library
 
-## Future things/thoughts to address
+- Vim keybindings
 
-- Better WebChucK console/integration printing
+- Dark mode
 
-    - Currently doesn't add sporked shreds to the table
+## WebChucK IDE Usage
 
-    - Doesn't currently print to console the same that native miniAudicle does
-
-
-## Usage
-
-Open `index.html` with a live server, Python HttpServer or the like
+Open `index.html` with a live server, Python http.server or the like
 
