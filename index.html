@@ -131,12 +131,12 @@
         <!-- CHUCK BAR -->
         <div class="container chuck-nav" id="chuck-nav">
             <div class="columns col-gapless">
-                <div class="column col-2 chuck-vm" id="chuck-vm">
+                <div class="column col-2 col-sm-5 chuck-vm">
                     <button class="btn btn-primary vm-button" id="startChuck" disabled>Start WebChucK [beta]</button>
                     <input class="chuckButton" id="micButton" type="image" src="./assets/icons/mic.png" disabled
                         alt="microphone" />
                 </div>
-                <div class="column col-10">
+                <div class="column col-10 col-sm-7">
                     <input class="chuckButton" id="compileButton" type="image" src="./assets/icons/play.png" disabled
                         alt="compile and play" /> 
                     <input class="chuckButton" id="replaceButton" type="image" src="./assets/icons/replace.png" disabled
@@ -149,9 +149,9 @@
 
         <!-- WEBCHUCK EDITOR -->
         <div class="container main-editor">
-            <div class="columns col-gapless" style="height: 100%">
+            <div class="columns col-gapless webchuckPanels" >
                 <!-- File Explorer -->
-                <div class="column col-2 main-panel">
+                <div class="column col-2 col-sm-12 main-panel" id="filePanel">
                     <div class="panel">
                         <div class="panel-header" style="padding: 0 0.8rem;">
                             <div class="panel-title" id="file-explorer-title">File Explorer</div>
@@ -162,7 +162,7 @@
                     </div>
                 </div>
                 <!-- Ace Editor -->
-                <div class="column col-6 main-panel">
+                <div class="column col-6 col-sm-12 main-panel" id="editorPanel">
                     <div class="panel">
                         <div class="panel-body zero-pad">
                             <div id="editor">/* Loading ChucK File */</div>
@@ -171,7 +171,7 @@
                 </div>
 
                 <!-- Shreds + Console -->
-                <div class="column col-4 main-panel">
+                <div class="column col-4 col-sm-12 main-panel" id="consolePanel">
                     <div class="panel">
                         <div class="panel-body" id="shreds">
                             <table class="table" id="shredsTable">

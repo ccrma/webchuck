@@ -9,6 +9,11 @@ body
   height: 100vh;
 }
 
+.webchuckPanels
+{
+  height: 100%;
+}
+
 .ide
 {
   background-color: #def;
@@ -54,6 +59,7 @@ body
   flex: 1 1 auto;
 }
 
+/* NAV BAR */
 .logo
 {
   line-height: 1;
@@ -78,10 +84,6 @@ body
 {
   display: flex;
   align-items: center;
-}
-
-#chuck-vm
-{
   overflow: hidden;
 }
 
@@ -89,7 +91,8 @@ body
 {
   margin: auto;
   width: 100%;
-  overflow: visible;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chuckButton
@@ -320,4 +323,28 @@ pre code
 a:visited
 {
   color: #5755d9;
+}
+
+/* ------------- MOBILE ------------- */
+@media (max-width: 600px)
+{
+  html,
+  body 
+  {
+    height: 170vh;
+  }
+
+  #filePanel
+  {
+    max-height: 20vh;
+  }
+  #editorPanel
+  {
+    max-height: 60vh;
+  }
+  #consolePanel
+  {
+    max-height: 70vh;
+  }
+  
 }
