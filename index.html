@@ -31,6 +31,8 @@
     <script src="./js/ace-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
     <script src="./js/GuiHelper.js"></script>
+    <!-- DEPENDENCY ADDED FOR PRECOMPILERS -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
 </head>
 
 <body>
@@ -124,7 +126,20 @@
                         <a href="https://chuck.stanford.edu" class="btn btn-link" target="_blank">ChucK Documentation</a> 
                     </ul>
                 </div>
-
+                <!-- Precompilers -->
+                <div class="dropdown">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                        Precompilers<i class="icon icon-caret"></i>
+                    </a>
+                    <ul class="menu">
+                        <li>
+                            <button class="btn btn-link" onclick="SetPrecompilerMode(0)" target="_blank">ChucK - as usual</button> 
+                        </li>
+                        <li>
+                            <button class="btn btn-link" onclick="SetPrecompilerMode(1)" target="_blank">iter~ - iterTilda</button>
+                        </li> 
+                    </ul>
+                </div>
             </section>
         </header>
 
@@ -243,6 +258,10 @@
             </div>
         </div>
     </div>
+    
+    <!-- POST SCRIPTS -->
+    <script type="text/javascript" src="./precompilers/precompilerEntry.js"></script><!-- helper for precompilers -->
+    <script type="text/javascript" src="./precompilers/iterTilda.js"></script><!-- iter~ for testing -->
 
     <!-- POST SCRIPTS -->
     <script> var whereIsChuck = "./src"; </script> <!-- Specify where ChucK is -->

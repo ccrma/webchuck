@@ -22,27 +22,76 @@ var preloadedFilesReady = preloadFilenames(serverFilesToPreload);
 // so they can be replaced later if desired
 var chuckCompileButton = function ()
 {
-    // send message to compile and play code
-    theChuck.runCode(chuckEditor.getValue()).then(
-        function (shredID)
-        {
-            addShredRow(shredID);
-        },
-        function (failure) { }
-    );
+    if(precompilerMode === 0) {
+        theChuck.runCode(window.localStorage.getItem('chuckCache')).then(
+            function (shredID)
+            {
+                
+                addShredRow(shredID);
+            },
+            function (failure) { }
+        )
+    }
+    if(precompilerMode === 1){
+        main().then(() => {
+            if (parsed === undefined){
+                theChuck.runCode(window.localStorage.getItem('chuckCache')).then(
+                    function (shredID)
+                    {
+                        
+                        addShredRow(shredID);
+                    },
+                    function (failure) { }
+                )
+            } else {
+                theChuck.runCode(parsed).then(
+                    function (shredID)
+                    {
+                        addShredRow(shredID);
+                    },
+                    function (failure) { }
+                )
+            }
+        })
+    } 
 };
 
 var chuckReplaceButton = function ()
 {
     // send message to replace last shred with this code
-    theChuck.replaceCode(chuckEditor.getValue()).then(
-        function (shreds)
-        {
-            removeShredRow(shreds.oldShred);
-            addShredRow(shreds.newShred);
-        },
-        function (failure) { }
-    );
+    if(precompilerMode === 0) {
+        theChuck.replaceCode(parsed).then(
+            function (shreds)
+            {
+                removeShredRow(shreds.oldShred);
+                addShredRow(shreds.newShred);
+            },
+            function (failure) { }
+        );
+    }
+    if(precompilerMode === 1){
+        main().then(() => {
+            if (parsed === undefined){
+                theChuck.replaceCode(window.localStorage.getItem('chuckCache')).then(
+                    function (shreds)
+                    {
+                        removeShredRow(shreds.oldShred);
+                        addShredRow(shreds.newShred);
+                    },
+                    function (failure) { }
+                );
+            } else {
+                theChuck.replaceCode(parsed).then(
+                    function (shreds)
+                    {
+                        removeShredRow(shreds.oldShred);
+                        addShredRow(shreds.newShred);
+                    },
+                    function (failure) { }
+                );
+            }
+        })
+    } 
 };
 
 var chuckRemoveButton = function ()
