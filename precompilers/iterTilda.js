@@ -133,7 +133,7 @@ if scanMul(cleanTxt) > 0:
     scan(scanRegionClose(scanRegionInit(cleanTxt)))
     parsed = finalScan(partialText)
     js.parsed = parsed
-    print(parsed)
+    #print(parsed)
   `)
 parsed = pyodide.globals.get("parsed")
 return parsed

@@ -33,6 +33,7 @@ var chuckCompileButton = function ()
         )
     }
     if(precompilerMode === 1){
+        theChuck.runCode('<<< "precompiling [iter~]..." >>>;')
         main().then(() => {
             if (parsed === undefined){
                 theChuck.runCode(window.localStorage.getItem('chuckCache')).then(
