@@ -1,6 +1,6 @@
 # WebChucK IDE
 
-A web-based integrated development environment for real-time sound synthesis and music creation with ChucK!
+A web-based integrated development environment (IDE) for real-time sound synthesis and music creation with ChucK!
 
 Try it here: [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
@@ -15,7 +15,7 @@ WebChucK enables Chuck to run on the web. Using WebAssembly and the Web Audio AP
 Link WebChucK in the `<body>` in your index.html
 
 ```html
-<!-- Connect Web Audio API, Connect webchuck.js and webchuck.wasm -->
+<!-- Connect ChucK to Web Audio API, connect webchuck.js and webchuck.wasm -->
 <script> var whereIsChuck = "https://cdn.jsdelivr.net/gh/ccrma/webchuck/src"; </script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ccrma/webchuck/src/webchuck_host.js"></script>
 ```
