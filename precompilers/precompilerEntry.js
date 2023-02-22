@@ -15,7 +15,7 @@ function SetPrecompilerMode(val) {
         precompilersTilda.innerText = valueTIlda
     }
     if(val === 1){
-        theChuck.runCode('<<< "Prototype mode: iter~ enabled.\nPlease note this is an experimental feature and is currently not supported in the base language.", "" >>>;')
+        theChuck.runCode('<<< "enabling prototype mode: [iter ~]...\nPlease note this is an experimental feature and is currently not supported in the base language. (Feel free to modify.) Have fun!", "" >>>;')
         precompilersTilda.innerText = valueTIlda + " ✔️"
         precompilersChuck.innerText = valueChuck
     }
