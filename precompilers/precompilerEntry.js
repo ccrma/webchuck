@@ -1,7 +1,7 @@
 var precompilersTilda = document.getElementById("iterTildaButton")
 var precompilersChuck = document.getElementById("chuckAsUsual")
 var valueTIlda = "Prototype: iter~"
-var valueChuck = "Chuck - as usual"
+var valueChuck = "Chuck (standard)"
 let precompilerMode = 0
 
 
