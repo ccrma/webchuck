@@ -71,6 +71,7 @@ var chuckReplaceButton = function ()
         );
     }
     if(precompilerMode === 1){
+        theChuck.runCode('<<< "precompiling [iter~]..." >>>;')
         main().then(() => {
             if (parsed === undefined){
                 theChuck.replaceCode(window.localStorage.getItem('chuckCache')).then(
