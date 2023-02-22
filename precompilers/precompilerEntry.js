@@ -5,20 +5,18 @@ var valueChuck = "Chuck - as usual"
 let precompilerMode = 0
 
 
-function SetPrecompilerMode(val){
-
-    
+function SetPrecompilerMode(val) {
 
     precompilerMode = val;
+
     if(val === 0){
-        theChuck.runCode('<<< "Chuck" >>>;')
+        theChuck.runCode('<<< "Chuck: standard language mode", "" >>>;')
         precompilersChuck.innerText = valueChuck + " ✔️"
         precompilersTilda.innerText = valueTIlda
     }
     if(val === 1){
-        theChuck.runCode('<<< "Prototype: iter~ \nPlease note that this is an experimental feature and is currently not supported in the base language. (feel free to modify!)" >>>;')
+        theChuck.runCode('<<< "Prototype mode: iter~ enabled.\nPlease note this is an experimental feature and is currently not supported in the base language.", "" >>>;')
         precompilersTilda.innerText = valueTIlda + " ✔️"
         precompilersChuck.innerText = valueChuck
     }
 }
-
