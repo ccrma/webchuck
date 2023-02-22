@@ -42,6 +42,8 @@ Or create a copy of WebChucK [src](./src/):
 
 - Dark mode
 
+- Precompilers (to play with possible new worlds)
+
 ### WebChucK IDE Usage
 
 Open `index.html` with a live server, Python http.server or the like
