@@ -32,7 +32,6 @@ function replaceIter(code) {
 spork~ ${uid}();
 `
         text += "/* iterator translation end */\n"
-        text += "/* function def start */\n"
 
         // functions can't be defined outside of the global scope,
         // so save defintions for later so they can be appended to the
@@ -47,8 +46,6 @@ fun void ${uid}() {
     }
 }
 `
-        text += "/* function def end */\n"
-
         return text;
     }
 
