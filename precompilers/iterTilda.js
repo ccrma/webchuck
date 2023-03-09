@@ -1,140 +1,72 @@
 let parsed = ""
 let flag = true
 async function main(){
-  parsed = ""
-  let pyodide = await loadPyodide();
-  pyodide.globals.set("data", chuckEditor.getValue());
-  pyodide.runPython(`
-import js
-import random
+    console.log("in main function");
+    parsed = ""
+    code = chuckEditor.getValue()
+    result = processCode(code)
+    console.log(result)
+    parsed = result // why?
+    return result
+}
 
-ids = []
-global lastItem
-lastItem = 0
-global functions
-functions = ""
-global partialText
-partialText = ""
-global final
-final = data
+function processCode(code) {
+    code = removeComments(code);
+    code = replaceIter(code);
+    return code;
+}
 
-comments = ["//iter~","// iter~", "// iter ~", "//iter ~", "/* iter ~", "/* iter ~" , "/*iter ~", "/* iter~", "/*iter~","//iter(","// iter(", "// iter (", "//iter (", "/* iter (", "/* iter (" , "/*iter (", "/* iter(", "/*iter("]
-global searchFor
-searchFor = ["iter ~","iter~"]
+function replaceIter(code) {
+    // store all function definitions here
+    functions = ""
 
-def prevScan(toScan):
-    return toScan.find("iter~")
+    // take "iter~(...)" and expand it out into valid chuck code
+    function expandIter(match, func, array, dur, offset, string, groups) {
+        text = "\n/* iterator translation start */\n"
 
-def scanMul(text):
-    for word in searchFor:
-        if text.find(word) > 0:
-            return text.find(word)
-    return -1
+        // generate uid for the function that's replacing iter~
+        uid = "__" + Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) 
 
-def scanMulWord(text):
-    for word in searchFor:
-        if text.find(word) > 0:
-            return len(word)
-    return -1
+        // spork the iter~ function
+        text += `
+spork~ ${uid}();
+`
+        text += "/* iterator translation end */\n"
 
-def removeComments():
-    global final
-    for c in comments:
-        while final.find(c) > 0:
-            x = final.find(c)
-            text = final[x:]
-            y = text.find(";")
-            partial = final[:x]
-            partial += final[x+y+1:]
-            final = partial  
-    return final
+        // functions can't be defined outside of the global scope,
+        // so save defintions for later so they can be appended to the
+        // entire chuck file.
+        functions += `
+fun void ${uid}() {
+    while(true){
+        for (int i; i < ${array}.size(); i++){
+            spork~ ${func}(${array}[i]);
+        }
+        ${dur} => now;
+    }
+}
+`
+        return text;
+    }
 
+    // match iter regex
+    // NOTE: this does not work with arbitrary code,
+    // because chuck is not a regular language it can have things
+    // like arbitrarily-depthed parentheses and extra commas that will
+    // screw things up, but hey it's an experimental feature
+    const iter_regex = /iter\~\((.*),(.*),(.*)\)\s*;/g
 
-def scanRegionInit(toScan): 
-    try:
-        #x = toScan.find("iter~")
-        x = scanMul(toScan)
-        text = toScan[:x]
-        text += """
-        /*iterator scan region start*/
-        """
-        text += toScan[x:]
-        return text
-    except: 
-        return data
-
-def scanRegionClose(toScan):
-    x = toScan.rindex("iter")
-    partialText = toScan[x:]
-    y = partialText.find(";")
-    finalText = toScan[:x+y+1]
-    wrapingCheck = partialText[y+1:].split()
-    if wrapingCheck[0] == "}":
-        finalText += "}"
-        wrapingCheck.pop(0)
-    finalText += "/*iterator scan region close*/"
-    for token in wrapingCheck:
-        finalText += token
-    #finalText += toScan[x+y+1:]
-    return finalText
-
-def finalScan(toScan):
-    x = toScan.find("/*iterator scan region close*/")
-    text = toScan[:x]
-    text += "/*iterator scan region close*/ /*functions defs*/"
-    text += functions
-    text += "/*functions defs*/"
-    text += toScan[x+30:]
-    return text
-
-def scan(toScan):
-    #x = toScan.find("iter~")
-    x = scanMul(toScan)
-    finalChuck = toScan[:x]
-    wordL = scanMulWord(toScan)+1
-    parseParam = toScan[x+wordL:]
-    y = parseParam.find(";")
-    parseParamFinal = parseParam[:y-1]
-    finalScan = parseParamFinal.split(",")
-    temp = "__"
-    temp += str(random.randint(10000000, 99999999))
-    ids.append(temp)
-    try:
-        global functions
-        functions += """
-fun void {id}(){specialO}
-    while(true){specialO}
-        for (int i; i < {val2}.size(); i++){specialO}
-        \tspork~{val1}({val2}[i]);
-    {specialC}
-    {val3} => now;
-{specialC}
-{specialC}
-        """.format(val1 = finalScan[0], val2 = finalScan[1], val3 = finalScan[2], specialO = '{', specialC = '}', id = temp)
-        finalChuck += """spork~{id}();""".format(id = temp)
-    except:
-        print("OG ChucK code")
-    finalChuck += toScan[x+7+y:]
-    #if prevScan(finalChuck) > 0:
-    if scanMul(finalChuck) > 0:
-        global lastItem
-        #lastItem = prevScan(finalChuck)
-        lastItem = scanMul(finalChuck)
-        scan(finalChuck)
-    else:
-        global partialText
-        partialText = finalChuck
+    // replace all instances of iter~(...) with the real chuck equivalent
+    code = code.replace(iter_regex, expandIter)
+    
+    // append all function definitions to the code
+    code = code + functions;
+    return code;
+}
 
 
-cleanTxt = removeComments()
-
-#if cleanTxt.find("iter~") > 0:
-if scanMul(cleanTxt) > 0:
-    scan(scanRegionClose(scanRegionInit(cleanTxt)))
-    parsed = finalScan(partialText)
-    js.parsed = parsed
-    #print(parsed)
-  `)
-parsed = pyodide.globals.get("parsed")
-return parsed
+// Taken from https://stackoverflow.com/questions/37051797/remove-comments-from-string-with-javascript-using-javascript
+function removeComments(string){
+    //Takes a string of code, not an actual function.
+    return string.replace(/\/\*[\s\S]*?\*\/|(?<=[^:])\/\/.*|^\/\/.*/g,'').trim();//Strip comments
 }
