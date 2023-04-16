@@ -3,7 +3,7 @@
 
 WebChucK enables [Chuck](https://chuck.stanford.edu) to run on the web. Through WebAssembly (WASM) and the Web Audio API, you can use WebChucK to build online ChucK-powered audiovisual projects or web apps. To learn more about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
-To see what WebChucK in action, check out [WebChucK IDE](https://chuck.stanford.edu/ide/)!
+To see WebChucK in action, check out [WebChucK IDE](https://chuck.stanford.edu/ide/)!
 
 ## Usage
 
