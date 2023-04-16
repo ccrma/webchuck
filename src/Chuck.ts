@@ -23,46 +23,55 @@ import { InMessage, OutMessage } from "./enums";
 type DeferredPromisesMap = Record<number, DeferredPromise<unknown>>;
 type EventCallbacksMap = Record<number, () => void>;
 
-export default class Chuck {
-    private audioWorkletNode: AudioWorkletNode;
+export default class Chuck extends window.AudioWorkletNode {
     private deferredPromises: DeferredPromisesMap = {};
     private deferredPromiseCounter: number = 0;
     private eventCallbacks: EventCallbacksMap = {};
     private eventCallbackCounter: number = 0;
     private isReady: DeferredPromise<void> = defer();
 
+    static chuckID: number = 1;
+
     constructor(
         preloadedFiles: File[],
         audioContext: AudioContext,
         wasm: ArrayBuffer,
-        chuckID: number = 1
+        numOutChannels: number = 2
     ) {
-        this.audioWorkletNode = new AudioWorkletNode(
+        super(
             audioContext,
-            `chuck-node-${chuckID}`,
+            `theChuck-${Chuck.chuckID}`,
             {
                 numberOfInputs: 1,
                 numberOfOutputs: 1,
                 // important: "number of inputs / outputs" is like an aggregate source
                 // most of the time, you only want one input source and one output
                 // source, but each one has multiple channels
-                outputChannelCount: [2],
+                outputChannelCount: [numOutChannels],
                 processorOptions: {
-                    chuckID,
+                    chuckID: Chuck.chuckID,
                     srate: audioContext.sampleRate,
                     preloadedFiles,
                     wasm,
                 },
             }
         );
-        this.audioWorkletNode.port.onmessage = this.receiveMessage.bind(this);
-        this.audioWorkletNode.onprocessorerror = (e) => console.error(e);
-        this.audioWorkletNode.connect(audioContext.destination);
+        this.port.onmessage = this.receiveMessage.bind(this);
+        this.onprocessorerror = (e) => console.error(e);
+        Chuck.chuckID++;
     }
 
-    static async init(filenamesToPreload: Filename[]): Promise<Chuck> {
+    static async init(filenamesToPreload: Filename[], audioContext?: AudioContext): Promise<Chuck> {
         const wasm = await loadWasm();
-        const audioContext = new AudioContext();
+
+        if (typeof audioContext === "undefined") {
+            audioContext = new AudioContext();
+        }
+
+        if (audioContext.state === "suspended") {
+            await audioContext.resume();
+        }
+
         await audioContext.audioWorklet.addModule(
             "https://chuck.stanford.edu/webchuck/src/webchuck.js"
         );
@@ -76,19 +85,6 @@ export default class Chuck {
         const callbackID = this.deferredPromiseCounter++;
         this.deferredPromises[callbackID] = defer();
         return callbackID;
-    }
-
-    // Expose the required methods and properties of the audioWorkletNode
-    public get context(): BaseAudioContext {
-        return this.audioWorkletNode.context;
-    }
-
-    public get numberOfInputs(): number {
-        return this.audioWorkletNode.numberOfInputs;
-    }
-
-    public get numberOfOutputs(): number {
-        return this.audioWorkletNode.numberOfOutputs;
     }
 
     // ================== Filesystem ===================== //
@@ -442,10 +438,16 @@ export default class Chuck {
         this.sendMessage(OutMessage.CLEAR_GLOBALS);
     }
 
+    // ================== Print Output ================== //
+    public chuckPrint(message: string) {
+        // override me to handle printing, this is just a default
+        console.log(message);
+    }
+
     // Private
     private sendMessage(type: OutMessage, body?: { [prop: string]: unknown }) {
         const msgBody = body ? { type, ...body } : { type };
-        this.audioWorkletNode.port.postMessage(msgBody);
+        this.port.postMessage(msgBody);
     }
 
     private receiveMessage(event: MessageEvent) {
@@ -458,8 +460,7 @@ export default class Chuck {
                 }
                 break;
             case InMessage.PRINT:
-                console.log(event.data.message);
-                return event.data.message;
+                this.chuckPrint(event.data.message);
                 break;
             case InMessage.EVENT:
                 if (event.data.callback in this.eventCallbacks) {

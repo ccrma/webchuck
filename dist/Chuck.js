@@ -15,34 +15,39 @@
  */
 import { defer, loadWasm, preloadFiles } from "./utils";
 import { InMessage, OutMessage } from "./enums";
-export default class Chuck {
-    constructor(preloadedFiles, audioContext, wasm, chuckID = 1) {
-        this.deferredPromises = {};
-        this.deferredPromiseCounter = 0;
-        this.eventCallbacks = {};
-        this.eventCallbackCounter = 0;
-        this.isReady = defer();
-        this.audioWorkletNode = new AudioWorkletNode(audioContext, `chuck-node-${chuckID}`, {
+export default class Chuck extends window.AudioWorkletNode {
+    constructor(preloadedFiles, audioContext, wasm, numOutChannels = 2) {
+        super(audioContext, `theChuck-${Chuck.chuckID}`, {
             numberOfInputs: 1,
             numberOfOutputs: 1,
             // important: "number of inputs / outputs" is like an aggregate source
             // most of the time, you only want one input source and one output
             // source, but each one has multiple channels
-            outputChannelCount: [2],
+            outputChannelCount: [numOutChannels],
             processorOptions: {
-                chuckID,
+                chuckID: Chuck.chuckID,
                 srate: audioContext.sampleRate,
                 preloadedFiles,
                 wasm,
             },
         });
-        this.audioWorkletNode.port.onmessage = this.receiveMessage.bind(this);
-        this.audioWorkletNode.onprocessorerror = (e) => console.error(e);
-        this.audioWorkletNode.connect(audioContext.destination);
+        this.deferredPromises = {};
+        this.deferredPromiseCounter = 0;
+        this.eventCallbacks = {};
+        this.eventCallbackCounter = 0;
+        this.isReady = defer();
+        this.port.onmessage = this.receiveMessage.bind(this);
+        this.onprocessorerror = (e) => console.error(e);
+        Chuck.chuckID++;
     }
-    static async init(filenamesToPreload) {
+    static async init(filenamesToPreload, audioContext) {
         const wasm = await loadWasm();
-        const audioContext = new AudioContext();
+        if (typeof audioContext === "undefined") {
+            audioContext = new AudioContext();
+        }
+        if (audioContext.state === "suspended") {
+            await audioContext.resume();
+        }
         await audioContext.audioWorklet.addModule("https://chuck.stanford.edu/webchuck/src/webchuck.js");
         const preloadedFiles = await preloadFiles(filenamesToPreload);
         const chuck = new Chuck(preloadedFiles, audioContext, wasm);
@@ -53,16 +58,6 @@ export default class Chuck {
         const callbackID = this.deferredPromiseCounter++;
         this.deferredPromises[callbackID] = defer();
         return callbackID;
-    }
-    // Expose the required methods and properties of the audioWorkletNode
-    get context() {
-        return this.audioWorkletNode.context;
-    }
-    get numberOfInputs() {
-        return this.audioWorkletNode.numberOfInputs;
-    }
-    get numberOfOutputs() {
-        return this.audioWorkletNode.numberOfOutputs;
     }
     // ================== Filesystem ===================== //
     createFile(directory, filename, data) {
@@ -358,10 +353,15 @@ export default class Chuck {
     clearGlobals() {
         this.sendMessage(OutMessage.CLEAR_GLOBALS);
     }
+    // ================== Print Output ================== //
+    chuckPrint(message) {
+        // override me to handle printing, this is just a default
+        console.log(message);
+    }
     // Private
     sendMessage(type, body) {
         const msgBody = body ? { type, ...body } : { type };
-        this.audioWorkletNode.port.postMessage(msgBody);
+        this.port.postMessage(msgBody);
     }
     receiveMessage(event) {
         const type = event.data.type;
@@ -372,8 +372,7 @@ export default class Chuck {
                 }
                 break;
             case InMessage.PRINT:
-                console.log(event.data.message);
-                return event.data.message;
+                this.chuckPrint(event.data.message);
                 break;
             case InMessage.EVENT:
                 if (event.data.callback in this.eventCallbacks) {
@@ -447,3 +446,4 @@ export default class Chuck {
         }
     }
 }
+Chuck.chuckID = 1;

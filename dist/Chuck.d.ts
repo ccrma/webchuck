@@ -1,18 +1,15 @@
 import DeferredPromise from "./DeferredPromise";
 import type { File, Filename } from "./utils";
-export default class Chuck {
-    private audioWorkletNode;
+export default class Chuck extends window.AudioWorkletNode {
     private deferredPromises;
     private deferredPromiseCounter;
     private eventCallbacks;
     private eventCallbackCounter;
     private isReady;
-    constructor(preloadedFiles: File[], audioContext: AudioContext, wasm: ArrayBuffer, chuckID?: number);
-    static init(filenamesToPreload: Filename[]): Promise<Chuck>;
+    static chuckID: number;
+    constructor(preloadedFiles: File[], audioContext: AudioContext, wasm: ArrayBuffer, numOutChannels?: number);
+    static init(filenamesToPreload: Filename[], audioContext?: AudioContext): Promise<Chuck>;
     private nextDeferID;
-    get context(): BaseAudioContext;
-    get numberOfInputs(): number;
-    get numberOfOutputs(): number;
     createFile(directory: string, filename: string, data: string): void;
     runCode(code: string): DeferredPromise<unknown>;
     runCodeWithReplacementDac(code: string, dacName: string): DeferredPromise<unknown>;
@@ -54,6 +51,7 @@ export default class Chuck {
     getAssociativeFloatArrayValue(variable: string, key: string): DeferredPromise<unknown>;
     clearChuckInstance(): void;
     clearGlobals(): void;
+    chuckPrint(message: string): void;
     private sendMessage;
     private receiveMessage;
 }
