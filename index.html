@@ -1,278 +1,531 @@
-<!--
-    WebChucK IDE, by Terry Feng
-    Special thanks to Celeste Betancur, Mike Mulshine, Jack Atherton, Chris Chafe, and Ge Wang
--->
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- TITLE -->
-    <title>WebChucK [beta]</title>
-    <meta property="og:description"
-        content="A web-based integrated development environment (IDE) for ChucK, a programming language for real-time sound synthesis and music creation! It's fun and easy to learn, and offers composers, researchers, and performers a powerful and accessible programming tool for building, experimenting, and sharing complex audio synthesis/analysis programs and real-time interactive music.">
-    <meta property="og:title" content="WebChucK [beta]" />
-    <meta property="og:url" content="https://chuck.stanford.edu/webchuck/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://chuck.stanford.edu/webchuck/assets/chuck_logo.png" />
-    <meta property="fb:app_id" content="966242223397117" /> <!--default app id-->
-    <meta name="keywords"
-        content="ChucK, WebChucK, IDE, CCRMA, Stanford University, Princeton University, computer music, programming language">
-    <!-- FAVICON -->
-    <link rel="apple-touch-icon" sizes="180x180" href="./favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="./favicon_io/site.webmanifest">
-    <!-- CSS -->
-    <link rel="stylesheet" href="./css/webchuck.css">
-    <!-- PRE SCRIPTS -->
-    <script src="./js/ace-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
-    <script src="./js/GuiHelper.js"></script>
-    <!-- DEPENDENCY ADDED FOR PRECOMPILERS -->
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
-</head>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="pandoc" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+        <title>WebChucK</title>
+        <style>
+            html {
+                color: #1a1a1a;
+                background-color: #fdfdfd;
+            }
 
-<body>
-    <!-- IDE -->
-    <div class="container ide zero-pad" id="ide">
+            body {
+                margin: 0 auto;
+                max-width: 36em;
+                padding-left: 50px;
+                padding-right: 50px;
+                padding-top: 50px;
+                padding-bottom: 50px;
+                hyphens: auto;
+                overflow-wrap: break-word;
+                text-rendering: optimizeLegibility;
+                font-kerning: normal;
+            }
 
-        <!-- NAV BAR -->
-        <header class="navbar">
-            <section class="navbar-section">
-                <!-- WebChucK Logo -->
-                <div class="logo">
-                    <img src="assets/chuck_logo.png" alt="chuck-logo" height="50px" width="50px">
-                </div>
+            @media (max-width: 600px) {
+                body {
+                    font-size: 0.9em;
+                    padding: 12px;
+                }
 
+                h1 {
+                    font-size: 1.8em;
+                }
+            }
 
-                <!-- File -->
-                <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="File">
-                        File<i class="icon icon-caret"></i>
-                    </a>
-                    <ul class="menu">
-                        <input id="fileUploader" type="file" multiple hidden />
-                        <li class="menu-item">
-                            <button class="btn btn-link" id="newFileButton">New</button>
-                        </li>
-                        <li class="menu-item">
-                            <button class="btn btn-link" id="fileUploadButton">Upload Files</button>
-                        </li>
-                        <li class="menu-item">
-                            <button class="btn btn-link" id="exportChuckButton">Export as ChucK file</button>
-                        </li>
-                    </ul>
-                </div>
-                <!-- Edit -->
-                <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="Edit">
-                        Edit<i class="icon icon-caret"></i>
-                    </a>
-                    <ul class="menu">
-                        <li class="menu-item"><button class="btn btn-link" id="vimModeButton">Vim Mode: Off</button></li>
-                        <li class="menu-item"><button class="btn btn-link" id="vimModeButton" onclick="UI()">Generate GUI</button></li>
-                    </ul>
-                </div>
-                <!-- View -->
-                <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="View">
-                        View<i class="icon icon-caret"></i>
-                    </a>
-                    <ul class="menu">
-                        <li class="menu-item"><button class="btn btn-link" id="darkModeButton">Dark Mode: Off</button></li>
-                        <li class="menu-item"><button class="btn btn-link" onclick="drawing(0)">GUI</button></li>
-                        <li class="menu-item"><button class="btn btn-link" onclick="drawing(1)">Visualizer</button></li>
-                        <li class="menu-item"><button class="btn btn-link" onclick="drawing(2)">Console</button></li>
-                    </ul>
-                </div>
-                <!-- Examples -->
-                <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0" id="Examples">
-                        Examples<i class="icon icon-caret"></i>
-                    </a>
-                    <ul class="menu">
-                        <li class="menu-item">
-                            <button class="btn btn-link" id="Default"
-                                onclick="loadServerFile('./template/untitled.ck')">Hello Sine</button>
-                        </li>
-                        <li class="menu-item">
-                            <button class="btn btn-link" id="HelloSineGUI"
-                                onclick="loadServerFile('./examples/HelloSineGUI.ck')">Hello Sine GUI</button>
-                        </li>
-                        <li class="menu-item">
-                            <button class="btn btn-link" id="loadHarmonicSeriesArp"
-                                onclick="loadServerFile('./examples/harmonicSeriesArp.ck')">Harmonic Series
-                                Arpeggiator</button>
-                        </li>
-                        <li class="menu-item">
-                            <button class="btn btn-link" id="loadSlammin"
-                                onclick="loadServerFile('./examples/slammin/slammin.ck'); loadServerFile('./examples/slammin/were_slammin.wav');">Play
-                                Lofi Beats</button>
-                        </li>
-                        <li class="menu-item">
-                            <button class="btn btn-link" id="moreExamplesButton">More Examples <i class="icon icon-arrow-right"></i></button>
-                        </li>
-                    </ul>
-                </div>
-                <!-- Help -->
-                <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
-                        Help<i class="icon icon-caret"></i>
-                    </a>
-                    <ul class="menu">
-                        <a href="https://chuck.stanford.edu" class="btn btn-link" target="_blank">ChucK Documentation</a> 
-                    </ul>
-                </div>
-                <!-- Precompilers -->
-                <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
-                        Experimental <i class="icon icon-caret"></i>
-                    </a>
-                    <ul class="menu">
-                        <li>
-                            <button class="btn btn-link" id="chuckAsUsual" onclick="SetPrecompilerMode(0)" target="_blank">ChucK (standard) <i class="icon icon-check"></i></button>
-                        </li>
-                        <li class="divider" data-content="Feature Prototypes"></li>
-                        <li>
-                            <button class="btn btn-link" id="iterTildaButton" onclick="SetPrecompilerMode(1)" target="_blank">iter~</button>
-                        </li> 
-                    </ul>
-                </div>
-            </section>
-        </header>
+            @media print {
+                html {
+                    background-color: white;
+                }
 
-        <!-- CHUCK BAR -->
-        <div class="container chuck-nav" id="chuck-nav">
-            <div class="columns col-gapless">
-                <div class="column col-2 col-sm-5 chuck-vm">
-                    <button class="btn btn-primary vm-button" id="startChuck" disabled>Start WebChucK [beta]</button>
-                    <input class="chuckButton" id="micButton" type="image" src="./assets/icons/mic.png" disabled
-                        alt="microphone" />
-                </div>
-                <div class="column col-10 col-sm-7">
-                    <input class="chuckButton" id="compileButton" type="image" src="./assets/icons/play.png" disabled
-                        alt="compile and play" /> 
-                    <input class="chuckButton" id="replaceButton" type="image" src="./assets/icons/replace.png" disabled
-                        alt="replace shread" />
-                    <input class="chuckButton" id="removeButton" type="image" src="./assets/icons/remove.png" disabled
-                        alt="remove shred" />
-                </div>
-            </div>
+                body {
+                    background-color: transparent;
+                    color: black;
+                    font-size: 12pt;
+                }
+
+                p,
+                h2,
+                h3 {
+                    orphans: 3;
+                    widows: 3;
+                }
+
+                h2,
+                h3,
+                h4 {
+                    page-break-after: avoid;
+                }
+            }
+
+            p {
+                margin: 1em 0;
+            }
+
+            a {
+                color: #1a1a1a;
+            }
+
+            a:visited {
+                color: #1a1a1a;
+            }
+
+            img {
+                max-width: 100%;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                margin-top: 1.4em;
+            }
+
+            h5,
+            h6 {
+                font-size: 1em;
+                font-style: italic;
+            }
+
+            h6 {
+                font-weight: normal;
+            }
+
+            ol,
+            ul {
+                padding-left: 1.7em;
+                margin-top: 1em;
+            }
+
+            li>ol,
+            li>ul {
+                margin-top: 0;
+            }
+
+            blockquote {
+                margin: 1em 0 1em 1.7em;
+                padding-left: 1em;
+                border-left: 2px solid #e6e6e6;
+                color: #606060;
+            }
+
+            code {
+                font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+                font-size: 85%;
+                margin: 0;
+                hyphens: manual;
+            }
+
+            pre {
+                margin: 1em 0;
+                overflow: auto;
+            }
+
+            pre code {
+                padding: 0;
+                overflow: visible;
+                overflow-wrap: normal;
+            }
+
+            .sourceCode {
+                background-color: transparent;
+                overflow: visible;
+            }
+
+            hr {
+                background-color: #1a1a1a;
+                border: none;
+                height: 1px;
+                margin: 1em 0;
+            }
+
+            table {
+                margin: 1em 0;
+                border-collapse: collapse;
+                width: 100%;
+                overflow-x: auto;
+                display: block;
+                font-variant-numeric: lining-nums tabular-nums;
+            }
+
+            table caption {
+                margin-bottom: 0.75em;
+            }
+
+            tbody {
+                margin-top: 0.5em;
+                border-top: 1px solid #1a1a1a;
+                border-bottom: 1px solid #1a1a1a;
+            }
+
+            th {
+                border-top: 1px solid #1a1a1a;
+                padding: 0.25em 0.5em 0.25em 0.5em;
+            }
+
+            td {
+                padding: 0.125em 0.5em 0.25em 0.5em;
+            }
+
+            header {
+                margin-bottom: 4em;
+                text-align: center;
+            }
+
+            #TOC li {
+                list-style: none;
+            }
+
+            #TOC ul {
+                padding-left: 1.3em;
+            }
+
+            #TOC>ul {
+                padding-left: 0;
+            }
+
+            #TOC a:not(:hover) {
+                text-decoration: none;
+            }
+
+            code {
+                white-space: pre-wrap;
+            }
+
+            span.smallcaps {
+                font-variant: small-caps;
+            }
+
+            div.columns {
+                display: flex;
+                gap: min(4vw, 1.5em);
+            }
+
+            div.column {
+                flex: auto;
+                overflow-x: auto;
+            }
+
+            div.hanging-indent {
+                margin-left: 1.5em;
+                text-indent: -1.5em;
+            }
+
+            ul.task-list {
+                list-style: none;
+            }
+
+            ul.task-list li input[type="checkbox"] {
+                width: 0.8em;
+                margin: 0 0.8em 0.2em -1.6em;
+                vertical-align: middle;
+            }
+
+            .display.math {
+                display: block;
+                text-align: center;
+                margin: 0.5rem auto;
+            }
+
+            /* CSS for syntax highlighting */
+            pre>code.sourceCode {
+                white-space: pre;
+                position: relative;
+            }
+
+            pre>code.sourceCode>span {
+                display: inline-block;
+                line-height: 1.25;
+            }
+
+            pre>code.sourceCode>span:empty {
+                height: 1.2em;
+            }
+
+            .sourceCode {
+                overflow: visible;
+            }
+
+            code.sourceCode>span {
+                color: inherit;
+                text-decoration: inherit;
+            }
+
+            div.sourceCode {
+                margin: 1em 0;
+            }
+
+            pre.sourceCode {
+                margin: 0;
+            }
+
+            @media screen {
+                div.sourceCode {
+                    overflow: auto;
+                }
+            }
+
+            @media print {
+                pre>code.sourceCode {
+                    white-space: pre-wrap;
+                }
+
+                pre>code.sourceCode>span {
+                    text-indent: -5em;
+                    padding-left: 5em;
+                }
+            }
+
+            pre.numberSource code {
+                counter-reset: source-line 0;
+            }
+
+            pre.numberSource code>span {
+                position: relative;
+                left: -4em;
+                counter-increment: source-line;
+            }
+
+            pre.numberSource code>span>a:first-child::before {
+                content: counter(source-line);
+                position: relative;
+                left: -1em;
+                text-align: right;
+                vertical-align: baseline;
+                border: none;
+                display: inline-block;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                padding: 0 4px;
+                width: 4em;
+                background-color: #2a211c;
+                color: #bdae9d;
+            }
+
+            pre.numberSource {
+                margin-left: 3em;
+                border-left: 1px solid #bdae9d;
+                padding-left: 4px;
+            }
+
+            div.sourceCode {
+                color: #bdae9d;
+                background-color: #2a211c;
+            }
+
+            @media screen {
+                pre>code.sourceCode>span>a:first-child::before {
+                    text-decoration: underline;
+                }
+            }
+
+            code span.al {
+                color: #ffff00;
+            }
+
+            /* Alert */
+            code span.an {
+                color: #0066ff;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Annotation */
+            code span.at {}
+
+            /* Attribute */
+            code span.bn {
+                color: #44aa43;
+            }
+
+            /* BaseN */
+            code span.bu {}
+
+            /* BuiltIn */
+            code span.cf {
+                color: #43a8ed;
+                font-weight: bold;
+            }
+
+            /* ControlFlow */
+            code span.ch {
+                color: #049b0a;
+            }
+
+            /* Char */
+            code span.cn {}
+
+            /* Constant */
+            code span.co {
+                color: #0066ff;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Comment */
+            code span.do {
+                color: #0066ff;
+                font-style: italic;
+            }
+
+            /* Documentation */
+            code span.dt {
+                text-decoration: underline;
+            }
+
+            /* DataType */
+            code span.dv {
+                color: #44aa43;
+            }
+
+            /* DecVal */
+            code span.er {
+                color: #ffff00;
+                font-weight: bold;
+            }
+
+            /* Error */
+            code span.ex {}
+
+            /* Extension */
+            code span.fl {
+                color: #44aa43;
+            }
+
+            /* Float */
+            code span.fu {
+                color: #ff9358;
+                font-weight: bold;
+            }
+
+            /* Function */
+            code span.im {}
+
+            /* Import */
+            code span.in {
+                color: #0066ff;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Information */
+            code span.kw {
+                color: #43a8ed;
+                font-weight: bold;
+            }
+
+            /* Keyword */
+            code span.op {}
+
+            /* Operator */
+            code span.pp {
+                font-weight: bold;
+            }
+
+            /* Preprocessor */
+            code span.sc {
+                color: #049b0a;
+            }
+
+            /* SpecialChar */
+            code span.ss {
+                color: #049b0a;
+            }
+
+            /* SpecialString */
+            code span.st {
+                color: #049b0a;
+            }
+
+            /* String */
+            code span.va {}
+
+            /* Variable */
+            code span.vs {
+                color: #049b0a;
+            }
+
+            /* VerbatimString */
+            code span.wa {
+                color: #ffff00;
+                font-weight: bold;
+            }
+
+            /* Warning */
+        </style>
+        <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+    </head>
+
+    <body>
+        <h1 id="webchuck">WebChucK</h1>
+        <p><a href="https://chuck.stanford.edu/webchuck/">Site</a> | <a href="./docs/classes/Chuck.md">Docs</a> | <a
+                href="https://www.npmjs.com/package/webchuck">npm</a></p>
+        <p>WebChucK enables <a href="https://chuck.stanford.edu">Chuck</a> to
+            run on the web. Through WebAssembly (WASM) and the Web Audio API, you
+            can use WebChucK to build online ChucK-powered audiovisual projects or
+            web apps. To learn more about WebChucK and what it can do, check out <a
+                href="https://chuck.stanford.edu/webchuck/">https://chuck.stanford.edu/webchuck/</a></p>
+        <p>To see what WebChucK in action, check out <a href="https://chuck.stanford.edu/ide/">WebChucK IDE</a>!</p>
+        <h2 id="usage">Usage</h2>
+        <p>Via npm:</p>
+        <pre><code>npm install webchuck</code></pre>
+        <div class="sourceCode" id="cb2">
+            <pre
+                class="sourceCode js"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Chuck } <span class="im">from</span> <span class="st">&#39;webchuck&#39;</span></span>
+        <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> theChuck <span class="op">=</span> <span class="cf">await</span> Chuck<span class="op">.</span><span class="fu">init</span>([])<span class="op">;</span></span>
+        <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+        <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>theChuck<span class="op">.</span><span class="fu">runCode</span>(<span class="vs">`</span></span>
+        <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="vs">    SinOsc sin =&gt; dac;</span></span>
+        <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="vs">    440 =&gt; sin.freq;</span></span>
+        <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="vs">    1::second =&gt; now;</span></span>
+        <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span>)<span class="op">;</span></span></code></pre>
         </div>
-
-        <!-- WEBCHUCK EDITOR -->
-        <div class="container main-editor">
-            <div class="columns col-gapless webchuckPanels" >
-                <!-- File Explorer -->
-                <div class="column col-2 col-sm-12 main-panel" id="filePanel">
-                    <div class="panel">
-                        <div class="panel-header" style="padding: 0 0.8rem;">
-                            <div class="panel-title" id="file-explorer-title">File Explorer</div>
-                        </div>
-                        <div class="panel-body">
-                            <div id="file-explorer"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Ace Editor -->
-                <div class="column col-6 col-sm-12 main-panel" id="editorPanel">
-                    <div class="panel">
-                        <div class="panel-body zero-pad">
-                            <div id="editor">/* Loading ChucK File */</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shreds + Console -->
-                <div class="column col-4 col-sm-12 main-panel" id="consolePanel">
-                    <div class="panel">
-                        <div class="panel-body" id="shreds">
-                            <table class="table" id="shredsTable">
-                                <thead>
-                                    <tr>
-                                        <th>Shred</th>
-                                        <th>Code</th>
-                                        <th>Time</th>
-                                        <th style="width:10%">Remove</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="panel" style="max-height: 42vh; position:sticky; top:58vh;">
-                        <div class="panel-body zero-pad" style="overflow:hidden" id="panel">
-                            <canvas class="canvas" id="canvas" style="width:650px; height:600px; display:none;"></canvas>
-                            <textarea class="console" id="console" readonly></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <p>Note that many browsers do not let audio run without a user
+            interaction (e.g. button press). You can check for a suspended audio
+            context and resume like this:</p>
+        <div class="sourceCode" id="cb3">
+            <pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (chuck<span class="op">.</span><span class="at">context</span><span class="op">.</span><span class="at">state</span> <span class="op">===</span> <span class="st">&quot;suspended&quot;</span>) {</span>
+        <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  chuck<span class="op">.</span><span class="at">context</span><span class="op">.</span><span class="fu">resume</span>()<span class="op">;</span></span>
+        <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre>
         </div>
-
-        <!-- MODALS (overlay)-->
-        <!-- More Examples Modal -->
-        <div class="modal" id="more-examples">
-            <a href="#" class="modal-overlay" aria-label="Close"></a>
-            <div class="modal-container" id="examples-container">
-                <div class="modal-header">
-                    <a href="#" class="btn btn-clear float-right" aria-label="Close"></a>
-                    <div class="modal-title h5">ChucK Examples</div>
-                </div>
-
-                <div class="modal-body">
-                    <div class="content">
-                        <!-- Example Browser -->
-                        <div class="panel" id="example-browser">
-                            <div class="panel-nav" id="example-breadcrumb">
-                                <ul class="breadcrumb" id="examples-breadcrumb">
-                                    <!-- Populate dynamic breadcrumbs here
-                                    <li class="breadcrumb-item"><button onClick="console.log('hi')">Hi</button></li>
-                                    -->
-                                </ul>
-                            </div>
-                            <div class="panel-body" id="example-folder">
-                                <!-- Populate dynamic files/folders here 
-                                <a class="btn btn-link" id="alarm.ck">alarm.ck</a>
-                                -->
-                            </div>
-                        </div>
-                        <!-- Example Preview -->
-                        <div class="panel" id="example-preview">
-                            <div class="panel-header">
-                                <div class="panel-title">Example Preview</div>
-                            </div>
-                            <div class="panel-body">
-                                <!-- populate dynamic code preview -->
-                                <pre><code id="example-code"></code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <a class="btn btn-link" href="#">Cancel</a>
-                    <button class="btn btn-primary" id="loadPreviewButton">Load</button>
-                </div>
-            </div>
+        <p>You can also embed the WebChucK JS module into your
+            <code>index.html</code>
+        </p>
+        <div class="sourceCode" id="cb4">
+            <pre
+                class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;button</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;webchuck&quot;</span><span class="kw">&gt;</span>Start WebChucK<span class="kw">&lt;/button&gt;</span></span>
+        <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;button</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;start&quot;</span><span class="kw">&gt;</span>Play<span class="kw">&lt;/button&gt;</span></span>
+        <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    </span>
+        <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/javascript&quot;</span><span class="kw">&gt;</span></span>
+        <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> thechuck<span class="op">;</span> </span>
+        <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    </span>
+        <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Import the WebChucK Package and connect the Audio Worklet, start the VM</span></span>
+        <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;webchuck&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;click&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+        <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span>(<span class="st">&#39;https://cdn.jsdelivr.net/npm/webchuck@1.1.0/+esm&#39;</span>)<span class="op">.</span><span class="fu">then</span>(<span class="kw">async</span> (module) <span class="kw">=&gt;</span> {</span>
+        <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            <span class="kw">const</span> Chuck <span class="op">=</span> module<span class="op">.</span><span class="at">Chuck</span><span class="op">;</span> <span class="co">// Chuck class</span></span>
+        <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            thechuck <span class="op">=</span> <span class="cf">await</span> Chuck<span class="op">.</span><span class="fu">init</span>([])<span class="op">;</span> <span class="co">// Create a ChucK object</span></span>
+        <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        })<span class="op">;</span></span>
+        <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+        <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    </span>
+        <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Button to </span></span>
+        <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;start&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;click&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+        <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        thechuck<span class="op">.</span><span class="fu">runCode</span>(<span class="st">&quot; SinOsc osc =&gt; dac; 440 =&gt; osc.freq; 1::second =&gt; now; &quot;</span>)<span class="op">;</span></span>
+        <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+        <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/script&gt;</span></span></code></pre>
         </div>
-    </div>
-    
-    <!-- POST SCRIPTS -->
-    <script type="text/javascript" src="./precompilers/precompilerEntry.js"></script><!-- helper for precompilers -->
-    <script type="text/javascript" src="./precompilers/iterTilda.js"></script><!-- iter~ for testing -->
-
-    <!-- POST SCRIPTS -->
-    <script> var whereIsChuck = "./src"; </script> <!-- Specify where ChucK is -->
-    <!-- Connect Web Audio API, Connect webchuck.js and webchuck.wasm -->
-    <script type="text/javascript" src="./src/webchuck_host.js"></script> <!-- WebChucK IDE modules -->
-    <script type="text/javascript" src="./js/Visualizer.js"></script> <!-- WebChucK to WebAudioAPI -->
-    <script type="text/javascript" src="./js/editor.js"></script> <!-- Load our editor config -->
-    <script type="text/javascript" src="./js/host.js"></script> <!-- Hook up our IDE to WebChucK -->
-    <script type="text/javascript" src="./js/gui.js"></script> <!-- Set up the gui generator -->
-    <script type="text/javascript" src="./js/examples.js"></script> <!-- For loading more examples -->
-</body>
+        <h2 id="documentation">Documentation</h2>
+        <p>WebChucK Documentation <a href="https://github.com/ccrma/webchuck/tree/main/docs/classes/Chuck.md">here</a></p>
+    </body>
 
 </html>

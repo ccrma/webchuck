@@ -1,0 +1,35 @@
+{
+  "name": "webchuck",
+  "version": "1.1.0",
+  "description": "WebChucK is a package for running ChucK code in the browser",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "doc": "typedoc --plugin typedoc-plugin-markdown --out docs src/index.ts --hideBreadcrumbs --disableSources",
+    "prepare": "npm run build",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccrma/webchuck.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ccrma/webchuck/issues"
+  },
+  "homepage": "https://github.com/ccrma/webchuck#readme",
+  "author": "Cole Simmons",
+  "contributors": [
+    "Terry Feng"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.11.10",
+    "typedoc": "^0.23.21",
+    "typedoc-plugin-markdown": "^3.14.0",
+    "typescript": "^4.9.3"
+  }
+}
