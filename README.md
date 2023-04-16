@@ -1,7 +1,7 @@
 # WebChucK
-[Site](https://chuck.stanford.edu/webchuck/) | [Docs](./docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
+[site](https://chuck.stanford.edu/webchuck/) | [docs](./docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
 
-WebChucK enables [Chuck](https://chuck.stanford.edu) to run on the web. Through WebAssembly (WASM) and the Web Audio API, you can use WebChucK to build online ChucK-powered audiovisual projects or web apps. To learn more about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
+WebChucK is [ChucK](https://chuck.stanford.edu) running on the web! Recent advancements have enabled ChucK to run in any web browser with near native performance. Run ChucK on the web, on a tablet, or on your mobile device; take it wherever you go! WebChucK opens the door for new users and creative workflows. Using WebAssembly (WASM) and the Web Audio API, you can use WebChucK anywhere to build new online audiovisual experiences and web apps. To learn more about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
 See WebChucK in action, [WebChucK IDE](https://chuck.stanford.edu/ide/)!
 
@@ -29,7 +29,7 @@ You can check for a suspended audio context and resume like this:
 
 ```js
 if (chuck.context.state === "suspended") {
-  chuck.context.resume();
+    chuck.context.resume();
 }
 ```
 
