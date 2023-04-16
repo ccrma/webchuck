@@ -17,7 +17,7 @@ import { defer, loadWasm, preloadFiles } from "./utils";
 import { InMessage, OutMessage } from "./enums";
 export default class Chuck extends window.AudioWorkletNode {
     constructor(preloadedFiles, audioContext, wasm, numOutChannels = 2) {
-        super(audioContext, `theChuck-${Chuck.chuckID}`, {
+        super(audioContext, "chuck-node", {
             numberOfInputs: 1,
             numberOfOutputs: 1,
             // important: "number of inputs / outputs" is like an aggregate source
@@ -40,7 +40,7 @@ export default class Chuck extends window.AudioWorkletNode {
         this.onprocessorerror = (e) => console.error(e);
         Chuck.chuckID++;
     }
-    static async init(filenamesToPreload, audioContext) {
+    static async init(filenamesToPreload, audioContext, numOutChannels = 2) {
         const wasm = await loadWasm();
         if (typeof audioContext === "undefined") {
             audioContext = new AudioContext();
@@ -50,7 +50,8 @@ export default class Chuck extends window.AudioWorkletNode {
         }
         await audioContext.audioWorklet.addModule("https://chuck.stanford.edu/webchuck/src/webchuck.js");
         const preloadedFiles = await preloadFiles(filenamesToPreload);
-        const chuck = new Chuck(preloadedFiles, audioContext, wasm);
+        const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
+        chuck.connect(audioContext.destination);
         await chuck.isReady.promise;
         return chuck;
     }

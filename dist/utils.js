@@ -45,9 +45,4 @@ export async function loadWasm() {
         asyncLoadFile("https://chuck.stanford.edu/webchuck/src/webchuck.wasm", resolve, reject);
     });
 }
-export async function loadWasmURL(url) {
-    return await new Promise((resolve, reject) => {
-        asyncLoadFile(url, resolve, reject);
-    });
-}
 export const defer = () => new DeferredPromise();

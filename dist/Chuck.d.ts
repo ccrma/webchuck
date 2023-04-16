@@ -8,7 +8,7 @@ export default class Chuck extends window.AudioWorkletNode {
     private isReady;
     static chuckID: number;
     constructor(preloadedFiles: File[], audioContext: AudioContext, wasm: ArrayBuffer, numOutChannels?: number);
-    static init(filenamesToPreload: Filename[], audioContext?: AudioContext): Promise<Chuck>;
+    static init(filenamesToPreload: Filename[], audioContext?: AudioContext, numOutChannels?: number): Promise<Chuck>;
     private nextDeferID;
     createFile(directory: string, filename: string, data: string): void;
     runCode(code: string): DeferredPromise<unknown>;
