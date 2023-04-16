@@ -1,5 +1,11 @@
 # Class: Chuck
 
+## Hierarchy
+
+- `AudioWorkletNode`
+
+  ↳ **`Chuck`**
+
 ## Table of contents
 
 ### Constructors
@@ -8,25 +14,33 @@
 
 ### Properties
 
-- [audioWorkletNode](Chuck.md#audioworkletnode)
+- [channelCount](Chuck.md#channelcount)
+- [channelCountMode](Chuck.md#channelcountmode)
+- [channelInterpretation](Chuck.md#channelinterpretation)
+- [context](Chuck.md#context)
 - [deferredPromiseCounter](Chuck.md#deferredpromisecounter)
 - [deferredPromises](Chuck.md#deferredpromises)
 - [eventCallbackCounter](Chuck.md#eventcallbackcounter)
 - [eventCallbacks](Chuck.md#eventcallbacks)
 - [isReady](Chuck.md#isready)
-
-### Accessors
-
-- [context](Chuck.md#context)
 - [numberOfInputs](Chuck.md#numberofinputs)
 - [numberOfOutputs](Chuck.md#numberofoutputs)
+- [onprocessorerror](Chuck.md#onprocessorerror)
+- [parameters](Chuck.md#parameters)
+- [port](Chuck.md#port)
+- [chuckID](Chuck.md#chuckid)
 
 ### Methods
 
+- [addEventListener](Chuck.md#addeventlistener)
 - [broadcastEvent](Chuck.md#broadcastevent)
+- [chuckPrint](Chuck.md#chuckprint)
 - [clearChuckInstance](Chuck.md#clearchuckinstance)
 - [clearGlobals](Chuck.md#clearglobals)
+- [connect](Chuck.md#connect)
 - [createFile](Chuck.md#createfile)
+- [disconnect](Chuck.md#disconnect)
+- [dispatchEvent](Chuck.md#dispatchevent)
 - [getAssociativeFloatArrayValue](Chuck.md#getassociativefloatarrayvalue)
 - [getAssociativeIntArrayValue](Chuck.md#getassociativeintarrayvalue)
 - [getFloat](Chuck.md#getfloat)
@@ -40,6 +54,7 @@
 - [listenForEventOnce](Chuck.md#listenforeventonce)
 - [nextDeferID](Chuck.md#nextdeferid)
 - [receiveMessage](Chuck.md#receivemessage)
+- [removeEventListener](Chuck.md#removeeventlistener)
 - [removeLastCode](Chuck.md#removelastcode)
 - [removeShred](Chuck.md#removeshred)
 - [replaceCode](Chuck.md#replacecode)
@@ -73,7 +88,7 @@
 
 ### constructor
 
-• **new Chuck**(`preloadedFiles`, `audioContext`, `wasm`, `chuckID?`)
+• **new Chuck**(`preloadedFiles`, `audioContext`, `wasm`, `numOutChannels?`)
 
 #### Parameters
 
@@ -82,13 +97,51 @@
 | `preloadedFiles` | `File`[] | `undefined` |
 | `audioContext` | `AudioContext` | `undefined` |
 | `wasm` | `ArrayBuffer` | `undefined` |
-| `chuckID` | `number` | `1` |
+| `numOutChannels` | `number` | `2` |
+
+#### Overrides
+
+window.AudioWorkletNode.constructor
 
 ## Properties
 
-### audioWorkletNode
+### channelCount
 
-• `Private` **audioWorkletNode**: `AudioWorkletNode`
+• **channelCount**: `number`
+
+#### Inherited from
+
+window.AudioWorkletNode.channelCount
+
+___
+
+### channelCountMode
+
+• **channelCountMode**: `ChannelCountMode`
+
+#### Inherited from
+
+window.AudioWorkletNode.channelCountMode
+
+___
+
+### channelInterpretation
+
+• **channelInterpretation**: `ChannelInterpretation`
+
+#### Inherited from
+
+window.AudioWorkletNode.channelInterpretation
+
+___
+
+### context
+
+• `Readonly` **context**: `BaseAudioContext`
+
+#### Inherited from
+
+window.AudioWorkletNode.context
 
 ___
 
@@ -120,37 +173,109 @@ ___
 
 • `Private` **isReady**: [`DeferredPromise`](DeferredPromise.md)<`void`\>
 
-## Accessors
-
-### context
-
-• `get` **context**(): `BaseAudioContext`
-
-#### Returns
-
-`BaseAudioContext`
-
 ___
 
 ### numberOfInputs
 
-• `get` **numberOfInputs**(): `number`
+• `Readonly` **numberOfInputs**: `number`
 
-#### Returns
+#### Inherited from
 
-`number`
+window.AudioWorkletNode.numberOfInputs
 
 ___
 
 ### numberOfOutputs
 
-• `get` **numberOfOutputs**(): `number`
+• `Readonly` **numberOfOutputs**: `number`
+
+#### Inherited from
+
+window.AudioWorkletNode.numberOfOutputs
+
+___
+
+### onprocessorerror
+
+• **onprocessorerror**: ``null`` \| (`this`: `AudioWorkletNode`, `ev`: `Event`) => `any`
+
+#### Inherited from
+
+window.AudioWorkletNode.onprocessorerror
+
+___
+
+### parameters
+
+• `Readonly` **parameters**: `AudioParamMap`
+
+#### Inherited from
+
+window.AudioWorkletNode.parameters
+
+___
+
+### port
+
+• `Readonly` **port**: `MessagePort`
+
+#### Inherited from
+
+window.AudioWorkletNode.port
+
+___
+
+### chuckID
+
+▪ `Static` **chuckID**: `number` = `1`
+
+## Methods
+
+### addEventListener
+
+▸ **addEventListener**<`K`\>(`type`, `listener`, `options?`): `void`
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `K` | extends ``"processorerror"`` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `type` | `K` |
+| `listener` | (`this`: `AudioWorkletNode`, `ev`: `AudioWorkletNodeEventMap`[`K`]) => `any` |
+| `options?` | `boolean` \| `AddEventListenerOptions` |
 
 #### Returns
 
-`number`
+`void`
 
-## Methods
+#### Inherited from
+
+window.AudioWorkletNode.addEventListener
+
+▸ **addEventListener**(`type`, `listener`, `options?`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `type` | `string` |
+| `listener` | `EventListenerOrEventListenerObject` |
+| `options?` | `boolean` \| `AddEventListenerOptions` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.addEventListener
+
+___
 
 ### broadcastEvent
 
@@ -161,6 +286,22 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `variable` | `string` |
+
+#### Returns
+
+`void`
+
+___
+
+### chuckPrint
+
+▸ **chuckPrint**(`message`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `message` | `string` |
 
 #### Returns
 
@@ -188,6 +329,45 @@ ___
 
 ___
 
+### connect
+
+▸ **connect**(`destinationNode`, `output?`, `input?`): `AudioNode`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `destinationNode` | `AudioNode` |
+| `output?` | `number` |
+| `input?` | `number` |
+
+#### Returns
+
+`AudioNode`
+
+#### Inherited from
+
+window.AudioWorkletNode.connect
+
+▸ **connect**(`destinationParam`, `output?`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `destinationParam` | `AudioParam` |
+| `output?` | `number` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.connect
+
+___
+
 ### createFile
 
 ▸ **createFile**(`directory`, `filename`, `data`): `void`
@@ -203,6 +383,142 @@ ___
 #### Returns
 
 `void`
+
+___
+
+### disconnect
+
+▸ **disconnect**(): `void`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.disconnect
+
+▸ **disconnect**(`output`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `output` | `number` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.disconnect
+
+▸ **disconnect**(`destinationNode`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `destinationNode` | `AudioNode` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.disconnect
+
+▸ **disconnect**(`destinationNode`, `output`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `destinationNode` | `AudioNode` |
+| `output` | `number` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.disconnect
+
+▸ **disconnect**(`destinationNode`, `output`, `input`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `destinationNode` | `AudioNode` |
+| `output` | `number` |
+| `input` | `number` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.disconnect
+
+▸ **disconnect**(`destinationParam`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `destinationParam` | `AudioParam` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.disconnect
+
+▸ **disconnect**(`destinationParam`, `output`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `destinationParam` | `AudioParam` |
+| `output` | `number` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.disconnect
+
+___
+
+### dispatchEvent
+
+▸ **dispatchEvent**(`event`): `boolean`
+
+Dispatches a synthetic event event to target and returns true if either event's cancelable attribute value is false or its preventDefault() method was not invoked, and false otherwise.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `Event` |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+window.AudioWorkletNode.dispatchEvent
 
 ___
 
@@ -399,7 +715,7 @@ ___
 
 ### receiveMessage
 
-▸ `Private` **receiveMessage**(`event`): `any`
+▸ `Private` **receiveMessage**(`event`): `void`
 
 #### Parameters
 
@@ -409,7 +725,53 @@ ___
 
 #### Returns
 
-`any`
+`void`
+
+___
+
+### removeEventListener
+
+▸ **removeEventListener**<`K`\>(`type`, `listener`, `options?`): `void`
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `K` | extends ``"processorerror"`` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `type` | `K` |
+| `listener` | (`this`: `AudioWorkletNode`, `ev`: `AudioWorkletNodeEventMap`[`K`]) => `any` |
+| `options?` | `boolean` \| `EventListenerOptions` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.removeEventListener
+
+▸ **removeEventListener**(`type`, `listener`, `options?`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `type` | `string` |
+| `listener` | `EventListenerOrEventListenerObject` |
+| `options?` | `boolean` \| `EventListenerOptions` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+window.AudioWorkletNode.removeEventListener
 
 ___
 
@@ -867,13 +1229,15 @@ ___
 
 ### init
 
-▸ `Static` **init**(`filenamesToPreload`): `Promise`<[`Chuck`](Chuck.md)\>
+▸ `Static` **init**(`filenamesToPreload`, `audioContext?`, `numOutChannels?`): `Promise`<[`Chuck`](Chuck.md)\>
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `filenamesToPreload` | `Filename`[] |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `filenamesToPreload` | `Filename`[] | `undefined` |
+| `audioContext?` | `AudioContext` | `undefined` |
+| `numOutChannels` | `number` | `2` |
 
 #### Returns
 
