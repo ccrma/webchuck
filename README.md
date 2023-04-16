@@ -50,7 +50,7 @@ You can also embed the WebChucK JS module into your `index.html`
         });
     });
     
-    // Button to 
+    // Button to run ChucK code
     document.getElementById('start').addEventListener('click', () => {
         thechuck.runCode(" SinOsc osc => dac; 440 => osc.freq; 1::second => now; ");
     });
