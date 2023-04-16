@@ -25,6 +25,12 @@
   "contributors": [
     "Terry Feng"
   ],
+  "keywords": [
+    "WebChucK",
+    "ChucK",
+    "Web Audio",
+    "Computer Music"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.11.10",
