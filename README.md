@@ -44,7 +44,7 @@ You can also embed the WebChucK JS module into your `index.html`
     
     // Import the WebChucK Package and connect the Audio Worklet, start the VM
     document.getElementById('webchuck').addEventListener('click', () => {
-        import('https://cdn.jsdelivr.net/npm/webchuck@1.1.0/+esm').then(async (module) => {
+        import('https://cdn.jsdelivr.net/npm/webchuck/+esm').then(async (module) => {
             const Chuck = module.Chuck; // Chuck class
             thechuck = await Chuck.init([]); // Create a ChucK object
         });

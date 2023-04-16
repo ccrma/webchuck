@@ -27,9 +27,7 @@
   ],
   "keywords": [
     "WebChucK",
-    "ChucK",
-    "Web Audio",
-    "Computer Music"
+    "ChucK"
   ],
   "license": "MIT",
   "devDependencies": {
