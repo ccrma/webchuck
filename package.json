@@ -20,10 +20,12 @@
   "bugs": {
     "url": "https://github.com/ccrma/webchuck/issues"
   },
-  "homepage": "https://github.com/ccrma/webchuck#readme",
-  "author": "Cole Simmons",
+  "homepage": "https://chuck.stanford.edu/webchuck",
+  "author": "ChucK Team",
   "contributors": [
-    "Terry Feng"
+    "Cole Simmons",
+    "Terry Feng",
+    "CCRMA"
   ],
   "keywords": [
     "WebChucK",
