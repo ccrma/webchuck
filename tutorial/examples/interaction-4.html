@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="../css/editor.css">
+</head>
+<body>
+<script type="text/javascript" src="./js/webchuck_host.js"></script>
+
+<h1>Interfacing With WebChucK</h1>
+<h2>Listening to a ChucK Event</h2>
+
+<input id="startButton" type="button" value="Start ChucK" />
+
+<script>
+	var serverFilesToPreload = [
+	        {
+	            serverFilename: './interaction-4.ck',
+	            virtualFilename: 'interaction-4.ck'
+	        }
+	    ];
+    var startButton = document.getElementById( "startButton" );
+    startButton.addEventListener( "click", async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( "interaction-4.ck" );
+        theChuck.startListeningForEvent("step", stepCallback);
+
+        startButton.disabled = true;
+    });
+
+    function randomizeBackgroundColor() {
+        var r = Math.random() * 256, g = Math.random() * 256, b = Math.random() * 256;
+        var color = "rgb(" + r.toString() + "," + g.toString() + "," + b.toString()+")";
+        document.body.style.backgroundColor  = color;
+    }
+
+    function stepCallback() {
+        randomizeBackgroundColor();
+    }
+    
+</script>
+</body>
+</html>
+

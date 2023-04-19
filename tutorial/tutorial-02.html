@@ -1,0 +1,256 @@
+<!-- 
+    WebChucK Tutorials, by Mike Mulshine et al
+
+    Praise be to Jack Atherton for making ChucK work on the web... As well as getting Ace to work as a miniAudicle like IDE. WOW.
+    
+    Praise be to Matt Wright for suggesting the use of pandoc = markdown to html converter, in which we can embed html/js as well.
+
+    Praise of course to Ge Wang for writing ChucK. 
+
+    <3 
+
+    here we go...
+-->
+<!---
+Include the ACE and ChucK stuff
+-->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="./css/editor.css">
+</head>
+<script type="text/javascript" src="./js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/editor.js"></script>
+<h2 id="tutorial-2-communicating-with-chuck">Tutorial 2: Communicating with ChucK</h2>
+<p><a href="./index.html">Home</a> ~ <a href="./tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="./tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="./tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
+<p>Audio programming in the browser unveils new modes of interaction between users and sounds on the web.</p>
+<p>In this tutorial we will take a look at mapping user inputs (via buttons, key presses, and more) to sounds and their parameters in ChucK.</p>
+<h3 id="updating-a-chuck-variable-float">1. Updating a ChucK variable (<strong>float</strong>)</h3>
+<p>This ChucK program plays a sine oscillator at 220Hz for as long as it runs.</p>
+<pre><div id="chuckEditor1">// Sine oscillator at 220 Hz
+SinOsc osc => dac;
+220.0 => osc.freq;
+
+while (true) {
+    1::ms => now;
+}
+</div></pre>
+<p>What if we want to change the frequency of the oscillator while the program runs?</p>
+<p>First, we need a frequency variable to update. The WebChucK javascript API will register the variable with the server if we declare it as <strong>global</strong>.</p>
+<pre><div id="chuckEditor2"> // Sine oscillator at 220 Hz (updating from global variable)
+SinOsc osc => dac;
+220.0 => global float freq;
+
+while (true) {
+    freq => osc.freq;
+    1::ms => now;
+}
+</div></pre>
+<p>Let's run this ChucK code from a file called <em>interaction-1.ck</em>, add an "Update Freq" button, and map clicks to randomize the <strong>freq</strong> variable in ChucK (between 220 and 440Hz).</p>
+<div id="htmlEditor1" style="height:600px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Interfacing With WebChucK&lt;/h1&gt;
+&lt;h2&gt;Update a variable&lt;/h2&gt;
+
+&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+&lt;input id=&quot;updateFreq&quot; type=&quot;button&quot; value=&quot;Update Freq&quot; /&gt;
+
+&lt;script&gt;
+    var serverFilesToPreload = [
+            {
+                serverFilename: &#39;./interaction-1.ck&#39;,
+                virtualFilename: &#39;interaction-1.ck&#39;
+            }
+        ];
+    var startButton = document.getElementById( &quot;startButton&quot; );
+    startButton.addEventListener( &quot;click&quot;, async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( &quot;interaction-1.ck&quot; );
+        startButton.disabled = true;
+    });
+    var updateFreqButton = document.getElementById( &quot;updateFreq&quot; );
+    updateFreqButton.addEventListener( &quot;click&quot;, async function() {
+        // Randomize frequency between 220 and 440Hz
+        var newFreq = 220.0 + Math.random() * 220.0;
+        theChuck.setFloat(&quot;freq&quot;, newFreq);
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p>We reference the ChucK code's <strong>freq</strong> variable as a string id ("freq") and request that it's value be updated via the WebChucK API's <strong>setFloat()</strong> function. <a href="./examples/interaction-1.html">Here</a> is the website in action. Click away and you can tell we are really making "Computer Music" now ;)</p>
+<h3 id="setting-chuck-variables-of-other-types">2. Setting ChucK variables (of other types)</h3>
+<p>There are several other <strong>set…()</strong> functions:</p>
+<ul>
+<li><strong>setInt</strong>("<em>variable</em>", <strong>value</strong>)</li>
+<li><strong>setIntArray</strong>("<em>variable</em>", <strong>values</strong>)</li>
+<li><strong>setIntArrayValue</strong>("<em>variable</em>", index, <strong>value</strong>)</li>
+<li><strong>setAssociativeIntArrayValue</strong>("<em>variable</em>", index, <strong>value</strong>)</li>
+<li><strong>setFloat</strong>("<em>variable</em>", <strong>value</strong>)</li>
+<li><strong>setFloatArray</strong>("<em>variable</em>", <strong>values</strong>)</li>
+<li><strong>setFloatArrayValue</strong>("<em>variable</em>", index, <strong>value</strong>)</li>
+<li><strong>setAssociativeFloatArrayValue</strong>("<em>variable</em>", index, <strong>value</strong>)</li>
+<li><strong>setString</strong>("<em>variable</em>", <strong>value</strong>)</li>
+</ul>
+<p>Let's take a look at an example that employs a few of these methods at once.</p>
+<p>The following ChucK code is in a file called <a href="./examples/interaction-2.ck"><em>interaction-2.ck</em></a>. It arpeggiates a chord upward continuously.</p>
+<pre><div id="chuckEditor3">// Chord arpeggiator
+SinOsc osc => ADSR adsr => dac;
+adsr.set(10::ms, 400::ms, 0.0, 3::ms);
+48.0 => global float fund;
+[0.0, 4.0, 7.0, 11.0, 14.0] @=> global float notes[];
+
+500 => global int period;
+
+0 => int which;
+while (true) {
+    Std.mtof(fund+notes[which++]) => osc.freq;
+    if (which >= notes.size()) 0 => which;
+
+    adsr.keyOn();
+    period::ms => now;
+}
+</div></pre>
+<p>Now run <em>interaction-2.ck</em> and map a few extra buttons to control the rate of the arpeggiation (<strong>period</strong>) using <strong>setInt()</strong>, the root note of the chord (<strong>fund</strong>) using <strong>setFloat()</strong>, and the quality of the chord itself (<strong>chords</strong>) using <strong>setFloatArray()</strong>.</p>
+<div id="htmlEditor2" style="height:900px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Interfacing With WebChucK&lt;/h1&gt;
+&lt;h2&gt;Arpeggiator: updating several variables&lt;/h2&gt;
+
+&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+&lt;input id=&quot;changeTempo&quot; type=&quot;button&quot; value=&quot;Change Tempo&quot; /&gt;
+&lt;input id=&quot;changeRoot&quot; type=&quot;button&quot; value=&quot;Change Root&quot; /&gt;
+&lt;input id=&quot;changeChord&quot; type=&quot;button&quot; value=&quot;Change Chord&quot; /&gt;
+
+&lt;script&gt;
+    var serverFilesToPreload = [
+            {
+                serverFilename: &#39;./interaction-2.ck&#39;,
+                virtualFilename: &#39;interaction-2.ck&#39;
+            }
+        ];
+    var startButton = document.getElementById( &quot;startButton&quot; );
+    startButton.addEventListener( &quot;click&quot;, async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( &quot;interaction-2.ck&quot; );
+        startButton.disabled = true;
+    });
+
+    var changeRootButton = document.getElementById( &quot;changeRoot&quot; );
+    changeRootButton.addEventListener( &quot;click&quot;, async function() {
+        // Randomize frequency between 220 and 440Hz
+        var newFund = 45 + Math.round(Math.random() * 24);
+        theChuck.setFloat(&quot;fund&quot;, newFund);
+    });
+
+    var changeTempoButton = document.getElementById( &quot;changeTempo&quot; );
+    changeTempoButton.addEventListener( &quot;click&quot;, async function() {
+        // Randomize period of tempo from 25-500 ms
+        var newPeriod= 25.0 + Math.random() * 475.0;
+        theChuck.setInt(&quot;period&quot;, newPeriod);
+    });
+
+    var whichChord = 0;
+    var chord1 = [0.0, 4.0, 7.0, 11.0, 14.0];
+    var chord2 = [-1, 3, 6, 9, 12];
+    var changeChordButton = document.getElementById( &quot;changeChord&quot; );
+    changeChordButton.addEventListener( &quot;click&quot;, async function() {
+        theChuck.setFloatArray(&quot;notes&quot;, ((whichChord++)%2) ? chord1 : chord2);
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p>Check the working site out <a href="./examples/interaction-2.html">here</a>.</p>
+<h3 id="triggering-events-in-chuck">3. Triggering Events in ChucK</h3>
+<p>What if we just want to trigger an event in ChucK? Like, play a note, start a sample, reset a metronome…</p>
+<p>Simply create a <strong>global</strong> instance of the ChucK native <strong>Event</strong> class (in ChucK) and call <strong>broadcastEvent</strong>("<em>event</em>") (in JavaScript).</p>
+<p>The following ChucK code is in a file called <a href="./examples/interaction-3.ck"><em>interaction-3.ck</em></a>. It arpeggiates a chord upward continuously.</p>
+<pre><div id="chuckEditor4">// Note triggered by global event
+global Event playNote;
+
+// Sawtooth through a low pass filter and envelope
+SawOsc osc => LPF filter => ADSR env => dac;
+env.set(2::ms, 500::ms, 0.0, 0::ms);
+
+// A little LFO modulation on the filter freq
+SinOsc filterMod => blackhole;
+3.5 => filterMod.freq;
+
+function void filterModProcess() {
+    while (true) {
+        300 + filterMod.last() * 150 => filter.freq;
+        1::samp => now;
+    }
+}
+
+spork ~ filterModProcess(); 
+
+while (true) {
+    playNote => now;
+    0 => filterMod.phase;
+    env.keyOn();
+}
+</div></pre>
+<p>Below we run <em>interaction-3.ck</em> and broadcast a “playNote” event when a button labeled <strong>“Play Note”</strong> is clicked.</p>
+<div id="htmlEditor3" style="height:570px">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Interfacing With WebChucK&lt;/h1&gt;
+&lt;h2&gt;Mapping button to Event&lt;/h2&gt;
+
+&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+&lt;input id=&quot;playNote&quot; type=&quot;button&quot; value=&quot;Play Note&quot; /&gt;
+
+&lt;script&gt;
+    var serverFilesToPreload = [
+            {
+                serverFilename: &#39;./interaction-3.ck&#39;,
+                virtualFilename: &#39;interaction-3.ck&#39;
+            }
+        ];
+    var startButton = document.getElementById( &quot;startButton&quot; );
+    startButton.addEventListener( &quot;click&quot;, async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( &quot;interaction-3.ck&quot; );
+        startButton.disabled = true;
+    });
+
+    var playNoteButton = document.getElementById( &quot;playNote&quot; );
+    playNoteButton.addEventListener( &quot;click&quot;, async function() {
+        theChuck.broadcastEvent(&quot;playNote&quot;);
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p><em>Note: As with <strong>setInt()</strong>, <strong>setFloat()</strong>, etc., make sure the name of the broadcasted event is identical to the global <strong>Event</strong> instance variable name.</em></p>
+<p>Check the working site out <a href="./examples/interaction-3.html">here</a>.</p>
+<p><a href="./index.html">Home</a> ~ <a href="./tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="./tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="./tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
+<script>
+    var htmlEditor1 = newHTMLEditor("htmlEditor1", true);
+    var htmlEditor2 = newHTMLEditor("htmlEditor2", true);
+    var htmlEditor3 = newHTMLEditor("htmlEditor3", true);
+
+    var chuckEditor1 = newChuckEditor("chuckEditor1", true);
+    var chuckEditor2 = newChuckEditor("chuckEditor2", true);
+    var chuckEditor3 = newChuckEditor("chuckEditor3", true);
+    var chuckEditor4 = newChuckEditor("chuckEditor4", true);
+</script>

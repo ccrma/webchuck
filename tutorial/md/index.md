@@ -1,0 +1,166 @@
+<!-- 
+	WebChucK Tutorials, by Mike Mulshine et al
+
+	Praise be to Jack Atherton for making ChucK work on the web... As well as getting Ace to work as a miniAudicle like IDE. WOW.
+	
+	Praise be to Matt Wright for suggesting the use of pandoc = markdown to html converter, in which we can embed html/js as well.
+
+	Praise of course to Ge Wang for writing ChucK. 
+
+	<3 
+
+	here we go...
+-->
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="./css/editor.css">
+</head>
+
+
+<!---
+Include the ACE and ChucK stuff
+-->
+<script type="text/javascript" src="./js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/editor.js"></script>
+<script type="text/javascript" src="./js/defer.js"></script>
+<script type="text/javascript" src="./js/webchuck_host.js"></script>
+
+# WebChucK 
+
+WebChucK brings the strongly-timed audio programming language, [ChucK](https://chuck.stanford.edu/), to your web browser. 
+
+## What is WebChucK?
+
+WebChucK wraps a web-assembly compiled version of ChucK\'s [virtual machine](https://chuck.cs.princeton.edu/doc/program/vm.html) in a javascript API that enables communication between the browser UI and underlying ChucK [shreds](https://chuck.cs.princeton.edu/doc/language/spork.html). 
+
+## Compatible Browsers
+
+* Chrome and other [Chromium](https://en.wikipedia.org/wiki/Chromium_(web_browser))-based browsers
+* Firefox
+* Edge
+* Opera
+* *NOT* Safari ([yet]())
+
+## Demo
+
+Here is a simple ChucK program that plays a sine wave for 1 second at 220Hz. Click **\"Start\"** to run the ChucK code as a shred. If you don\'t hear anything, check out our  [troubleshooting guide](). 
+
+<pre><div id="editor1" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">// Sine oscillator at 220Hz
+SinOsc osc => dac;
+220 => osc.freq;
+1::week => now;
+</div></pre>
+<input id="run1" type="button" value="Start" />
+<input id="stop1" type="button" value="Stop" />
+<br/><br/>
+
+Feel free to edit the code and click **\"Replace\"** to replace the shred. Click **\"Stop\"** to remove the shred. Fun!
+
+Let\'s do something more complicated. 
+
+<pre><div id="editor2" class="ace_editor ace_hidpi ace-chuck" style="font-size: 13px; font-family: Monaco; line-height: 1.25; height: 150px;">// Pseudo 808 kick synthesis
+SinOsc osc => ADSR oscEnv => Gain output; 
+Noise noise => BPF noiseFilter => ADSR noiseEnv => output;
+Envelope freqEnv => blackhole;
+
+400 => noiseFilter.freq;
+15 => noiseFilter.Q;
+
+oscEnv.set(1::ms, 400::ms, 0.0, 0::ms);
+noiseEnv.set(1::ms, 50::ms, 0.0, 0::ms);
+
+output => dac;
+
+// Play kick
+150 => float startFreq;
+1::ms => dur riseTime;
+
+55 => float endFreq;
+100::ms => dur dropTime;
+
+function void kick() {
+    oscEnv.keyOn();
+    noiseEnv.keyOn();
+    
+    Math.random2(350, 450) => noiseFilter.freq;
+    Math.random2(10, 15) => noiseFilter.Q;
+    
+    startFreq => freqEnv.target;
+    riseTime => freqEnv.duration;
+    riseTime => now;
+    
+    endFreq => freqEnv.target;
+    dropTime => freqEnv.duration;
+    dropTime => now;
+}
+
+// Background shred to frequency modulate kick osc
+function void processEnvelopes() {
+    while (true) {
+        freqEnv.value() => osc.freq;
+        1::samp => now;
+    }
+}
+
+spork ~ processEnvelopes();
+
+130 => int bpm;
+60.0 / bpm => float step;
+while (true) {
+    spork ~ kick();
+    step::second => now;
+}
+
+</div></pre>
+<input id="run2" type="button" value="Start" />
+<input id="stop2" type="button" value="Stop" />
+<br/><br/>
+
+
+## Tutorials
+
+* [Tutorial 1](./tutorial-01.html): Getting Started - Running ChucK on a Web Page 
+* [Tutorial 2](./tutorial-02.html): Interfacing with ChucK - Updating Variables + Events
+* [Tutorial 3](./tutorial-03.html): Interfacing with ChucK - Listening for Variables + Events
+
+<script>
+	async function prep() {
+		//await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        theChuck.removeLastCode();
+	}
+
+	var editor1 = newChuckEditor("editor1");
+    var editor2 = newChuckEditor("editor2");
+
+    var run1 = document.getElementById( "run1" );
+    var run2 = document.getElementById( "run2" );
+    var stop1 = document.getElementById( "stop1" );
+    var stop2 = document.getElementById( "stop2" );
+    stop1.disabled = true;
+    stop2.disabled = true;
+
+    run1.addEventListener( "click", async function() {
+    	await prep();
+        await theChuck.runCode(editor1.getValue());
+        stop1.disabled = false;
+        run1.value = "Replace";
+    });
+    run2.addEventListener( "click", async function() {
+        await prep();
+        await theChuck.runCode(editor2.getValue());
+        stop2.disabled = false;
+        run2.value = "Replace";
+    });
+
+    stop1.addEventListener( "click", async function() {
+        await theChuck.removeLastCode();
+
+    });
+    stop2.addEventListener( "click", async function() {
+        await theChuck.removeLastCode();
+    });
+</script>

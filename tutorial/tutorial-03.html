@@ -1,0 +1,174 @@
+<!-- 
+    WebChucK Tutorials, by Mike Mulshine et al
+
+    Praise be to Jack Atherton for making ChucK work on the web... As well as getting Ace to work as a miniAudicle like IDE. WOW.
+    
+    Praise be to Matt Wright for suggesting the use of pandoc = markdown to html converter, in which we can embed html/js as well.
+
+    Praise of course to Ge Wang for writing ChucK. 
+
+    <3 
+
+    here we go...
+-->
+<!---
+Include the ACE and ChucK stuff
+-->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="./css/editor.css">
+</head>
+<script type="text/javascript" src="./js/ace.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/editor.js"></script>
+<h2 id="tutorial-3-listening-to-chuck">Tutorial 3: Listening to ChucK</h2>
+<p><a href="./index.html">Home</a> ~ <a href="./tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="./tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="./tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
+<p>In this tutorial we will learn how to listen to Chuck Events and other variables.</p>
+<h3 id="listening-to-chuck-events">1. Listening to ChucK Events</h3>
+<p>An <strong>Event</strong> is a class that encapsulates a very useful mode of communication within ChucK. Effectively, an <strong>Event</strong> represents just that: an event - something did or will happen. A <strong>global Event</strong> let’s the WebChucK backend know that an <strong>Event</strong> instance needs to be added to an <strong>Event</strong> registry so that we can keep an eye on it in javascript.</p>
+<p>In the ChucK code below (<a href="./examples/interaction-4.ck"><em>interaction-4.ck</em></a>), a simple note is played every 300 milliseconds. Simultaneously, we fire off an event via an <strong>Event</strong> class’s <strong>broadcast()</strong> method on an <strong>Event</strong> instance called "step".</p>
+<pre><div id="chuckEditor1">global Event step;
+
+SinOsc osc => ADSR env => dac;
+0.5 => dac.gain;
+
+220 => osc.freq;
+env.set(3::ms, 250::ms, 0.0, 0::ms);
+
+while (true) {
+    env.keyOn();
+    step.broadcast();
+    300::ms => now;
+}
+
+</div></pre>
+<p>Now, let’s do something with this in <strong>Event</strong> ("step") in javascript. For example, let’s change the background color of a simple webpage every time a note is played (or event broadcasted).</p>
+<div id="htmlEditor1" style="height:725">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;../css/editor.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Interfacing With WebChucK&lt;/h1&gt;
+&lt;h2&gt;Listening to a ChucK Event&lt;/h2&gt;
+
+&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+
+&lt;script&gt;
+    var serverFilesToPreload = [
+            {
+                serverFilename: &#39;./interaction-4.ck&#39;,
+                virtualFilename: &#39;interaction-4.ck&#39;
+            }
+        ];
+    var startButton = document.getElementById( &quot;startButton&quot; );
+    startButton.addEventListener( &quot;click&quot;, async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( &quot;interaction-4.ck&quot; );
+        theChuck.startListeningForEvent(&quot;step&quot;, stepCallback);
+
+        startButton.disabled = true;
+    });
+
+    function randomizeBackgroundColor() {
+        var r = Math.random() * 256, g = Math.random() * 256, b = Math.random() * 256;
+        var color = &quot;rgb(&quot; + r.toString() + &quot;,&quot; + g.toString() + &quot;,&quot; + b.toString()+&quot;)&quot;;
+        document.body.style.backgroundColor  = color;
+    }
+
+    function stepCallback() {
+        randomizeBackgroundColor();
+    }
+    
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p>Check the working site out <a href="./examples/interaction-4.html">here</a>.</p>
+<h3 id="listening-to-retrieving-chuck-variables">1. Listening to (/retrieving) ChucK variables</h3>
+<p>What if we want to know the value of a ChucK variable for use in our webpage?</p>
+<p>The ChucK code below updates <strong>global float</strong> named <em>scale</em> to control an oscillator, modulating its frequency between 200 and 800 Hz. The value of scale itself is normalized to be between 0.0 and 1.0.</p>
+<pre><div id="chuckEditor2">global float scale; 
+
+SinOsc car => dac;
+
+SinOsc mod => blackhole; 
+Math.PI / 4.0 => mod.phase;
+0.25 => mod.freq; 
+
+0.5 => dac.gain;
+
+while (true) {
+    
+    (mod.last() + 1.0) * 0.5 => scale;
+    scale * 800 + 200 => car.freq;
+    
+    1::samp => now;
+}
+</div></pre>
+<p>In our webpage, we can tell our ChucK instance (<em>theChuck</em>) that we want to know the value of the <strong>global float</strong> named <em>scale</em> by passing “scale” in to a function called <strong>getFloat()</strong>. <strong>getFloat("variable")</strong> returns a [<strong>Promise</strong>][https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise], which effectively serves as a placeholder for a value that hasn’t been retrieved yet. The cool thing is that you can associate a handler (a function) with a <strong>Promise</strong>, which will be called when the Promise task is completed (in our case, retrieving a value from the WebChucK thread).</p>
+<p>Below is a demonstration of how you can chain a <strong>getFloat("variable")</strong> call to a function using <strong>.then()</strong>. See <em>updateBackgroundColor()</em>, which is called at an interval of 50ms.</p>
+<div id="htmlEditor2" style="height:725">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;../css/editor.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;./js/webchuck_host.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1&gt;Interfacing With WebChucK&lt;/h1&gt;
+&lt;h2&gt;Listening to a ChucK Variable&lt;/h2&gt;
+
+&lt;input id=&quot;startButton&quot; type=&quot;button&quot; value=&quot;Start ChucK&quot; /&gt;
+
+&lt;script&gt;
+    var serverFilesToPreload = [
+            {
+                serverFilename: &#39;./interaction-5.ck&#39;,
+                virtualFilename: &#39;interaction-5.ck&#39;
+            }
+        ];
+    var startButton = document.getElementById( &quot;startButton&quot; );
+    startButton.addEventListener( &quot;click&quot;, async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( &quot;interaction-5.ck&quot; );
+        setInterval(updateBackgroundColor, 50);
+        startButton.disabled = true;
+    });
+
+
+    function updateBackgroundColor() {
+        theChuck.getFloat(&quot;scale&quot;).then( function(val) {
+            var r = val * 256, g = 100, b = 100;
+            var color = &quot;rgb(&quot; + r.toString() + &quot;,&quot; + g.toString() + &quot;,&quot; + b.toString()+&quot;)&quot;;
+            document.body.style.backgroundColor  = color;
+        });
+    }
+
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p>This is a non-intuitive syntax, but ends up being quite easy to work with in context.</p>
+<p>Check the working site out <a href="./examples/interaction-5.html">here</a>.</p>
+<p><a href="./index.html">Home</a> ~ <a href="./tutorial-01.html">Tutorial 1: Getting Started</a> ~ <a href="./tutorial-02.html">Tutorial 2: Communicating with Chuck</a> ~ <a href="./tutorial-03.html">Tutorial 3: Listening to Chuck</a></p>
+<script>
+    var htmlEditor1 = newHTMLEditor("htmlEditor1", true);
+    var htmlEditor2 = newHTMLEditor("htmlEditor2", true);
+
+    var chuckEditor1 = newChuckEditor("chuckEditor1", true);
+    var chuckEditor2 = newChuckEditor("chuckEditor2", true);
+
+</script>

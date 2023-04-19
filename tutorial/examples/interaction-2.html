@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="../css/editor.css">
+</head>
+<body>
+<script type="text/javascript" src="./js/webchuck_host.js"></script>
+
+<h1>Interfacing With WebChucK</h1>
+<h2>Arpeggiator: updating several variables</h2>
+
+<input id="startButton" type="button" value="Start ChucK" />
+<input id="changeTempo" type="button" value="Change Tempo" />
+<input id="changeRoot" type="button" value="Change Root" />
+<input id="changeChord" type="button" value="Change Chord" />
+
+<script>
+	var serverFilesToPreload = [
+	        {
+	            serverFilename: './interaction-2.ck',
+	            virtualFilename: 'interaction-2.ck'
+	        }
+	    ];
+    var startButton = document.getElementById( "startButton" );
+    startButton.addEventListener( "click", async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( "interaction-2.ck" );
+        startButton.disabled = true;
+    });
+
+    var changeRootButton = document.getElementById( "changeRoot" );
+    changeRootButton.addEventListener( "click", async function() {
+    	// Randomize frequency between 220 and 440Hz
+    	var newFund = 45 + Math.round(Math.random() * 24);
+    	theChuck.setFloat("fund", newFund);
+    });
+
+    var changeTempoButton = document.getElementById( "changeTempo" );
+    changeTempoButton.addEventListener( "click", async function() {
+        // Randomize period of tempo from 25-500 ms
+        var newPeriod= 25.0 + Math.random() * 475.0;
+        theChuck.setInt("period", newPeriod);
+    });
+
+    var whichChord = 0;
+    var chord1 = [0.0, 4.0, 7.0, 11.0, 14.0];
+    var chord2 = [-1, 3, 6, 9, 12];
+    var changeChordButton = document.getElementById( "changeChord" );
+    changeChordButton.addEventListener( "click", async function() {
+        theChuck.setFloatArray("notes", ((whichChord++)%2) ? chord1 : chord2);
+    });
+</script>
+</body>
+</html>
+
