@@ -544,8 +544,8 @@ ___
 
 ▸ **getAssociativeFloatArrayValue**(`variable`, `key`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get the value (by key) of an associative float array in ChucK
-Resolve the deferred promise with .value() 
+Get the value (by key) of an associative float array in ChucK.
+Resolve the deferred promise with .value().
 e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
 
 #### Parameters
@@ -567,8 +567,8 @@ ___
 
 ▸ **getAssociativeIntArrayValue**(`variable`, `key`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get the value (by key) of an associative int array in ChucK
-Resolve the deferred promise with .value() 
+Get the value (by key) of an associative int array in ChucK.
+Resolve the deferred promise with .value().
 e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
 
 #### Parameters
@@ -590,8 +590,8 @@ ___
 
 ▸ **getFloat**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get the value of a global float variable in ChucK
-Resolve the deferred promise with .value() 
+Get the value of a global float variable in ChucK.
+Resolve the deferred promise with .value().
 e.g. theChucK.getFloat("var").value();
 
 #### Parameters
@@ -612,8 +612,8 @@ ___
 
 ▸ **getFloatArray**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get the values of a global float array in ChucK
-Resolve the deferred promise with .value() 
+Get the values of a global float array in ChucK.
+Resolve the deferred promise with .value().
 e.g. theChucK.getFloatArray("var").value();
 
 #### Parameters
@@ -634,8 +634,8 @@ ___
 
 ▸ **getFloatArrayValue**(`variable`, `index`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get the float value of a global float arry by index
-Resolve the deferred promise with .value() 
+Get the float value of a global float arry by index.
+Resolve the deferred promise with .value().
 e.g. theChucK.getFloatArray("var", index).value();
 
 #### Parameters
@@ -657,8 +657,8 @@ ___
 
 ▸ **getInt**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get the value of a global int variable in ChucK
-Resolve the deferred promise with .value() 
+Get the value of a global int variable in ChucK.
+Resolve the deferred promise with .value().
 e.g. theChucK.getInt("var").value();
 
 #### Parameters
@@ -679,8 +679,8 @@ ___
 
 ▸ **getIntArray**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get the values of a global int array in ChucK
-Resolve the deferred promise with .value() 
+Get the values of a global int array in ChucK.
+Resolve the deferred promise with .value().
 e.g. theChucK.getIntArray("var").value();
 
 #### Parameters
@@ -701,8 +701,8 @@ ___
 
 ▸ **getIntArrayValue**(`variable`, `index`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get a single value (by index) in a global int array in ChucK
-Resolve the deferred promise with .value() 
+Get a single value (by index) in a global int array in ChucK.
+Resolve the deferred promise with .value().
 e.g. theChucK.getIntArrayValue("var", index).value();
 
 #### Parameters
@@ -724,8 +724,8 @@ ___
 
 ▸ **getString**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Get the value of a global string variable in ChucK
-Resolve the deferred promise with .value() 
+Get the value of a global string variable in ChucK.
+Resolve the deferred promise with .value().
 e.g. theChucK.getString("var").value();
 
 #### Parameters
@@ -978,7 +978,7 @@ ___
 
 ▸ **replaceFileWithArgs**(`filename`, `colonSeparatedArgs`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Replace the last running shred with a file to execute, passing arguments
+Replace the last running shred with a file to execute, passing arguments.
 Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
 
 #### Parameters
@@ -1000,7 +1000,7 @@ ___
 
 ▸ **replaceFileWithArgsWithReplacementDac**(`filename`, `colonSeparatedArgs`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Replace the last running shred with a file to execute, passing arguments, and dac
+Replace the last running shred with a file to execute, passing arguments, and dac.
 Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
 
 #### Parameters
@@ -1087,7 +1087,7 @@ ___
 
 ▸ **runFile**(`filename`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Run a ChucK file that is already in the WebChucK virtual file system
+Run a ChucK file that is already in the WebChucK virtual file system.
 Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
 
 #### Parameters
@@ -1108,7 +1108,7 @@ ___
 
 ▸ **runFileWithArgs**(`filename`, `colonSeparatedArgs`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Run a ChucK file that is already in the WebChucK virtual file system with arguments
+Run a ChucK file that is already in the WebChucK virtual file system with arguments.
 e.g. native equivalent of `chuck myFile:arg`
 
 #### Parameters
@@ -1130,7 +1130,7 @@ ___
 
 ▸ **runFileWithArgsWithReplacementDac**(`filename`, `colonSeparatedArgs`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Run a ChucK file that is already in the WebChucK virtual file system with arguments
+Run a ChucK file that is already in the WebChucK virtual file system with arguments.
 e.g. native equivalent of `chuck myFile:arg`
 
 #### Parameters
@@ -1153,7 +1153,7 @@ ___
 
 ▸ **runFileWithReplacementDac**(`filename`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
 
-Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??)
+Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??).
 Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
 
 #### Parameters
@@ -1194,7 +1194,7 @@ ___
 
 ▸ **setAssociativeFloatArrayValue**(`variable`, `key`, `value`): `void`
 
-Set the value (by key) of an associative float array in ChucK
+Set the value (by key) of an associative float array in ChucK.
 Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
 
 #### Parameters
@@ -1215,7 +1215,7 @@ ___
 
 ▸ **setAssociativeIntArrayValue**(`variable`, `key`, `value`): `void`
 
-Set the value (by key) of an associative int array in ChucK
+Set the value (by key) of an associative int array in ChucK.
 Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
 
 #### Parameters

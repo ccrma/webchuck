@@ -214,7 +214,7 @@ export default class Chuck extends window.AudioWorkletNode {
 
   // ================== Run/Replace File ================== //
   /**
-   * Run a ChucK file that is already in the WebChucK virtual file system
+   * Run a ChucK file that is already in the WebChucK virtual file system.
    * Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
    * @param filename ChucK file to be run
    * @returns promise to shred ID
@@ -229,7 +229,7 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??)
+   * Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??).
    * Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
    * @param filename ChucK file to be run
    * @param dacName dac for ChucK (??)
@@ -246,7 +246,7 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Run a ChucK file that is already in the WebChucK virtual file system with arguments
+   * Run a ChucK file that is already in the WebChucK virtual file system with arguments.
    * e.g. native equivalent of `chuck myFile:arg`
    * @param filename ChucK file to be run
    * @param colonSeparatedArgs arguments to pass to the file
@@ -263,7 +263,7 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Run a ChucK file that is already in the WebChucK virtual file system with arguments
+   * Run a ChucK file that is already in the WebChucK virtual file system with arguments.
    * e.g. native equivalent of `chuck myFile:arg`
    * @param filename ChucK file to be run
    * @param colonSeparatedArgs arguments to pass to the file
@@ -318,7 +318,7 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Replace the last running shred with a file to execute, passing arguments
+   * Replace the last running shred with a file to execute, passing arguments.
    * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile() 
    * @param filename file to be replace last running shred
    * @param colonSeparatedArgs arguments to pass in to file
@@ -335,7 +335,7 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Replace the last running shred with a file to execute, passing arguments, and dac
+   * Replace the last running shred with a file to execute, passing arguments, and dac.
    * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile() 
    * @param filename file to be replace last running shred
    * @param colonSeparatedArgs arguments to pass in to file
@@ -457,8 +457,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get the value of a global int variable in ChucK
-   * Resolve the deferred promise with .value() 
+   * Get the value of a global int variable in ChucK.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getInt("var").value();
    * @param variable name of variable
    * @returns deferred promise with value of the variable
@@ -482,8 +482,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get the value of a global float variable in ChucK
-   * Resolve the deferred promise with .value() 
+   * Get the value of a global float variable in ChucK.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getFloat("var").value();
    * @param variable name of variable
    * @returns deferred promise with value of the variable
@@ -507,8 +507,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get the value of a global string variable in ChucK
-   * Resolve the deferred promise with .value() 
+   * Get the value of a global string variable in ChucK.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getString("var").value();
    * @param variable name of string variable
    * @returns deferred promise with string value
@@ -533,8 +533,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get the values of a global int array in ChucK
-   * Resolve the deferred promise with .value() 
+   * Get the values of a global int array in ChucK.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getIntArray("var").value();
    * @param variable name of int array variable
    * @returns deferred promise of array of numbers
@@ -564,8 +564,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get a single value (by index) in a global int array in ChucK
-   * Resolve the deferred promise with .value() 
+   * Get a single value (by index) in a global int array in ChucK.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getIntArrayValue("var", index).value();
    * @param variable name of int array variable
    * @param index array index to get
@@ -582,7 +582,7 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Set the value (by key) of an associative int array in ChucK
+   * Set the value (by key) of an associative int array in ChucK.
    * Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
    * @param variable name of global associative int array to set
    * @param key the key index of the associative array
@@ -601,8 +601,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get the value (by key) of an associative int array in ChucK
-   * Resolve the deferred promise with .value() 
+   * Get the value (by key) of an associative int array in ChucK.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
    * @param variable name of gobal associative int arry
    * @param key the key index to get 
@@ -629,8 +629,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get the values of a global float array in ChucK
-   * Resolve the deferred promise with .value() 
+   * Get the values of a global float array in ChucK.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getFloatArray("var").value();
    * @param variable name of float array
    * @returns deferred promise of float values
@@ -659,8 +659,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get the float value of a global float arry by index
-   * Resolve the deferred promise with .value() 
+   * Get the float value of a global float arry by index.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getFloatArray("var", index).value();
    * @param variable name of float arry
    * @param index indfex of element
@@ -677,7 +677,7 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Set the value (by key) of an associative float array in ChucK
+   * Set the value (by key) of an associative float array in ChucK.
    * Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
    * @param variable name of global associative float array to set
    * @param key the key index of the associative array
@@ -696,8 +696,8 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Get the value (by key) of an associative float array in ChucK
-   * Resolve the deferred promise with .value() 
+   * Get the value (by key) of an associative float array in ChucK.
+   * Resolve the deferred promise with .value().
    * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
    * @param variable name of gobal associative float arry
    * @param key the key index to get 
@@ -739,7 +739,7 @@ export default class Chuck extends window.AudioWorkletNode {
     console.log(message);
   }
 
-  // ================ Internal Private ================= //
+  // ================ Internal Private ================== //
   /**
    * Internal: Communicate via JS to WebChucK WASM
    */
