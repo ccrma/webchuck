@@ -26,6 +26,10 @@ T The type of the resolved value. Defaults to any if not provided.
 - [reject](DeferredPromise.md#reject)
 - [resolve](DeferredPromise.md#resolve)
 
+### Methods
+
+- [value](DeferredPromise.md#value)
+
 ## Constructors
 
 ### constructor
@@ -58,3 +62,17 @@ ___
 ### resolve
 
 • **resolve**: `undefined` \| (`value`: `T`) => `void`
+
+## Methods
+
+### value
+
+▸ **value**(): `Promise`<`T`\>
+
+Get the value from any Deferred Promise
+
+#### Returns
+
+`Promise`<`T`\>
+
+value from resolve/reject

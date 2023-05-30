@@ -46,7 +46,7 @@ export var OutMessage;
     OutMessage["SET_ASSOCIATIVE_FLOAT_ARRAY_VALUE"] = "setGlobalAssociativeFloatArrayValue";
     OutMessage["GET_ASSOCIATIVE_FLOAT_ARRAY_VALUE"] = "getGlobalAssociativeFloatArrayValue";
     // Clear
-    OutMessage["CLEAR_INSTANCE"] = "clearInstance";
+    OutMessage["CLEAR_INSTANCE"] = "clearChuckInstance";
     OutMessage["CLEAR_GLOBALS"] = "clearGlobals";
 })(OutMessage || (OutMessage = {}));
 export var InMessage;

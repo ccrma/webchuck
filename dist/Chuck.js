@@ -15,7 +15,19 @@
  */
 import { defer, loadWasm, preloadFiles } from "./utils";
 import { InMessage, OutMessage } from "./enums";
+/**
+ * WebChucK: ChucK Web Audio Node class.
+ * See init() to get started
+ */
 export default class Chuck extends window.AudioWorkletNode {
+    /**
+     * Constructor for a ChucK Web Audio Node
+     * @param preloadedFiles Files to preload into ChucK's filesystem
+     * @param audioContext AudioContext to connect to
+     * @param wasm WebChucK WebAssembly binary
+     * @param numOutChannels Number of output channels
+     * @returns WebChucK ChucK instance
+     */
     constructor(preloadedFiles, audioContext, wasm, numOutChannels = 2) {
         super(audioContext, "chuck-node", {
             numberOfInputs: 1,
@@ -40,6 +52,13 @@ export default class Chuck extends window.AudioWorkletNode {
         this.onprocessorerror = (e) => console.error(e);
         Chuck.chuckID++;
     }
+    /**
+     * Quick initialize a default instance of the ChucK Web Audio Node
+     * @param filenamesToPreload Files to preload into ChucK's filesystem [{serverFileName: ./path, virtualFileName: path}]
+     * @param audioContext AudioContext to connect connect WebChuck node to
+     * @param numOutChannels Number of output channels
+     * @returns
+     */
     static async init(filenamesToPreload, audioContext, numOutChannels = 2) {
         const wasm = await loadWasm();
         if (typeof audioContext === "undefined") {
@@ -55,12 +74,24 @@ export default class Chuck extends window.AudioWorkletNode {
         await chuck.isReady.promise;
         return chuck;
     }
+    /**
+     * Private function for ChucK to handle execution of tasks.
+     * Will create a Deferred Promise that wraps a task for WebChucK to execute
+     * @returns callbackID to a an action for ChucK to perform
+     */
     nextDeferID() {
         const callbackID = this.deferredPromiseCounter++;
         this.deferredPromises[callbackID] = defer();
         return callbackID;
     }
     // ================== Filesystem ===================== //
+    /**
+     * Create a virtual file in ChucK's filesystem.
+     * You should first locally fetch() the contents of your file, then pass the data to this method.
+     * @param directory Virtual directory to create file in
+     * @param filename Name of file to create
+     * @param data Data that you want to write to the file
+     */
     createFile(directory, filename, data) {
         this.sendMessage(OutMessage.LOAD_FILE, {
             directory,
@@ -68,12 +99,40 @@ export default class Chuck extends window.AudioWorkletNode {
             data,
         });
     }
+    /**
+     * Automatically fetch and load in a file from a URL to ChucK's virtual filesystem
+     * @param filename URL to file to fetch and load file
+     */
+    async loadFile(filename) {
+        if (filename.endsWith(".ck")) {
+            return fetch(filename).then((response) => response.text()).then((text) => {
+                this.createFile("", filename, text);
+            });
+        }
+        else {
+            return fetch(filename).then((response) => response.arrayBuffer()).then((buffer) => {
+                this.createFile("", filename, new Uint8Array(buffer));
+            });
+        }
+    }
     // ================== Run/Replace Code ================== //
+    /**
+     * Run a string of ChucK code
+     * @param code ChucK code string to be executed
+     * @returns promise to the shred ID
+     */
     runCode(code) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.RUN_CODE, { callback: callbackID, code });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Run a string of ChucK code using a different dac (unsure of functionality)
+     * -tf (5/30/2023)
+     * @param code ChucK code string to be executed
+     * @param dacName dac for ChucK (??)
+     * @returns promise to the shred ID
+     */
     runCodeWithReplacementDac(code, dacName) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.RUN_CODE_WITH_REPLACEMENT_DAC, {
@@ -83,6 +142,11 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Replace last running shred with string of ChucK code to execute
+     * @param code ChucK code string to replace last Shred
+     * @returns promise to shred ID
+     */
     replaceCode(code) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REPLACE_CODE, {
@@ -91,6 +155,12 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Replace last running shred with string of ChucK code to execute, to another dac (??)
+     * @param code ChucK code string to replace last Shred
+     * @param dacName dac for ChucK (??)
+     * @returns promise to shred ID
+     */
     replaceCodeWithReplacementDac(code, dacName) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REPLACE_CODE_WITH_REPLACEMENT_DAC, {
@@ -100,12 +170,22 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Remove the last running shred
+     * @returns promise to the shred ID that was removed
+     */
     removeLastCode() {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REMOVE_LAST_CODE, { callback: callbackID });
         return this.deferredPromises[callbackID];
     }
     // ================== Run/Replace File ================== //
+    /**
+     * Run a ChucK file that is already in the WebChucK virtual file system
+     * Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
+     * @param filename ChucK file to be run
+     * @returns promise to shred ID
+     */
     runFile(filename) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.RUN_FILE, {
@@ -114,6 +194,13 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??)
+     * Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
+     * @param filename ChucK file to be run
+     * @param dacName dac for ChucK (??)
+     * @returns promise to shred ID
+     */
     runFileWithReplacementDac(filename, dacName) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.RUN_FILE_WITH_REPLACEMENT_DAC, {
@@ -123,6 +210,13 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Run a ChucK file that is already in the WebChucK virtual file system with arguments
+     * e.g. native equivalent of `chuck myFile:arg`
+     * @param filename ChucK file to be run
+     * @param colonSeparatedArgs arguments to pass to the file
+     * @returns promise to shred ID
+     */
     runFileWithArgs(filename, colonSeparatedArgs) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.RUN_FILE_WITH_ARGS, {
@@ -132,6 +226,14 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Run a ChucK file that is already in the WebChucK virtual file system with arguments
+     * e.g. native equivalent of `chuck myFile:arg`
+     * @param filename ChucK file to be run
+     * @param colonSeparatedArgs arguments to pass to the file
+     * @param dacName dac for ChucK (??)
+     * @returns promise to shred ID
+     */
     runFileWithArgsWithReplacementDac(filename, colonSeparatedArgs, dacName) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.RUN_FILE_WITH_ARGS, {
@@ -142,6 +244,12 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Replace the last running shred with a file to execute.
+     * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
+     * @param filename file to be replace last
+     * @returns promise to shred ID
+     */
     replaceFile(filename) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REPLACE_FILE, {
@@ -150,6 +258,13 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Replace the last running shred with a file to execute.
+     * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
+     * @param filename file to be replace last
+     * @param dacName dac for ChucK (??)
+     * @returns promise to shred ID
+     */
     replaceFileWithReplacementDac(filename, dacName) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REPLACE_FILE_WITH_REPLACEMENT_DAC, {
@@ -159,6 +274,13 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Replace the last running shred with a file to execute, passing arguments
+     * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
+     * @param filename file to be replace last running shred
+     * @param colonSeparatedArgs arguments to pass in to file
+     * @returns promise to shred ID
+     */
     replaceFileWithArgs(filename, colonSeparatedArgs) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REPLACE_FILE_WITH_ARGS, {
@@ -168,6 +290,14 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Replace the last running shred with a file to execute, passing arguments, and dac
+     * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
+     * @param filename file to be replace last running shred
+     * @param colonSeparatedArgs arguments to pass in to file
+     * @param dacName dac for ChucK (??)
+     * @returns promise to shred ID
+     */
     replaceFileWithArgsWithReplacementDac(filename, colonSeparatedArgs, dacName) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REPLACE_FILE_WITH_ARGS, {
@@ -179,6 +309,11 @@ export default class Chuck extends window.AudioWorkletNode {
         return this.deferredPromises[callbackID];
     }
     // ================== Shred =================== //
+    /**
+     * Remove a shred from ChucK VM by ID
+     * @param shred shred ID to be removed
+     * @returns promise to whether Shred was removed successfully
+     */
     removeShred(shred) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REMOVE_SHRED, {
@@ -187,6 +322,11 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Check if a shred from ChucK VM is running
+     * @param shred which shred ID to check
+     * @returns promise to whether Shred was removed successfully
+     */
     isShredActive(shred) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.IS_SHRED_ACTIVE, {
@@ -196,12 +336,25 @@ export default class Chuck extends window.AudioWorkletNode {
         return this.deferredPromises[callbackID];
     }
     // ================== Event =================== //
+    /**
+     * Signal a ChucK event, will wake the first waiting Shred
+     * @param variable ChucK event variable to be signaled
+     */
     signalEvent(variable) {
         this.sendMessage(OutMessage.SIGNAL_EVENT, { variable });
     }
+    /**
+     * Broadcast a ChucK event to all
+     * @param variable ChucK event variable to be signaled
+     */
     broadcastEvent(variable) {
         this.sendMessage(OutMessage.BROADCAST_EVENT, { variable });
     }
+    /**
+     * <more information needed>
+     * @param variable
+     * @param callback
+     */
     listenForEventOnce(variable, callback) {
         const callbackID = this.eventCallbackCounter++;
         this.eventCallbacks[callbackID] = callback;
@@ -210,6 +363,12 @@ export default class Chuck extends window.AudioWorkletNode {
             callback: callbackID,
         });
     }
+    /**
+     * <more information needed>
+     * @param variable
+     * @param callback
+     * @returns
+     */
     startListeningForEvent(variable, callback) {
         const callbackID = this.eventCallbackCounter++;
         this.eventCallbacks[callbackID] = callback;
@@ -219,6 +378,11 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return callbackID;
     }
+    /**
+     * <more informatino needed>
+     * @param variable
+     * @param callbackID
+     */
     stopListeningForEvent(variable, callbackID) {
         this.sendMessage(OutMessage.STOP_LISTENING_FOR_EVENT, {
             variable,
@@ -226,9 +390,21 @@ export default class Chuck extends window.AudioWorkletNode {
         });
     }
     // ================== Int, Float, String ============= //
+    /**
+     * Set the value of a global int variable in ChucK
+     * @param variable name of variable
+     * @param value value to set
+     */
     setInt(variable, value) {
         this.sendMessage(OutMessage.SET_INT, { variable, value });
     }
+    /**
+     * Get the value of a global int variable in ChucK
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getInt("var").value();
+     * @param variable name of variable
+     * @returns deferred promise with value of the variable
+     */
     getInt(variable) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_INT, {
@@ -237,9 +413,21 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Set the value of a global float variable in ChucK
+     * @param variable name of variable
+     * @param value value to set
+     */
     setFloat(variable, value) {
         this.sendMessage(OutMessage.SET_FLOAT, { variable, value });
     }
+    /**
+     * Get the value of a global float variable in ChucK
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getFloat("var").value();
+     * @param variable name of variable
+     * @returns deferred promise with value of the variable
+     */
     getFloat(variable) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_FLOAT, {
@@ -248,9 +436,21 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Set the value of a global string variable in ChucK
+     * @param variable name of string variable
+     * @param value new string to set
+     */
     setString(variable, value) {
         this.sendMessage(OutMessage.SET_STRING, { variable, value });
     }
+    /**
+     * Get the value of a global string variable in ChucK
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getString("var").value();
+     * @param variable name of string variable
+     * @returns deferred promise with string value
+     */
     getString(variable) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_STRING, {
@@ -260,9 +460,21 @@ export default class Chuck extends window.AudioWorkletNode {
         return this.deferredPromises[callbackID];
     }
     // ================== Int[] =================== //
+    /**
+     * Set the values of a global int array in ChucK
+     * @param variable name of int array variable
+     * @param values array of numbers
+     */
     setIntArray(variable, values) {
         this.sendMessage(OutMessage.SET_INT_ARRAY, { variable, values });
     }
+    /**
+     * Get the values of a global int array in ChucK
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getIntArray("var").value();
+     * @param variable name of int array variable
+     * @returns deferred promise of array of numbers
+     */
     getIntArray(variable) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_INT_ARRAY, {
@@ -271,6 +483,12 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Set a single value (by index) in a global int array in ChucK
+     * @param variable name of int array variable
+     * @param index array index to set
+     * @param value value to set
+     */
     setIntArrayValue(variable, index, value) {
         this.sendMessage(OutMessage.SET_INT_ARRAY_VALUE, {
             variable,
@@ -278,6 +496,14 @@ export default class Chuck extends window.AudioWorkletNode {
             value,
         });
     }
+    /**
+     * Get a single value (by index) in a global int array in ChucK
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getIntArrayValue("var", index).value();
+     * @param variable name of int array variable
+     * @param index array index to get
+     * @returns deferred promise for a number
+     */
     getIntArrayValue(variable, index) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_INT_ARRAY_VALUE, {
@@ -287,6 +513,13 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Set the value (by key) of an associative int array in ChucK
+     * Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
+     * @param variable name of global associative int array to set
+     * @param key the key index of the associative array
+     * @param value the new value
+     */
     setAssociativeIntArrayValue(variable, key, value) {
         this.sendMessage(OutMessage.SET_ASSOCIATIVE_INT_ARRAY_VALUE, {
             variable,
@@ -294,6 +527,14 @@ export default class Chuck extends window.AudioWorkletNode {
             value,
         });
     }
+    /**
+     * Get the value (by key) of an associative int array in ChucK
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
+     * @param variable name of gobal associative int arry
+     * @param key the key index to get
+     * @returns deferred promise with associative int array value
+     */
     getAssociativeIntArrayValue(variable, key) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_ASSOCIATIVE_INT_ARRAY_VALUE, {
@@ -304,9 +545,21 @@ export default class Chuck extends window.AudioWorkletNode {
         return this.deferredPromises[callbackID];
     }
     // ================== Float[] =================== //
+    /**
+     * Set the values of a global float array in ChucK
+     * @param variable name of float array
+     * @param values values to set
+     */
     setFloatArray(variable, values) {
         this.sendMessage(OutMessage.SET_FLOAT_ARRAY, { variable, values });
     }
+    /**
+     * Get the values of a global float array in ChucK
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getFloatArray("var").value();
+     * @param variable name of float array
+     * @returns deferred promise of float values
+     */
     getFloatArray(variable) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_FLOAT_ARRAY, {
@@ -315,6 +568,12 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Set the float value of a global float array by index
+     * @param variable name of float array
+     * @param index index of element
+     * @param value value to set
+     */
     setFloatArrayValue(variable, index, value) {
         this.sendMessage(OutMessage.SET_FLOAT_ARRAY_VALUE, {
             variable,
@@ -322,6 +581,14 @@ export default class Chuck extends window.AudioWorkletNode {
             value,
         });
     }
+    /**
+     * Get the float value of a global float arry by index
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getFloatArray("var", index).value();
+     * @param variable name of float arry
+     * @param index indfex of element
+     * @returns deferred promise of float value
+     */
     getFloatArrayValue(variable, index) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_FLOAT_ARRAY_VALUE, {
@@ -331,6 +598,13 @@ export default class Chuck extends window.AudioWorkletNode {
         });
         return this.deferredPromises[callbackID];
     }
+    /**
+     * Set the value (by key) of an associative float array in ChucK
+     * Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
+     * @param variable name of global associative float array to set
+     * @param key the key index of the associative array
+     * @param value the new value
+     */
     setAssociativeFloatArrayValue(variable, key, value) {
         this.sendMessage(OutMessage.SET_ASSOCIATIVE_FLOAT_ARRAY_VALUE, {
             variable,
@@ -338,6 +612,14 @@ export default class Chuck extends window.AudioWorkletNode {
             value,
         });
     }
+    /**
+     * Get the value (by key) of an associative float array in ChucK
+     * Resolve the deferred promise with .value()
+     * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
+     * @param variable name of gobal associative float arry
+     * @param key the key index to get
+     * @returns deferred promise with associative int array value
+     */
     getAssociativeFloatArrayValue(variable, key) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_ASSOCIATIVE_FLOAT_ARRAY_VALUE, {
@@ -348,22 +630,39 @@ export default class Chuck extends window.AudioWorkletNode {
         return this.deferredPromises[callbackID];
     }
     // ================= Clear ====================== //
+    /**
+     * Remove all shreds and reset the WebChucK instance
+     */
     clearChuckInstance() {
         this.sendMessage(OutMessage.CLEAR_INSTANCE);
     }
+    /**
+     * Reset all global variables in ChucK
+     */
     clearGlobals() {
         this.sendMessage(OutMessage.CLEAR_GLOBALS);
     }
     // ================== Print Output ================== //
+    /**
+     * Override this method to redirect ChucK console output. Current default is console.log().
+     * Set your own method to handle output or process it.
+     * @param message Message that ChucK prints to console
+     */
     chuckPrint(message) {
-        // override me to handle printing, this is just a default
+        // Default ChucK output destination
         console.log(message);
     }
-    // Private
+    // ================ Internal Private ================= //
+    /**
+     * Internal: Communicate via JS to WebChucK WASM
+     */
     sendMessage(type, body) {
         const msgBody = body ? { type, ...body } : { type };
         this.port.postMessage(msgBody);
     }
+    /**
+     * Internal: Communicate via JS to WebChucK WASM
+     */
     receiveMessage(event) {
         const type = event.data.type;
         switch (type) {
