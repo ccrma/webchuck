@@ -36,7 +36,7 @@ export declare enum OutMessage {
     GET_FLOAT_ARRAY_VALUE = "getGlobalFloatArrayValue",
     SET_ASSOCIATIVE_FLOAT_ARRAY_VALUE = "setGlobalAssociativeFloatArrayValue",
     GET_ASSOCIATIVE_FLOAT_ARRAY_VALUE = "getGlobalAssociativeFloatArrayValue",
-    CLEAR_INSTANCE = "clearInstance",
+    CLEAR_INSTANCE = "clearChuckInstance",
     CLEAR_GLOBALS = "clearGlobals"
 }
 export declare enum InMessage {

@@ -14,4 +14,9 @@ export default class DeferredPromise<T = any> {
      * and setting up the resolve and reject methods.
      */
     constructor();
+    /**
+     * Get the value from any Deferred Promise
+     * @returns value from resolve/reject
+     */
+    value(): Promise<T>;
 }

@@ -53,7 +53,7 @@ export enum OutMessage {
   GET_ASSOCIATIVE_FLOAT_ARRAY_VALUE = "getGlobalAssociativeFloatArrayValue",
 
   // Clear
-  CLEAR_INSTANCE = "clearInstance",
+  CLEAR_INSTANCE = "clearChuckInstance",
   CLEAR_GLOBALS = "clearGlobals",
 }
 

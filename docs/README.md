@@ -1,22 +1,25 @@
 # WebChucK
-[site](https://chuck.stanford.edu/webchuck/) | [docs](./docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
+[site](https://chuck.stanford.edu/webchuck/) | [docs](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
 
-WebChucK is [ChucK](https://chuck.stanford.edu) running on the web! Recent advancements have enabled ChucK to run in any web browser with near native performance. Run ChucK on the web, on a tablet, or on your mobile device; take it wherever you go! WebChucK opens the door for new users and creative workflows. Using WebAssembly (WASM) and the Web Audio API, you can use WebChucK anywhere to build new online audiovisual experiences and web apps. To learn more about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
+WebChucK brings [ChucK](https://chuck.stanford.edu), a strongly-timed audio programming language, to the web! ChucK's C++ source code has been compiled down to WebAssembly (WASM) and runs via the `AudioWorkletNode` interface of the Web Audio API. With near-native performance, WebChucK runs on modern desktop browsers as well as tablets and mobile devices! Bring together ChucK's real-time sound synthesis engine and the interconnectivity of the web to create new experiences and develop creative workflows. Use WebChucK to build online audiovisual experiences, immersive multi-channel audio web apps, or embed WebChucK into any website! To learn more about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
 See WebChucK in action, [WebChucK IDE](https://chuck.stanford.edu/ide/)!
 
 ## Usage
 
-Via npm:
+Via TypeScript and installation as an npm package:
 
 ```
 npm install webchuck
 ```
 
-```js
+```ts
 import { Chuck } from 'webchuck'
+
+// Create the default ChucK object
 const theChuck = await Chuck.init([]);
 
+// Run ChucK code
 theChuck.runCode(`
     SinOsc sin => dac;
     440 => sin.freq;
@@ -27,36 +30,36 @@ theChuck.runCode(`
 Note that many browsers do not let audio run without a user interaction (e.g. button press).
 You can check for a suspended audio context and resume like this:
 
-```js
-if (chuck.context.state === "suspended") {
-    chuck.context.resume();
+```ts
+if (theChuck.context.state === "suspended") {
+    theChuck.context.resume();
 }
 ```
 
-You can also embed the WebChucK JS module into your `index.html`
+You can also embed WebChucK as a JS module into your `index.html`. Here's an example below in JavaScript
 
 ```html
 <button id="webchuck">Start WebChucK</button>
 <button id="start">Play</button>
     
 <script type="text/javascript">
-    var thechuck; 
+    var theChuck; 
     
-    // Import the WebChucK Package and connect the Audio Worklet, start the VM
+    // Import WebChucK and create a ChucK object 
     document.getElementById('webchuck').addEventListener('click', () => {
         import('https://cdn.jsdelivr.net/npm/webchuck/+esm').then(async (module) => {
             const Chuck = module.Chuck; // Chuck class
-            thechuck = await Chuck.init([]); // Create a ChucK object
+            theChuck = await Chuck.init([]); // Create default ChucK object
         });
     });
     
     // Button to run ChucK code
     document.getElementById('start').addEventListener('click', () => {
-        thechuck.runCode(" SinOsc osc => dac; 440 => osc.freq; 1::second => now; ");
+        theChuck.runCode(" SinOsc osc => dac; 440 => osc.freq; 1::second => now; ");
     });
 </script>
 ```
 
 ## Documentation
 
-WebChucK Documentation [here](./docs/classes/Chuck.md)
+WebChucK documentation [here](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md)
