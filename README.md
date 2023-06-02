@@ -50,19 +50,19 @@ You can also embed WebChucK as a JS module into your `index.html`. Here's an exa
 <button id="start">Play</button>
     
 <script type="text/javascript">
-    var thechuck; 
+    var theChuck; 
     
     // Import WebChucK and create a ChucK object 
     document.getElementById('webchuck').addEventListener('click', () => {
         import('https://cdn.jsdelivr.net/npm/webchuck/+esm').then(async (module) => {
             const Chuck = module.Chuck; // Chuck class
-            thechuck = await Chuck.init([]); // Create default ChucK object
+            theChuck = await Chuck.init([]); // Create default ChucK object
         });
     });
     
     // Button to run ChucK code
     document.getElementById('start').addEventListener('click', () => {
-        thechuck.runCode(" SinOsc osc => dac; 440 => osc.freq; 1::second => now; ");
+        theChuck.runCode(" SinOsc osc => dac; 440 => osc.freq; 1::second => now; ");
     });
 </script>
 ```

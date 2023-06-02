@@ -19,4 +19,12 @@ export default class DeferredPromise {
             this.reject = reject;
         });
     }
+    /**
+     * Get the value from any Deferred Promise
+     * @returns value from resolve/reject
+     */
+    async value() {
+        // whether resolve or reject, return the value in the promise
+        return await this.promise;
+    }
 }

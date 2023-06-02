@@ -1,5 +1,5 @@
 # WebChucK
-[site](https://chuck.stanford.edu/webchuck/) | [docs](./docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
+[site](https://chuck.stanford.edu/webchuck/) | [docs](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
 
 WebChucK brings [ChucK](https://chuck.stanford.edu), a strongly-timed audio programming language, to 
 the web! ChucK's C++ source code has been compiled down to WebAssembly (WASM) and runs via the 
@@ -22,10 +22,13 @@ Install WebChucK via npm. This can also be used with TypeScript (example below)
 npm install webchuck
 ```
 
-```js
+```ts
 import { Chuck } from 'webchuck'
+
+// Create the default ChucK object
 const theChuck = await Chuck.init([]);
 
+// Run ChucK code
 theChuck.runCode(`
     SinOsc sin => dac;
     440 => sin.freq;
@@ -36,9 +39,9 @@ theChuck.runCode(`
 Note that many browsers do not let audio run without a user interaction (e.g. button press).
 You can check for a suspended audio context and resume like this:
 
-```js
-if (chuck.context.state === "suspended") {
-    chuck.context.resume();
+```ts
+if (theChuck.context.state === "suspended") {
+    theChuck.context.resume();
 }
 ```
 
@@ -51,19 +54,19 @@ Embed WebChucK as a JS module into your `index.html`
 <button id="start">Play</button>
     
 <script type="text/javascript">
-    var thechuck; 
+    var theChuck; 
     
-    // Import the WebChucK Package and connect the Audio Worklet, start the VM
+    // Import WebChucK and create a ChucK object 
     document.getElementById('webchuck').addEventListener('click', () => {
         import('https://cdn.jsdelivr.net/npm/webchuck/+esm').then(async (module) => {
             const Chuck = module.Chuck; // Chuck class
-            thechuck = await Chuck.init([]); // Create a ChucK object
+            theChuck = await Chuck.init([]); // Create default ChucK object
         });
     });
     
     // Button to run ChucK code
     document.getElementById('start').addEventListener('click', () => {
-        thechuck.runCode(" SinOsc osc => dac; 440 => osc.freq; 1::second => now; ");
+        theChuck.runCode(" SinOsc osc => dac; 440 => osc.freq; 1::second => now; ");
     });
 </script>
 ```
