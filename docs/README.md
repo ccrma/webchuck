@@ -14,9 +14,7 @@ Try out WebChucK in action through [WebChucK IDE](https://chuck.stanford.edu/ide
 
 ## Usage
 
-### NPM
-
-Install WebChucK via npm. This can also be used with TypeScript (example below)
+Install WebChucK via npm and use it with TypeScript:
 
 ```
 npm install webchuck
@@ -45,9 +43,7 @@ if (theChuck.context.state === "suspended") {
 }
 ```
 
-### CDN 
-
-Embed WebChucK as a JS module into your `index.html`
+You can also embed WebChucK as a JS module into your `index.html`. Here's an example below in JavaScript:
 
 ```html
 <button id="webchuck">Start WebChucK</button>

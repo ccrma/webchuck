@@ -699,7 +699,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * Get the value (by key) of an associative float array in ChucK.
    * Resolve the deferred promise with .value().
    * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
-   * @param variable name of gobal associative float arry
+   * @param variable name of gobal associative float array
    * @param key the key index to get 
    * @returns deferred promise with associative int array value
    */
@@ -710,6 +710,84 @@ export default class Chuck extends window.AudioWorkletNode {
       key,
       callback: callbackID,
     });
+    return this.deferredPromises[callbackID];
+  }
+
+
+  // ================== ChucK VM parameters =================== //
+  /**
+   * Set an internal ChucK VM integer parameter.
+   * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+   * @param name name of value to set
+   * @param value value to set
+   */
+  public setParamInt(name: string, value: number) {
+    this.sendMessage(OutMessage.SET_PARAM_INT, { name, value });
+  }
+  /**
+   * Get an internal ChucK VM integer parameter
+   * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+   * @param name name of value to get 
+   * @returns deferred promise with int value
+   */
+  public getParamInt(name: string) {
+    const callbackID = this.nextDeferID();
+    this.sendMessage(OutMessage.GET_PARAM_INT, {
+      name,
+      callback: callbackID,
+    });
+    return this.deferredPromises[callbackID];
+  }
+
+  /**
+   * Set an internal ChucK VM float parameter
+   * @param name name of value to set
+   * @param value value to set
+   */
+  public setParamFloat(name: string, value: number) {
+    this.sendMessage(OutMessage.SET_PARAM_FLOAT, { name, value });
+  }
+  /**
+   * Get an internal ChucK VM float parameter
+   * @param name name of value to get
+   * @returns deferred promise with float value
+   */
+  public getParamFloat(name: string) {
+    const callbackID = this.nextDeferID();
+    this.sendMessage(OutMessage.GET_PARAM_FLOAT, {
+      name,
+      callback: callbackID,
+    });
+    return this.deferredPromises[callbackID];
+  }
+
+  /**
+   * Set an internal ChucK VM string parameter
+   * @param name name of value to set
+   * @param value value to set
+   */
+  public setParamString(name: string, value: string) {
+    this.sendMessage(OutMessage.SET_PARAM_STRING, { name, value });
+  }
+  /**
+   * Get an internal ChucK VM string parameter
+   * e.g. "VERSION"
+   * @param name name of value to get e.g. ("VERSION")
+   * @returns deferred promise with string value
+   */
+  public getParamString(name: string) {
+    const callbackID = this.nextDeferID();
+    this.sendMessage(OutMessage.GET_PARAM_STRING, {
+      name,
+      callback: callbackID,
+    });
+    return this.deferredPromises[callbackID];
+  }
+
+  // ================== ChucK VM =================== //
+  public now() {
+    const callbackID = this.nextDeferID();
+    this.sendMessage(OutMessage.GET_CHUCK_NOW, { callback: callbackID });
     return this.deferredPromises[callbackID];
   }
 
@@ -739,9 +817,11 @@ export default class Chuck extends window.AudioWorkletNode {
     console.log(message);
   }
 
-  // ================ Internal Private ================== //
+  //--------------------------------------------------------
+  // Internal Message Sending Communication
+  //--------------------------------------------------------
   /**
-   * Internal: Communicate via JS to WebChucK WASM
+   * Internal: Message sending from JS to ChucK
    */
   private sendMessage(type: OutMessage, body?: { [prop: string]: unknown }) {
     const msgBody = body ? { type, ...body } : { type };
@@ -749,7 +829,7 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Internal: Communicate via JS to WebChucK WASM
+   * Internal: Message receiving from ChucK to JS
    */
   private receiveMessage(event: MessageEvent) {
     const type: InMessage = event.data.type;

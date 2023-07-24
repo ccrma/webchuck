@@ -6,6 +6,7 @@ fetch("blit2.ck").then((response) => response.text()).then((text) => {
 var Chuck;
 import('https://cdn.jsdelivr.net/npm/webchuck/+esm').then(async (module) => {
     Chuck = module.Chuck; // Chuck class
+    document.getElementById("try").disabled = false;
 });
     
 var theChuck; 

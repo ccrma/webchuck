@@ -52,6 +52,17 @@ export enum OutMessage {
   SET_ASSOCIATIVE_FLOAT_ARRAY_VALUE = "setGlobalAssociativeFloatArrayValue",
   GET_ASSOCIATIVE_FLOAT_ARRAY_VALUE = "getGlobalAssociativeFloatArrayValue",
 
+  // VM Params
+  SET_PARAM_INT = "setParamInt",
+  GET_PARAM_INT = "getParamInt",
+  SET_PARAM_FLOAT = "setParamFloat",
+  GET_PARAM_FLOAT = "getParamFloat",
+  SET_PARAM_STRING = "setParamString",
+  GET_PARAM_STRING = "getParamString",
+
+  // VM
+  GET_CHUCK_NOW = "getChuckNow",
+
   // Clear
   CLEAR_INSTANCE = "clearChuckInstance",
   CLEAR_GLOBALS = "clearGlobals",

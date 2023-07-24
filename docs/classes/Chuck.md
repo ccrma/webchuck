@@ -52,11 +52,15 @@ See init() to get started
 - [getInt](Chuck.md#getint)
 - [getIntArray](Chuck.md#getintarray)
 - [getIntArrayValue](Chuck.md#getintarrayvalue)
+- [getParamFloat](Chuck.md#getparamfloat)
+- [getParamInt](Chuck.md#getparamint)
+- [getParamString](Chuck.md#getparamstring)
 - [getString](Chuck.md#getstring)
 - [isShredActive](Chuck.md#isshredactive)
 - [listenForEventOnce](Chuck.md#listenforeventonce)
 - [loadFile](Chuck.md#loadfile)
 - [nextDeferID](Chuck.md#nextdeferid)
+- [now](Chuck.md#now)
 - [receiveMessage](Chuck.md#receivemessage)
 - [removeEventListener](Chuck.md#removeeventlistener)
 - [removeLastCode](Chuck.md#removelastcode)
@@ -82,6 +86,9 @@ See init() to get started
 - [setInt](Chuck.md#setint)
 - [setIntArray](Chuck.md#setintarray)
 - [setIntArrayValue](Chuck.md#setintarrayvalue)
+- [setParamFloat](Chuck.md#setparamfloat)
+- [setParamInt](Chuck.md#setparamint)
+- [setParamString](Chuck.md#setparamstring)
 - [setString](Chuck.md#setstring)
 - [signalEvent](Chuck.md#signalevent)
 - [startListeningForEvent](Chuck.md#startlisteningforevent)
@@ -552,7 +559,7 @@ e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `variable` | `string` | name of gobal associative float arry |
+| `variable` | `string` | name of gobal associative float array |
 | `key` | `string` | the key index to get |
 
 #### Returns
@@ -720,6 +727,68 @@ deferred promise for a number
 
 ___
 
+### getParamFloat
+
+▸ **getParamFloat**(`name`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+
+Get an internal ChucK VM float parameter
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `name` | `string` | name of value to get |
+
+#### Returns
+
+[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+
+deferred promise with float value
+
+___
+
+### getParamInt
+
+▸ **getParamInt**(`name`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+
+Get an internal ChucK VM integer parameter
+e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `name` | `string` | name of value to get |
+
+#### Returns
+
+[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+
+deferred promise with int value
+
+___
+
+### getParamString
+
+▸ **getParamString**(`name`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+
+Get an internal ChucK VM string parameter
+e.g. "VERSION"
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `name` | `string` | name of value to get e.g. ("VERSION") |
+
+#### Returns
+
+[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+
+deferred promise with string value
+
+___
+
 ### getString
 
 ▸ **getString**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
@@ -814,11 +883,21 @@ callbackID to a an action for ChucK to perform
 
 ___
 
+### now
+
+▸ **now**(): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+
+#### Returns
+
+[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+
+___
+
 ### receiveMessage
 
 ▸ `Private` **receiveMessage**(`event`): `void`
 
-Internal: Communicate via JS to WebChucK WASM
+Internal: Message receiving from ChucK to JS
 
 #### Parameters
 
@@ -1175,7 +1254,7 @@ ___
 
 ▸ `Private` **sendMessage**(`type`, `body?`): `void`
 
-Internal: Communicate via JS to WebChucK WASM
+Internal: Message sending from JS to ChucK
 
 #### Parameters
 
@@ -1341,6 +1420,64 @@ Set a single value (by index) in a global int array in ChucK
 | `variable` | `string` | name of int array variable |
 | `index` | `number` | array index to set |
 | `value` | `number`[] | value to set |
+
+#### Returns
+
+`void`
+
+___
+
+### setParamFloat
+
+▸ **setParamFloat**(`name`, `value`): `void`
+
+Set an internal ChucK VM float parameter
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `name` | `string` | name of value to set |
+| `value` | `number` | value to set |
+
+#### Returns
+
+`void`
+
+___
+
+### setParamInt
+
+▸ **setParamInt**(`name`, `value`): `void`
+
+Set an internal ChucK VM integer parameter.
+e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `name` | `string` | name of value to set |
+| `value` | `number` | value to set |
+
+#### Returns
+
+`void`
+
+___
+
+### setParamString
+
+▸ **setParamString**(`name`, `value`): `void`
+
+Set an internal ChucK VM string parameter
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `name` | `string` | name of value to set |
+| `value` | `string` | value to set |
 
 #### Returns
 
