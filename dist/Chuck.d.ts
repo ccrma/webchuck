@@ -1,5 +1,5 @@
 import DeferredPromise from "./DeferredPromise";
-import type { File, Filename } from "./utils";
+import type { Filename } from "./utils";
 /**
  * WebChucK: ChucK Web Audio Node class.
  * See init() to get started
@@ -12,22 +12,23 @@ export default class Chuck extends window.AudioWorkletNode {
     private isReady;
     static chuckID: number;
     /**
-     * Constructor for a ChucK Web Audio Node
-     * @param preloadedFiles Files to preload into ChucK's filesystem
+     * Internal constructor for a ChucK AudioWorklet Web Audio Node
+     * @param preloadedFiles Array of Files to preload into ChucK's filesystem
      * @param audioContext AudioContext to connect to
      * @param wasm WebChucK WebAssembly binary
      * @param numOutChannels Number of output channels
+     * @returns ChucK AudioWorklet Node
+     */
+    private constructor();
+    /**
+     * Call me to initialize a ChucK Web Audio Node. Generally you should have only one instance of this.
+     * @param filenamesToPreload Array of Files to preload into ChucK's filesystem [{serverFileName: "./filename", virtualFileName: "filename"}...]
+     * @param audioContext Optional parameter if you want to use your own AudioContext. Otherwise, a new one will be created and the node will be connected to the output destination.
+     * @param numOutChannels Optional number of output channels. Default is 2 and Web Audio supports up to 32.
+     * @param whereIsChuck Optional url to your src folder containing webchuck.js and webchuck.wasm
      * @returns WebChucK ChucK instance
      */
-    constructor(preloadedFiles: File[], audioContext: AudioContext, wasm: ArrayBuffer, numOutChannels?: number);
-    /**
-     * Quick initialize a default instance of the ChucK Web Audio Node
-     * @param filenamesToPreload Files to preload into ChucK's filesystem [{serverFileName: ./path, virtualFileName: path}]
-     * @param audioContext AudioContext to connect connect WebChuck node to
-     * @param numOutChannels Number of output channels
-     * @returns
-     */
-    static init(filenamesToPreload: Filename[], audioContext?: AudioContext, numOutChannels?: number): Promise<Chuck>;
+    static init(filenamesToPreload: Filename[], audioContext?: AudioContext, numOutChannels?: number, whereIsChuck?: string): Promise<Chuck>;
     /**
      * Private function for ChucK to handle execution of tasks.
      * Will create a Deferred Promise that wraps a task for WebChucK to execute
@@ -315,11 +316,51 @@ export default class Chuck extends window.AudioWorkletNode {
      * Get the value (by key) of an associative float array in ChucK.
      * Resolve the deferred promise with .value().
      * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
-     * @param variable name of gobal associative float arry
+     * @param variable name of gobal associative float array
      * @param key the key index to get
      * @returns deferred promise with associative int array value
      */
     getAssociativeFloatArrayValue(variable: string, key: string): DeferredPromise<unknown>;
+    /**
+     * Set an internal ChucK VM integer parameter.
+     * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamInt(name: string, value: number): void;
+    /**
+     * Get an internal ChucK VM integer parameter
+     * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+     * @param name name of value to get
+     * @returns deferred promise with int value
+     */
+    getParamInt(name: string): DeferredPromise<unknown>;
+    /**
+     * Set an internal ChucK VM float parameter
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamFloat(name: string, value: number): void;
+    /**
+     * Get an internal ChucK VM float parameter
+     * @param name name of value to get
+     * @returns deferred promise with float value
+     */
+    getParamFloat(name: string): DeferredPromise<unknown>;
+    /**
+     * Set an internal ChucK VM string parameter
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamString(name: string, value: string): void;
+    /**
+     * Get an internal ChucK VM string parameter
+     * e.g. "VERSION"
+     * @param name name of value to get e.g. ("VERSION")
+     * @returns deferred promise with string value
+     */
+    getParamString(name: string): DeferredPromise<unknown>;
+    now(): DeferredPromise<unknown>;
     /**
      * Remove all shreds and reset the WebChucK instance
      */
@@ -335,11 +376,11 @@ export default class Chuck extends window.AudioWorkletNode {
      */
     chuckPrint(message: string): void;
     /**
-     * Internal: Communicate via JS to WebChucK WASM
+     * Internal: Message sending from JS to ChucK
      */
     private sendMessage;
     /**
-     * Internal: Communicate via JS to WebChucK WASM
+     * Internal: Message receiving from ChucK to JS
      */
     private receiveMessage;
 }

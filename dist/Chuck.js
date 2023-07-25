@@ -21,12 +21,12 @@ import { InMessage, OutMessage } from "./enums";
  */
 export default class Chuck extends window.AudioWorkletNode {
     /**
-     * Constructor for a ChucK Web Audio Node
-     * @param preloadedFiles Files to preload into ChucK's filesystem
+     * Internal constructor for a ChucK AudioWorklet Web Audio Node
+     * @param preloadedFiles Array of Files to preload into ChucK's filesystem
      * @param audioContext AudioContext to connect to
      * @param wasm WebChucK WebAssembly binary
      * @param numOutChannels Number of output channels
-     * @returns WebChucK ChucK instance
+     * @returns ChucK AudioWorklet Node
      */
     constructor(preloadedFiles, audioContext, wasm, numOutChannels = 2) {
         super(audioContext, "chuck-node", {
@@ -53,24 +53,31 @@ export default class Chuck extends window.AudioWorkletNode {
         Chuck.chuckID++;
     }
     /**
-     * Quick initialize a default instance of the ChucK Web Audio Node
-     * @param filenamesToPreload Files to preload into ChucK's filesystem [{serverFileName: ./path, virtualFileName: path}]
-     * @param audioContext AudioContext to connect connect WebChuck node to
-     * @param numOutChannels Number of output channels
-     * @returns
+     * Call me to initialize a ChucK Web Audio Node. Generally you should have only one instance of this.
+     * @param filenamesToPreload Array of Files to preload into ChucK's filesystem [{serverFileName: "./filename", virtualFileName: "filename"}...]
+     * @param audioContext Optional parameter if you want to use your own AudioContext. Otherwise, a new one will be created and the node will be connected to the output destination.
+     * @param numOutChannels Optional number of output channels. Default is 2 and Web Audio supports up to 32.
+     * @param whereIsChuck Optional url to your src folder containing webchuck.js and webchuck.wasm
+     * @returns WebChucK ChucK instance
      */
-    static async init(filenamesToPreload, audioContext, numOutChannels = 2) {
-        const wasm = await loadWasm();
-        if (typeof audioContext === "undefined") {
+    static async init(filenamesToPreload, audioContext, numOutChannels = 2, whereIsChuck = "https://chuck.stanford.edu/webchuck/src/") {
+        const wasm = await loadWasm(whereIsChuck);
+        let defaultAudioContext = false;
+        // If an audioContext is not given, create a default one
+        if (audioContext === undefined) {
             audioContext = new AudioContext();
+            defaultAudioContext = true;
         }
         if (audioContext.state === "suspended") {
             await audioContext.resume();
         }
-        await audioContext.audioWorklet.addModule("https://chuck.stanford.edu/webchuck/src/webchuck.js");
+        await audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js");
         const preloadedFiles = await preloadFiles(filenamesToPreload);
         const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
-        chuck.connect(audioContext.destination);
+        // connect node to default destination if using default audio context
+        if (defaultAudioContext) {
+            chuck.connect(audioContext.destination); // default connection source
+        }
         await chuck.isReady.promise;
         return chuck;
     }
@@ -616,7 +623,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * Get the value (by key) of an associative float array in ChucK.
      * Resolve the deferred promise with .value().
      * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
-     * @param variable name of gobal associative float arry
+     * @param variable name of gobal associative float array
      * @param key the key index to get
      * @returns deferred promise with associative int array value
      */
@@ -627,6 +634,79 @@ export default class Chuck extends window.AudioWorkletNode {
             key,
             callback: callbackID,
         });
+        return this.deferredPromises[callbackID];
+    }
+    // ================== ChucK VM parameters =================== //
+    /**
+     * Set an internal ChucK VM integer parameter.
+     * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamInt(name, value) {
+        this.sendMessage(OutMessage.SET_PARAM_INT, { name, value });
+    }
+    /**
+     * Get an internal ChucK VM integer parameter
+     * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+     * @param name name of value to get
+     * @returns deferred promise with int value
+     */
+    getParamInt(name) {
+        const callbackID = this.nextDeferID();
+        this.sendMessage(OutMessage.GET_PARAM_INT, {
+            name,
+            callback: callbackID,
+        });
+        return this.deferredPromises[callbackID];
+    }
+    /**
+     * Set an internal ChucK VM float parameter
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamFloat(name, value) {
+        this.sendMessage(OutMessage.SET_PARAM_FLOAT, { name, value });
+    }
+    /**
+     * Get an internal ChucK VM float parameter
+     * @param name name of value to get
+     * @returns deferred promise with float value
+     */
+    getParamFloat(name) {
+        const callbackID = this.nextDeferID();
+        this.sendMessage(OutMessage.GET_PARAM_FLOAT, {
+            name,
+            callback: callbackID,
+        });
+        return this.deferredPromises[callbackID];
+    }
+    /**
+     * Set an internal ChucK VM string parameter
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamString(name, value) {
+        this.sendMessage(OutMessage.SET_PARAM_STRING, { name, value });
+    }
+    /**
+     * Get an internal ChucK VM string parameter
+     * e.g. "VERSION"
+     * @param name name of value to get e.g. ("VERSION")
+     * @returns deferred promise with string value
+     */
+    getParamString(name) {
+        const callbackID = this.nextDeferID();
+        this.sendMessage(OutMessage.GET_PARAM_STRING, {
+            name,
+            callback: callbackID,
+        });
+        return this.deferredPromises[callbackID];
+    }
+    // ================== ChucK VM =================== //
+    now() {
+        const callbackID = this.nextDeferID();
+        this.sendMessage(OutMessage.GET_CHUCK_NOW, { callback: callbackID });
         return this.deferredPromises[callbackID];
     }
     // ================= Clear ====================== //
@@ -652,16 +732,18 @@ export default class Chuck extends window.AudioWorkletNode {
         // Default ChucK output destination
         console.log(message);
     }
-    // ================ Internal Private ================== //
+    //--------------------------------------------------------
+    // Internal Message Sending Communication
+    //--------------------------------------------------------
     /**
-     * Internal: Communicate via JS to WebChucK WASM
+     * Internal: Message sending from JS to ChucK
      */
     sendMessage(type, body) {
         const msgBody = body ? { type, ...body } : { type };
         this.port.postMessage(msgBody);
     }
     /**
-     * Internal: Communicate via JS to WebChucK WASM
+     * Internal: Message receiving from ChucK to JS
      */
     receiveMessage(event) {
         const type = event.data.type;

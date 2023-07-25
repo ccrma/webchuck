@@ -37,14 +37,14 @@ export default class Chuck extends window.AudioWorkletNode {
   static chuckID: number = 1;
 
   /**
-   * Constructor for a ChucK Web Audio Node
-   * @param preloadedFiles Files to preload into ChucK's filesystem
+   * Internal constructor for a ChucK AudioWorklet Web Audio Node
+   * @param preloadedFiles Array of Files to preload into ChucK's filesystem
    * @param audioContext AudioContext to connect to
    * @param wasm WebChucK WebAssembly binary
    * @param numOutChannels Number of output channels
-   * @returns WebChucK ChucK instance
+   * @returns ChucK AudioWorklet Node
    */
-  constructor(
+  private constructor(
     preloadedFiles: File[],
     audioContext: AudioContext,
     wasm: ArrayBuffer,
@@ -70,21 +70,26 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Quick initialize a default instance of the ChucK Web Audio Node
-   * @param filenamesToPreload Files to preload into ChucK's filesystem [{serverFileName: ./path, virtualFileName: path}]
-   * @param audioContext AudioContext to connect connect WebChuck node to
-   * @param numOutChannels Number of output channels
-   * @returns 
+   * Call me to initialize a ChucK Web Audio Node. Generally you should have only one instance of this.
+   * @param filenamesToPreload Array of Files to preload into ChucK's filesystem [{serverFileName: "./filename", virtualFileName: "filename"}...]
+   * @param audioContext Optional parameter if you want to use your own AudioContext. Otherwise, a new one will be created and the node will be connected to the output destination.
+   * @param numOutChannels Optional number of output channels. Default is 2 and Web Audio supports up to 32.
+   * @param whereIsChuck Optional url to your src folder containing webchuck.js and webchuck.wasm
+   * @returns WebChucK ChucK instance
    */
-  static async init(
+  public static async init(
     filenamesToPreload: Filename[],
     audioContext?: AudioContext,
-    numOutChannels: number = 2
+    numOutChannels: number = 2,
+    whereIsChuck: string = "https://chuck.stanford.edu/webchuck/src/", // default Chuck src location 
   ): Promise<Chuck> {
-    const wasm = await loadWasm();
+    const wasm = await loadWasm(whereIsChuck);
 
-    if (typeof audioContext === "undefined") {
+    let defaultAudioContext: boolean  = false;
+    // If an audioContext is not given, create a default one
+    if (audioContext === undefined) {
       audioContext = new AudioContext();
+      defaultAudioContext = true;
     }
 
     if (audioContext.state === "suspended") {
@@ -92,11 +97,17 @@ export default class Chuck extends window.AudioWorkletNode {
     }
 
     await audioContext.audioWorklet.addModule(
-      "https://chuck.stanford.edu/webchuck/src/webchuck.js"
+      whereIsChuck + "webchuck.js"
     );
+
     const preloadedFiles = await preloadFiles(filenamesToPreload);
     const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
-    chuck.connect(audioContext.destination);
+
+    // connect node to default destination if using default audio context
+    if (defaultAudioContext) {
+      chuck.connect(audioContext.destination); // default connection source
+    }
+
     await chuck.isReady.promise;
     return chuck;
   }

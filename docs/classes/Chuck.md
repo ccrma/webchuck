@@ -99,15 +99,15 @@ See init() to get started
 
 ### constructor
 
-• **new Chuck**(`preloadedFiles`, `audioContext`, `wasm`, `numOutChannels?`)
+• `Private` **new Chuck**(`preloadedFiles`, `audioContext`, `wasm`, `numOutChannels?`)
 
-Constructor for a ChucK Web Audio Node
+Internal constructor for a ChucK AudioWorklet Web Audio Node
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `preloadedFiles` | `File`[] | `undefined` | Files to preload into ChucK's filesystem |
+| `preloadedFiles` | `File`[] | `undefined` | Array of Files to preload into ChucK's filesystem |
 | `audioContext` | `AudioContext` | `undefined` | AudioContext to connect to |
 | `wasm` | `ArrayBuffer` | `undefined` | WebChucK WebAssembly binary |
 | `numOutChannels` | `number` | `2` | Number of output channels |
@@ -1562,18 +1562,21 @@ ___
 
 ### init
 
-▸ `Static` **init**(`filenamesToPreload`, `audioContext?`, `numOutChannels?`): `Promise`<[`Chuck`](Chuck.md)\>
+▸ `Static` **init**(`filenamesToPreload`, `audioContext?`, `numOutChannels?`, `whereIsChuck?`): `Promise`<[`Chuck`](Chuck.md)\>
 
-Quick initialize a default instance of the ChucK Web Audio Node
+Call me to initialize a ChucK Web Audio Node. Generally you should have only one instance of this.
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `filenamesToPreload` | `Filename`[] | `undefined` | Files to preload into ChucK's filesystem [{serverFileName: ./path, virtualFileName: path}] |
-| `audioContext?` | `AudioContext` | `undefined` | AudioContext to connect connect WebChuck node to |
-| `numOutChannels` | `number` | `2` | Number of output channels |
+| `filenamesToPreload` | `Filename`[] | `undefined` | Array of Files to preload into ChucK's filesystem [{serverFileName: "./filename", virtualFileName: "filename"}...] |
+| `audioContext?` | `AudioContext` | `undefined` | Optional parameter if you want to use your own AudioContext. Otherwise, a new one will be created and the node will be connected to the output destination. |
+| `numOutChannels` | `number` | `2` | Optional number of output channels. Default is 2 and Web Audio supports up to 32. |
+| `whereIsChuck` | `string` | `"https://chuck.stanford.edu/webchuck/src/"` | Optional url to your src folder containing webchuck.js and webchuck.wasm |
 
 #### Returns
 
 `Promise`<[`Chuck`](Chuck.md)\>
+
+WebChucK ChucK instance
