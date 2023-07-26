@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "tsc && rollup dist/index.js --file src/wc-bundle.js --format esm",
+    "test": "npm run build && bash ./test.sh",
     "doc": "typedoc --plugin typedoc-plugin-markdown --out docs src/index.ts --hideBreadcrumbs --disableSources",
     "prepare": "npm run build && npm run doc",
     "postversion": "git push && git push --tags"

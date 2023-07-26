@@ -22,8 +22,8 @@ export default class Chuck extends window.AudioWorkletNode {
     /**
      * Call me to initialize a ChucK Web Audio Node. Generally you only need one instance of this.
      * @example theChuck = await Chuck.init([]); // initialize ChucK with no preloaded files
-     * @example theChuck = await Chuck.init([{serverFileName: "./filename", virtualFileName: "filename"}]); // initialize ChucK with preloaded files
-     * @param filenamesToPreload Array of Files to preload into ChucK's filesystem [{serverFileName: "./filename", virtualFileName: "filename"}...]
+     * @example theChuck = await Chuck.init([{serverFilename: "./filename.ck", virtualFilename: "filename.ck"}...]); // initialize ChucK with preloaded files
+     * @param filenamesToPreload Array of Files to preload into ChucK's filesystem [{serverFilename: "./filename", virtualFilename: "filename"}...]
      * @param audioContext Optional parameter if you want to use your own AudioContext. Otherwise, a new one will be created and the node will be connected to the output destination.
      * @param numOutChannels Optional number of output channels. Default is 2 and Web Audio supports up to 32.
      * @param whereIsChuck Optional url to your src folder containing webchuck.js and webchuck.wasm

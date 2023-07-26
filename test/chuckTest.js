@@ -104,7 +104,7 @@ const testSuite = [
         return outputBox.innerText == "PASSED";
     }),
 
-    new Test(3, "[sound] load in a server file from URL, 880Hz 1 second", async () => {
+    new Test(3, "[sound] Dynamic load in a chuck file from URL, 880Hz 1 second", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 3);
         aChuck.chuckPrint = (output) => {
@@ -116,7 +116,7 @@ const testSuite = [
         return outputBox.innerText == "PASSED";
     }),
 
-    new Test(4, "[sound] load in a server file from URL, kick wav file", async () => {
+    new Test(4, "[sound] Dynamic load in a kick wav file from URL", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 4);
         aChuck.chuckPrint = (output) => {
@@ -133,7 +133,7 @@ const testSuite = [
         return outputBox.innerText.includes("KICKED");
     }),
 
-    new Test(5, "set/get int and float, webchuck and js", async () => {
+    new Test(5, "Sync test set/get int and float, webchuck and js", async () => {
         var outputBox = document.getElementById("output-" + 5);
         devChuck.runCode(`
             1 => global int GLOBAL_INT;
@@ -150,7 +150,7 @@ const testSuite = [
         return test1 && test2;
     }),
 
-    new Test(6, "shred management, add, remove, replace", async () => {
+    new Test(6, "Test shred management, add, remove, replace", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 6);
         aChuck.chuckPrint = (output) => {
@@ -207,17 +207,27 @@ const testSuite = [
 async function runTestSuite() {
     // Reset
     Test.testScore = 0;
-    // clear all output boxes
+    // clear all output boxes and results
     for(const test of testSuite) {
         var outputBox = document.getElementById("output-" + test.id);
         outputBox.innerText = "";
+        var result = document.getElementById("result-" + test.id);
+        result.innerHTML = "--";
+        result.style.color = "black";
     }
+
+    parallelize = document.getElementById("parallelize").checked;
 
     devChuck = await Chuck.init([], undefined, undefined, "../src/");
 
     for(const test of testSuite) {
         console.log("Running test " + test.id)
-        test.run(); // TODO: add/remove the await to run tests in parallel
+
+        if (parallelize) {
+            test.run(); 
+        } else {
+            await test.run();
+        }
     }
 }
 
