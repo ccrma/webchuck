@@ -73,20 +73,20 @@ You can also embed WebChucK as a JS module into your `index.html`. Here's an exa
 
 ## Building 
 
-Clone this repository and install npm dependencies.
+Clone this repository and install npm dependencies. You'll need to make sure you have [Node](https://nodejs.org) installed.
 
 ```
 git clone https://github.com/ccrma/webchuck.git
 npm install
 ```
 
-Then build by running
+Then build WebChucK by running
 
 ```
 npm run build
 ```
 
-### Testing
+## Testing
 
 After you've built WebChucK, serve this repository using your local server. Then open `./test/index.html` in your browser.
 
@@ -96,7 +96,7 @@ You can do this on your own or simply run
 npm run test
 ```
 
-**Note**: The live WebChuck Test Suite can also be found [here](https://chuck.stanford.edu/webchuck/test)
+**Additionallly**: The live WebChuck Test Suite can also be found [here](https://chuck.stanford.edu/webchuck/test)
 
 ## Documentation
 

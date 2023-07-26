@@ -1565,7 +1565,7 @@ theChuck = await Chuck.init([]); // initialize ChucK with no preloaded files
 **`Example`**
 
 ```ts
-theChuck = await Chuck.init([{serverFilename: "./filename", virtualFilename: "filename"}]); // initialize ChucK with preloaded files
+theChuck = await Chuck.init([{serverFilename: "./filename.ck", virtualFilename: "filename.ck"}...]); // initialize ChucK with preloaded files
 ```
 
 #### Parameters
