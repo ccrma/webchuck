@@ -24,7 +24,7 @@ export default class DeferredPromise {
      * @returns value from resolve/reject
      */
     async value() {
-        // whether resolve or reject, return the value in the promise
+        // whether resolve or reject, return the value wrapped in a promise
         return await this.promise;
     }
 }

@@ -53,7 +53,9 @@ export default class Chuck extends window.AudioWorkletNode {
         Chuck.chuckID++;
     }
     /**
-     * Call me to initialize a ChucK Web Audio Node. Generally you should have only one instance of this.
+     * Call me to initialize a ChucK Web Audio Node. Generally you only need one instance of this.
+     * @example theChuck = await Chuck.init([]); // initialize ChucK with no preloaded files
+     * @example theChuck = await Chuck.init([{serverFileName: "./filename", virtualFileName: "filename"}]); // initialize ChucK with preloaded files
      * @param filenamesToPreload Array of Files to preload into ChucK's filesystem [{serverFileName: "./filename", virtualFileName: "filename"}...]
      * @param audioContext Optional parameter if you want to use your own AudioContext. Otherwise, a new one will be created and the node will be connected to the output destination.
      * @param numOutChannels Optional number of output channels. Default is 2 and Web Audio supports up to 32.
@@ -108,16 +110,17 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Automatically fetch and load in a file from a URL to ChucK's virtual filesystem
-     * @param filename URL to file to fetch and load file
+     * @param url URL to a file to fetch and load file
      */
-    async loadFile(filename) {
-        if (filename.endsWith(".ck")) {
-            return fetch(filename).then((response) => response.text()).then((text) => {
+    async loadFile(url) {
+        const filename = url.split("/").pop();
+        if (url.endsWith(".ck")) {
+            return fetch(url).then((response) => response.text()).then((text) => {
                 this.createFile("", filename, text);
             });
         }
         else {
-            return fetch(filename).then((response) => response.arrayBuffer()).then((buffer) => {
+            return fetch(url).then((response) => response.arrayBuffer()).then((buffer) => {
                 this.createFile("", filename, new Uint8Array(buffer));
             });
         }
@@ -131,7 +134,7 @@ export default class Chuck extends window.AudioWorkletNode {
     runCode(code) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.RUN_CODE, { callback: callbackID, code });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Run a string of ChucK code using a different dac (unsure of functionality)
@@ -147,12 +150,12 @@ export default class Chuck extends window.AudioWorkletNode {
             code,
             dac_name: dacName,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Replace last running shred with string of ChucK code to execute
      * @param code ChucK code string to replace last Shred
-     * @returns promise to shred ID
+     * @returns promise to shred ID that is removed
      */
     replaceCode(code) {
         const callbackID = this.nextDeferID();
@@ -160,7 +163,7 @@ export default class Chuck extends window.AudioWorkletNode {
             callback: callbackID,
             code,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Replace last running shred with string of ChucK code to execute, to another dac (??)
@@ -175,7 +178,7 @@ export default class Chuck extends window.AudioWorkletNode {
             code,
             dac_name: dacName,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Remove the last running shred
@@ -184,7 +187,7 @@ export default class Chuck extends window.AudioWorkletNode {
     removeLastCode() {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.REMOVE_LAST_CODE, { callback: callbackID });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     // ================== Run/Replace File ================== //
     /**
@@ -199,7 +202,7 @@ export default class Chuck extends window.AudioWorkletNode {
             callback: callbackID,
             filename,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??).
@@ -215,7 +218,7 @@ export default class Chuck extends window.AudioWorkletNode {
             dac_name: dacName,
             filename,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Run a ChucK file that is already in the WebChucK virtual file system with arguments.
@@ -231,7 +234,7 @@ export default class Chuck extends window.AudioWorkletNode {
             colon_separated_args: colonSeparatedArgs,
             filename,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Run a ChucK file that is already in the WebChucK virtual file system with arguments.
@@ -249,7 +252,7 @@ export default class Chuck extends window.AudioWorkletNode {
             dac_name: dacName,
             filename,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Replace the last running shred with a file to execute.
@@ -263,7 +266,7 @@ export default class Chuck extends window.AudioWorkletNode {
             callback: callbackID,
             filename,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Replace the last running shred with a file to execute.
@@ -279,7 +282,7 @@ export default class Chuck extends window.AudioWorkletNode {
             dac_name: dacName,
             filename,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Replace the last running shred with a file to execute, passing arguments.
@@ -295,7 +298,7 @@ export default class Chuck extends window.AudioWorkletNode {
             colon_separated_args: colonSeparatedArgs,
             filename,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Replace the last running shred with a file to execute, passing arguments, and dac.
@@ -313,7 +316,7 @@ export default class Chuck extends window.AudioWorkletNode {
             dac_name: dacName,
             filename,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     // ================== Shred =================== //
     /**
@@ -327,12 +330,12 @@ export default class Chuck extends window.AudioWorkletNode {
             shred,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Check if a shred from ChucK VM is running
      * @param shred which shred ID to check
-     * @returns promise to whether Shred was removed successfully
+     * @returns promise to whether Shred was is running
      */
     isShredActive(shred) {
         const callbackID = this.nextDeferID();
@@ -340,7 +343,7 @@ export default class Chuck extends window.AudioWorkletNode {
             shred,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     // ================== Event =================== //
     /**
@@ -386,7 +389,7 @@ export default class Chuck extends window.AudioWorkletNode {
         return callbackID;
     }
     /**
-     * <more informatino needed>
+     * <more information needed>
      * @param variable
      * @param callbackID
      */
@@ -407,10 +410,8 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get the value of a global int variable in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getInt("var").value();
      * @param variable name of variable
-     * @returns deferred promise with value of the variable
+     * @returns promise with value of the variable
      */
     getInt(variable) {
         const callbackID = this.nextDeferID();
@@ -418,7 +419,7 @@ export default class Chuck extends window.AudioWorkletNode {
             variable,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Set the value of a global float variable in ChucK
@@ -430,10 +431,8 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get the value of a global float variable in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getFloat("var").value();
      * @param variable name of variable
-     * @returns deferred promise with value of the variable
+     * @returns promise with value of the variable
      */
     getFloat(variable) {
         const callbackID = this.nextDeferID();
@@ -441,7 +440,7 @@ export default class Chuck extends window.AudioWorkletNode {
             variable,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Set the value of a global string variable in ChucK
@@ -453,10 +452,8 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get the value of a global string variable in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getString("var").value();
      * @param variable name of string variable
-     * @returns deferred promise with string value
+     * @returns promise with string value
      */
     getString(variable) {
         const callbackID = this.nextDeferID();
@@ -464,7 +461,7 @@ export default class Chuck extends window.AudioWorkletNode {
             variable,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     // ================== Int[] =================== //
     /**
@@ -477,10 +474,8 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get the values of a global int array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getIntArray("var").value();
      * @param variable name of int array variable
-     * @returns deferred promise of array of numbers
+     * @returns promise to array of numbers
      */
     getIntArray(variable) {
         const callbackID = this.nextDeferID();
@@ -488,7 +483,7 @@ export default class Chuck extends window.AudioWorkletNode {
             variable,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Set a single value (by index) in a global int array in ChucK
@@ -505,11 +500,9 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get a single value (by index) in a global int array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getIntArrayValue("var", index).value();
      * @param variable name of int array variable
      * @param index array index to get
-     * @returns deferred promise for a number
+     * @returns promise to the value
      */
     getIntArrayValue(variable, index) {
         const callbackID = this.nextDeferID();
@@ -518,7 +511,7 @@ export default class Chuck extends window.AudioWorkletNode {
             index,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Set the value (by key) of an associative int array in ChucK.
@@ -536,8 +529,7 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get the value (by key) of an associative int array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
+     * e.g. theChucK.getAssociateIntArrayValue("var", "key");
      * @param variable name of gobal associative int arry
      * @param key the key index to get
      * @returns deferred promise with associative int array value
@@ -549,7 +541,7 @@ export default class Chuck extends window.AudioWorkletNode {
             key,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     // ================== Float[] =================== //
     /**
@@ -562,8 +554,7 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get the values of a global float array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getFloatArray("var").value();
+     * e.g. theChucK.getFloatArray("var");
      * @param variable name of float array
      * @returns deferred promise of float values
      */
@@ -573,7 +564,7 @@ export default class Chuck extends window.AudioWorkletNode {
             variable,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Set the float value of a global float array by index
@@ -590,8 +581,7 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get the float value of a global float arry by index.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getFloatArray("var", index).value();
+     * e.g. theChucK.getFloatArray("var", index);
      * @param variable name of float arry
      * @param index indfex of element
      * @returns deferred promise of float value
@@ -603,7 +593,7 @@ export default class Chuck extends window.AudioWorkletNode {
             index,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Set the value (by key) of an associative float array in ChucK.
@@ -621,8 +611,7 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Get the value (by key) of an associative float array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
+     * e.g. theChucK.getAssociateIntArrayValue("var", "key");
      * @param variable name of gobal associative float array
      * @param key the key index to get
      * @returns deferred promise with associative int array value
@@ -634,12 +623,12 @@ export default class Chuck extends window.AudioWorkletNode {
             key,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     // ================== ChucK VM parameters =================== //
     /**
      * Set an internal ChucK VM integer parameter.
-     * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+     * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "IS_REAL_TIME_AUDIO_HINT", "TTY_COLOR".
      * @param name name of value to set
      * @param value value to set
      */
@@ -658,7 +647,7 @@ export default class Chuck extends window.AudioWorkletNode {
             name,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Set an internal ChucK VM float parameter
@@ -679,7 +668,7 @@ export default class Chuck extends window.AudioWorkletNode {
             name,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     /**
      * Set an internal ChucK VM string parameter
@@ -693,7 +682,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * Get an internal ChucK VM string parameter
      * e.g. "VERSION"
      * @param name name of value to get e.g. ("VERSION")
-     * @returns deferred promise with string value
+     * @returns promise with string value
      */
     getParamString(name) {
         const callbackID = this.nextDeferID();
@@ -701,13 +690,17 @@ export default class Chuck extends window.AudioWorkletNode {
             name,
             callback: callbackID,
         });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     // ================== ChucK VM =================== //
+    /**
+     * Get the current time of the ChucK VM
+     * @returns promise to current Chuck time in samples
+     */
     now() {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.GET_CHUCK_NOW, { callback: callbackID });
-        return this.deferredPromises[callbackID];
+        return this.deferredPromises[callbackID].value();
     }
     // ================= Clear ====================== //
     /**
