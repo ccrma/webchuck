@@ -1,5 +1,5 @@
 # WebChucK
-[site](https://chuck.stanford.edu/webchuck/) | [docs](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
+[site](https://chuck.stanford.edu/webchuck/) | [docs](https://chuck.stanford.edu/webchuck/docs) | [npm](https://www.npmjs.com/package/webchuck)
 
 WebChucK brings [ChucK](https://chuck.stanford.edu), a strongly-timed audio programming language, to 
 the web! ChucK's C++ source code has been compiled down to WebAssembly (WASM) and runs via the 
@@ -73,16 +73,16 @@ You can also embed WebChucK as a JS module into your `index.html`. Here's an exa
 
 ## Building 
 
-Clone this repository and install npm dependencies. You'll need to make sure you have [Node](https://nodejs.org) installed.
+Clone this repository. Then make sure you have [Node](https://nodejs.org) installed.
 
 ```
 git clone https://github.com/ccrma/webchuck.git
+```
+
+Then install npm dependencies and build WebChuck by running:
+
+```
 npm install
-```
-
-Then build WebChucK by running
-
-```
 npm run build
 ```
 
@@ -100,7 +100,7 @@ npm run test
 
 ## Documentation
 
-Check out WebChucK's full documentation [here](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md)
+Check out WebChucK's full documentation [here](https://chuck.stanford.edu/webchuck/docs)
 
 To generate latest documentation run
 

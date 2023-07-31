@@ -1,11 +1,14 @@
 /**
  * DeferredPromise is a utility class that enables resolving or rejecting
- * promises externally. This is particularly useful when working with async
- * communication, like with a Worker.
+ * promises externally. This is particularly useful when working with asynchronous
+ * communication, like with a Worker or in this case WebChuck.
  *
- * @typeparam T The type of the resolved value. Defaults to any if not provided.
+ * @typeparam `T` The type of the resolved value. Defaults to any if not provided.
  */
 export default class DeferredPromise<T = any> {
+  /**
+   * @internal
+   */
   // The promise instance that will be resolved or rejected externally
   public readonly promise: Promise<T>;
 
@@ -31,8 +34,14 @@ export default class DeferredPromise<T = any> {
   }
 
   /**
-   * Get the value from any Deferred Promise
-   * @returns value from resolve/reject
+   * Returns the Promise to value `T` from the DeferredPromise. WebChucK occasionally returns a DeferredPromise and the value can be accessed in the following way:
+   * 
+   * @example
+   * ```ts
+   * const deferredPromise = new DeferredPromise();
+   * const value = await deferredPromise.value(); // await the Promise to value `T`
+   * ``` 
+   * @returns Promise to value `T`. If resolved, the value is returned. If rejected, the error is thrown.
    */
   public async value() {
     // whether resolve or reject, return the value wrapped in this.promise
