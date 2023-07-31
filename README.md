@@ -2,13 +2,13 @@
 [site](https://chuck.stanford.edu/webchuck/) | [docs](https://chuck.stanford.edu/webchuck/docs) | [npm](https://www.npmjs.com/package/webchuck)
 
 WebChucK brings [ChucK](https://chuck.stanford.edu), a strongly-timed audio programming language, to 
-the web! ChucK's C++ source code has been compiled down to WebAssembly (WASM) and runs via the 
-`AudioWorkletNode` interface of the Web Audio API. With near-native performance, WebChucK runs on 
-modern desktop browsers as well as tablets and mobile devices! Bring together ChucK's real-time 
-sound synthesis engine and the interconnectivity of the web to create new experiences and develop 
-creative workflows. Use WebChucK to build online audiovisual experiences, immersive multi-channel 
-audio web apps, online musical instruments, simply by embedding WebChucK into any website! To learn 
-more about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
+the web! ChucK's C++ source code has been compiled with [Emscripten](https://emscripten.org) and 
+targets WebAssembly (WASM) to run via the `AudioWorkletNode` interface of the Web Audio API. 
+With near-native performance, WebChucK runs on modern desktop browsers as well as tablets and mobile 
+devices! Bring together ChucK's real-time sound synthesis engine and web tools to create new 
+experiences and develop creative workflows. Embed WebChucK into any website to build online audiovisual 
+experiences, immersive multi-channel audio web apps, or shareable musical instruments! To learn more 
+about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
 Try out WebChucK in action through [WebChucK IDE](https://chuck.stanford.edu/ide/)!
 

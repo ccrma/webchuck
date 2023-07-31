@@ -17,11 +17,11 @@ import { defer, loadWasm, preloadFiles } from "./utils";
 import { InMessage, OutMessage } from "./enums";
 /**
  * WebChucK: ChucK Web Audio Node class.
- * Call **{@link init | Init}** to create a ChucK instance
+ * Use **{@link init | Init}** to create a ChucK instance
  */
 export default class Chuck extends window.AudioWorkletNode {
     /**
-     * Internal constructor for a ChucK AudioWorklet Web Audio Node. Use **{@link init| Init}** to create a ChucK instance.
+     * Private internal constructor for a ChucK AudioWorklet Web Audio Node. Use public **{@link init| Init}** to create a ChucK instance.
      * @param preloadedFiles Array of Files to preload into ChucK's filesystem
      * @param audioContext AudioContext to connect to
      * @param wasm WebChucK WebAssembly binary
@@ -176,7 +176,7 @@ export default class Chuck extends window.AudioWorkletNode {
         return this.deferredPromises[callbackID].value();
     }
     /**
-     * Replace last running shred with string of ChucK code to execute.
+     * Replace the last currently running shred with string of ChucK code to execute.
      * @example theChuck.replaceCode("SinOsc osc => dac; 1::second => now;");
      * @param code ChucK code string to run and replace last shred
      * @returns Promise to shred ID that is replaced
@@ -290,7 +290,7 @@ export default class Chuck extends window.AudioWorkletNode {
         return this.deferredPromises[callbackID].value();
     }
     /**
-     * Replace the last running shred with a Chuck file to execute.
+     * Replace the last currently running shred with a Chuck file to execute.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
      * @param filename file to be replace last
      * @returns Promise to replaced shred ID
@@ -767,7 +767,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * theChuck.chuckPrint = (message) => { console.log("ChucK says: " + message); }
      *
      * // Now when ChucK prints, it will print to our callback method
-     * theChuck.runCode("<<< \"Hello World!\" >>>");
+     * theChuck.runCode(`<<< "Hello World!", "" >>>`);
      *
      * // Output: "ChucK says: Hello World!"
      * ```

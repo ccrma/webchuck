@@ -16,6 +16,7 @@
     "outDir": "./dist"
   },
   "typedocOptions" : {
+    "githubPages": false,
     "categorizeByGroup": false,
     "excludeInternal": true,
     "sort": "static-first",
@@ -26,8 +27,10 @@
       "inherited": false,
     },
     "exclude": "src/DeferredPromise.ts",
-    "plugin": [
-    ],
+    "plugin": [],
+    "navigationLinks": {
+      "WebChucK": "../"
+    },
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
