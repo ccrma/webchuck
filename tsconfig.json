@@ -15,6 +15,20 @@
     "declaration": true,
     "outDir": "./dist"
   },
+  "typedocOptions" : {
+    "categorizeByGroup": false,
+    "excludeInternal": true,
+    "sort": "static-first",
+    "hideGenerator": true,
+    "defaultCategory": "ChucK",
+    "visibilityFilters": {
+      "private": true,
+      "inherited": false,
+    },
+    "exclude": "src/DeferredPromise.ts",
+    "plugin": [
+    ],
+  },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

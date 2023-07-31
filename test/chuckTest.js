@@ -179,9 +179,55 @@ const testSuite = [
                removed2 == true;
     }),
 
-    new Test(7, "Chuck VM operations and parameters", async () => {
+    new Test(7, "Test RunFileWithArgs", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 7);
+
+        // print lambda
+        print = (output) => {
+            outputBox.innerHTML += output + "<br>";
+        }
+        aChuck.chuckPrint = print;
+        outputBox.innerHTML += "Passing in arguments: 1 2 foo" + "<br>";
+
+        await aChuck.loadFile("./testFiles/test7.ck");
+        await aChuck.runFileWithArgs("test7.ck", "1:2:foo");
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        return outputBox.innerText.includes("number of arguments: 3");
+    }),
+    
+    new Test(8, "Test isShredActive", async () => {
+        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        var outputBox = document.getElementById("output-" + 8);
+
+        // print lambda
+        print = (output) => {
+            outputBox.innerHTML += output + "<br>";
+        }
+        aChuck.chuckPrint = print;
+        outputBox.innerHTML += "Starting shred 1 for 1 second" + "<br>";
+
+        aChuck.runCode(`1::second => now;`);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        var test1; var test2;
+        await aChuck.isShredActive(1).then((active) => {
+            print("@100ms - Shred 1 is active: " + active);
+            test1 = active == 1
+        });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await aChuck.isShredActive(1).then((active) => {
+            print("@1s - Shred 1 is active: " + active);
+            test2 = active == 0
+        });
+
+        return test1 && test2;
+    }),
+
+
+    new Test(99, "Chuck VM operations and parameters", async () => {
+        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        var outputBox = document.getElementById("output-" + 99);
 
         // print lambda
         print = (output) => {
@@ -197,8 +243,6 @@ const testSuite = [
 
         return outputBox.innerText !== "";
     }),
-
-
 
 
 ]

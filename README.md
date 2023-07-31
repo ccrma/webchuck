@@ -71,7 +71,9 @@ You can also embed WebChucK as a JS module into your `index.html`. Here's an exa
 </script>
 ```
 
-## Building 
+## For Developers
+
+### Building 
 
 Clone this repository. Then make sure you have [Node](https://nodejs.org) installed.
 
@@ -86,7 +88,7 @@ npm install
 npm run build
 ```
 
-## Testing
+### Testing
 
 After you've built WebChucK, serve this repository using your local server. Then open `./test/index.html` in your browser.
 
@@ -102,7 +104,7 @@ npm run test
 
 Check out WebChucK's full documentation [here](https://chuck.stanford.edu/webchuck/docs)
 
-To generate latest documentation run
+Run this to generate the latest WebChucK documentation using [TypeDoc](https://typedoc.org/)
 
 ```
 npm run doc

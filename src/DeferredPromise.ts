@@ -6,9 +6,6 @@
  * @typeparam `T` The type of the resolved value. Defaults to any if not provided.
  */
 export default class DeferredPromise<T = any> {
-  /**
-   * @internal
-   */
   // The promise instance that will be resolved or rejected externally
   public readonly promise: Promise<T>;
 
