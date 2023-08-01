@@ -24,7 +24,7 @@ export enum OutMessage {
   // Event
   SIGNAL_EVENT = "signalChuckEvent",
   BROADCAST_EVENT = "broadcastChuckEvent",
-  LISTEN_FOR_EVENT_ONCE = "listenForEventOnce",
+  LISTEN_FOR_EVENT_ONCE = "listenForChuckEventOnce",
   START_LISTENING_FOR_EVENT = "startListeningForChuckEvent",
   STOP_LISTENING_FOR_EVENT = "stopListeningForChuckEvent",
 

@@ -15,7 +15,7 @@ export declare enum OutMessage {
     IS_SHRED_ACTIVE = "isShredActive",
     SIGNAL_EVENT = "signalChuckEvent",
     BROADCAST_EVENT = "broadcastChuckEvent",
-    LISTEN_FOR_EVENT_ONCE = "listenForEventOnce",
+    LISTEN_FOR_EVENT_ONCE = "listenForChuckEventOnce",
     START_LISTENING_FOR_EVENT = "startListeningForChuckEvent",
     STOP_LISTENING_FOR_EVENT = "stopListeningForChuckEvent",
     SET_INT = "setChuckInt",

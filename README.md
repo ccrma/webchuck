@@ -1,14 +1,14 @@
 # WebChucK
-[site](https://chuck.stanford.edu/webchuck/) | [docs](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
+[site](https://chuck.stanford.edu/webchuck/) | [docs](https://chuck.stanford.edu/webchuck/docs) | [npm](https://www.npmjs.com/package/webchuck)
 
 WebChucK brings [ChucK](https://chuck.stanford.edu), a strongly-timed audio programming language, to 
-the web! ChucK's C++ source code has been compiled down to WebAssembly (WASM) and runs via the 
-`AudioWorkletNode` interface of the Web Audio API. With near-native performance, WebChucK runs on 
-modern desktop browsers as well as tablets and mobile devices! Bring together ChucK's real-time 
-sound synthesis engine and the interconnectivity of the web to create new experiences and develop 
-creative workflows. Use WebChucK to build online audiovisual experiences, immersive multi-channel 
-audio web apps, online musical instruments, simply by embedding WebChucK into any website! To learn 
-more about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
+the web! ChucK's C++ source code has been compiled with [Emscripten](https://emscripten.org) and 
+targets WebAssembly (WASM) to run via the `AudioWorkletNode` interface of the Web Audio API. 
+With near-native performance, WebChucK runs on modern desktop browsers as well as tablets and mobile 
+devices! Bring together ChucK's real-time sound synthesis engine and web tools to create new 
+experiences and develop creative workflows. Embed WebChucK into any website to build online audiovisual 
+experiences, immersive multi-channel audio web apps, or shareable musical instruments! To learn more 
+about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
 Try out WebChucK in action through [WebChucK IDE](https://chuck.stanford.edu/ide/)!
 
@@ -71,22 +71,24 @@ You can also embed WebChucK as a JS module into your `index.html`. Here's an exa
 </script>
 ```
 
-## Building 
+## For Developers
 
-Clone this repository and install npm dependencies. You'll need to make sure you have [Node](https://nodejs.org) installed.
+### Building 
+
+Clone this repository. Then make sure you have [Node](https://nodejs.org) installed.
 
 ```
 git clone https://github.com/ccrma/webchuck.git
+```
+
+Then install npm dependencies and build WebChuck by running:
+
+```
 npm install
-```
-
-Then build WebChucK by running
-
-```
 npm run build
 ```
 
-## Testing
+### Testing
 
 After you've built WebChucK, serve this repository using your local server. Then open `./test/index.html` in your browser.
 
@@ -100,9 +102,9 @@ npm run test
 
 ## Documentation
 
-Check out WebChucK's full documentation [here](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md)
+Check out WebChucK's full documentation [here](https://chuck.stanford.edu/webchuck/docs)
 
-To generate latest documentation run
+Run this to generate the latest WebChucK documentation using [TypeDoc](https://typedoc.org/)
 
 ```
 npm run doc
