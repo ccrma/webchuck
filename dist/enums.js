@@ -21,7 +21,7 @@ export var OutMessage;
     // Event
     OutMessage["SIGNAL_EVENT"] = "signalChuckEvent";
     OutMessage["BROADCAST_EVENT"] = "broadcastChuckEvent";
-    OutMessage["LISTEN_FOR_EVENT_ONCE"] = "listenForEventOnce";
+    OutMessage["LISTEN_FOR_EVENT_ONCE"] = "listenForChuckEventOnce";
     OutMessage["START_LISTENING_FOR_EVENT"] = "startListeningForChuckEvent";
     OutMessage["STOP_LISTENING_FOR_EVENT"] = "stopListeningForChuckEvent";
     // Int, Float, String

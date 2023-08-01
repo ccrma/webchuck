@@ -457,9 +457,11 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * <more information needed>
-   * @param variable 
-   * @param callback 
+   * Listen for a specific ChucK event to be signaled (through either signal()
+   * or broadcast()). Once signaled, the callback function is invoked. This can
+   * happen at most once per call.
+   * @param variable ChucK global event variable to be signaled
+   * @param callback javascript callback function
    */
   public listenForEventOnce(variable: string, callback: () => void) {
     const callbackID = this.eventCallbackCounter++;
@@ -471,10 +473,13 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * <more information needed>
-   * @param variable 
-   * @param callback 
-   * @returns 
+   * Listen for a specific ChucK event to be signaled (through either signal()
+   * or broadcast()). Each time the event is signaled, the callback function is
+   * invoked. This continues until {@link stopListeningForEvent} is called on the
+   * specific event.
+   * @param variable ChucK global event variable to be signaled
+   * @param callback javascript callback function
+   * @returns javascript callback ID
    */
   public startListeningForEvent(variable: string, callback: () => void) {
     const callbackID = this.eventCallbackCounter++;
@@ -487,9 +492,10 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * <more information needed>
-   * @param variable 
-   * @param callbackID 
+   * Stop listening to a specific ChucK event, undoing the process started
+   * by {@link startListeningForEvent}.
+   * @param variable ChucK global event variable to be signaled
+   * @param callbackID callback ID returned by {@link startListeningForEvent}
    */
   public stopListeningForEvent(variable: string, callbackID: number) {
     this.sendMessage(OutMessage.STOP_LISTENING_FOR_EVENT, {

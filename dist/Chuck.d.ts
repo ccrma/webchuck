@@ -206,22 +206,28 @@ export default class Chuck extends window.AudioWorkletNode {
      */
     broadcastEvent(variable: string): void;
     /**
-     * <more information needed>
-     * @param variable
-     * @param callback
+     * Listen for a specific ChucK event to be signaled (through either signal()
+     * or broadcast()). Once signaled, the callback function is invoked. This can
+     * happen at most once per call.
+     * @param variable ChucK global event variable to be signaled
+     * @param callback javascript callback function
      */
     listenForEventOnce(variable: string, callback: () => void): void;
     /**
-     * <more information needed>
-     * @param variable
-     * @param callback
-     * @returns
+     * Listen for a specific ChucK event to be signaled (through either signal()
+     * or broadcast()). Each time the event is signaled, the callback function is
+     * invoked. This continues until {@link stopListeningForEvent} is called on the
+     * specific event.
+     * @param variable ChucK global event variable to be signaled
+     * @param callback javascript callback function
+     * @returns javascript callback ID
      */
     startListeningForEvent(variable: string, callback: () => void): number;
     /**
-     * <more information needed>
-     * @param variable
-     * @param callbackID
+     * Stop listening to a specific ChucK event, undoing the process started
+     * by {@link startListeningForEvent}.
+     * @param variable ChucK global event variable to be signaled
+     * @param callbackID callback ID returned by {@link startListeningForEvent}
      */
     stopListeningForEvent(variable: string, callbackID: number): void;
     /**
