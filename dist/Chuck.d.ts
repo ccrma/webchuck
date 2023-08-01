@@ -191,10 +191,10 @@ export default class Chuck extends window.AudioWorkletNode {
     removeShred(shred: number | string): Promise<unknown>;
     /**
      * Check if shred with ID is running in the Chuck Virtual Machine.
-     * @param shredId The shred ID to check
+     * @param shred The shred ID to check
      * @returns Promise to whether shred is running, 1 if running, 0 if not
      */
-    isShredActive(shredID: number | string): Promise<unknown>;
+    isShredActive(shred: number | string): Promise<unknown>;
     /**
      * Signal a ChucK event global. This will wake the first waiting Shred.
      * @param variable ChucK global event variable to be signaled

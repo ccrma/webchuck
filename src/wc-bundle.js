@@ -529,13 +529,13 @@ class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Check if shred with ID is running in the Chuck Virtual Machine.
-     * @param shredId The shred ID to check
+     * @param shred The shred ID to check
      * @returns Promise to whether shred is running, 1 if running, 0 if not
      */
-    isShredActive(shredID) {
+    isShredActive(shred) {
         const callbackID = this.nextDeferID();
         this.sendMessage(OutMessage.IS_SHRED_ACTIVE, {
-            shredID,
+            shred,
             callback: callbackID,
         });
         return this.deferredPromises[callbackID].value();
