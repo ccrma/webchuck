@@ -12,7 +12,9 @@ more about WebChucK and what it can do, check out [https://chuck.stanford.edu/we
 
 Try out WebChucK in action through [WebChucK IDE](https://chuck.stanford.edu/ide/)!
 
-## Usage
+## Getting Started
+
+### NPM 
 
 Install WebChucK via npm and use it with TypeScript:
 
@@ -43,6 +45,8 @@ if (theChuck.context.state === "suspended") {
 }
 ```
 
+### CDN 
+
 You can also embed WebChucK as a JS module into your `index.html`. Here's an example below in JavaScript:
 
 ```html
@@ -67,6 +71,39 @@ You can also embed WebChucK as a JS module into your `index.html`. Here's an exa
 </script>
 ```
 
+## Building 
+
+Clone this repository and install npm dependencies. You'll need to make sure you have [Node](https://nodejs.org) installed.
+
+```
+git clone https://github.com/ccrma/webchuck.git
+npm install
+```
+
+Then build WebChucK by running
+
+```
+npm run build
+```
+
+## Testing
+
+After you've built WebChucK, serve this repository using your local server. Then open `./test/index.html` in your browser.
+
+You can do this on your own or simply run
+
+```
+npm run test
+```
+
+**Additionallly**: The live WebChuck Test Suite can also be found [here](https://chuck.stanford.edu/webchuck/test)
+
 ## Documentation
 
 Check out WebChucK's full documentation [here](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md)
+
+To generate latest documentation run
+
+```
+npm run doc
+```

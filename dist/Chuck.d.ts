@@ -1,5 +1,4 @@
-import DeferredPromise from "./DeferredPromise";
-import type { File, Filename } from "./utils";
+import type { Filename } from "./utils";
 /**
  * WebChucK: ChucK Web Audio Node class.
  * See init() to get started
@@ -12,22 +11,25 @@ export default class Chuck extends window.AudioWorkletNode {
     private isReady;
     static chuckID: number;
     /**
-     * Constructor for a ChucK Web Audio Node
-     * @param preloadedFiles Files to preload into ChucK's filesystem
+     * Internal constructor for a ChucK AudioWorklet Web Audio Node
+     * @param preloadedFiles Array of Files to preload into ChucK's filesystem
      * @param audioContext AudioContext to connect to
      * @param wasm WebChucK WebAssembly binary
      * @param numOutChannels Number of output channels
+     * @returns ChucK AudioWorklet Node
+     */
+    private constructor();
+    /**
+     * Call me to initialize a ChucK Web Audio Node. Generally you only need one instance of this.
+     * @example theChuck = await Chuck.init([]); // initialize ChucK with no preloaded files
+     * @example theChuck = await Chuck.init([{serverFilename: "./filename.ck", virtualFilename: "filename.ck"}...]); // initialize ChucK with preloaded files
+     * @param filenamesToPreload Array of Files to preload into ChucK's filesystem [{serverFilename: "./filename", virtualFilename: "filename"}...]
+     * @param audioContext Optional parameter if you want to use your own AudioContext. Otherwise, a new one will be created and the node will be connected to the output destination.
+     * @param numOutChannels Optional number of output channels. Default is 2 and Web Audio supports up to 32.
+     * @param whereIsChuck Optional url to your src folder containing webchuck.js and webchuck.wasm
      * @returns WebChucK ChucK instance
      */
-    constructor(preloadedFiles: File[], audioContext: AudioContext, wasm: ArrayBuffer, numOutChannels?: number);
-    /**
-     * Quick initialize a default instance of the ChucK Web Audio Node
-     * @param filenamesToPreload Files to preload into ChucK's filesystem [{serverFileName: ./path, virtualFileName: path}]
-     * @param audioContext AudioContext to connect connect WebChuck node to
-     * @param numOutChannels Number of output channels
-     * @returns
-     */
-    static init(filenamesToPreload: Filename[], audioContext?: AudioContext, numOutChannels?: number): Promise<Chuck>;
+    static init(filenamesToPreload: Filename[], audioContext?: AudioContext, numOutChannels?: number, whereIsChuck?: string): Promise<Chuck>;
     /**
      * Private function for ChucK to handle execution of tasks.
      * Will create a Deferred Promise that wraps a task for WebChucK to execute
@@ -44,15 +46,15 @@ export default class Chuck extends window.AudioWorkletNode {
     createFile(directory: string, filename: string, data: string | ArrayBuffer): void;
     /**
      * Automatically fetch and load in a file from a URL to ChucK's virtual filesystem
-     * @param filename URL to file to fetch and load file
+     * @param url URL to a file to fetch and load file
      */
-    loadFile(filename: string): Promise<void>;
+    loadFile(url: string): Promise<void>;
     /**
      * Run a string of ChucK code
      * @param code ChucK code string to be executed
      * @returns promise to the shred ID
      */
-    runCode(code: string): DeferredPromise<unknown>;
+    runCode(code: string): Promise<unknown>;
     /**
      * Run a string of ChucK code using a different dac (unsure of functionality)
      * -tf (5/30/2023)
@@ -60,32 +62,32 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param dacName dac for ChucK (??)
      * @returns promise to the shred ID
      */
-    runCodeWithReplacementDac(code: string, dacName: string): DeferredPromise<unknown>;
+    runCodeWithReplacementDac(code: string, dacName: string): Promise<unknown>;
     /**
      * Replace last running shred with string of ChucK code to execute
      * @param code ChucK code string to replace last Shred
-     * @returns promise to shred ID
+     * @returns promise to shred ID that is removed
      */
-    replaceCode(code: string): DeferredPromise<unknown>;
+    replaceCode(code: string): Promise<unknown>;
     /**
      * Replace last running shred with string of ChucK code to execute, to another dac (??)
      * @param code ChucK code string to replace last Shred
      * @param dacName dac for ChucK (??)
      * @returns promise to shred ID
      */
-    replaceCodeWithReplacementDac(code: string, dacName: string): DeferredPromise<unknown>;
+    replaceCodeWithReplacementDac(code: string, dacName: string): Promise<unknown>;
     /**
      * Remove the last running shred
      * @returns promise to the shred ID that was removed
      */
-    removeLastCode(): DeferredPromise<unknown>;
+    removeLastCode(): Promise<unknown>;
     /**
      * Run a ChucK file that is already in the WebChucK virtual file system.
      * Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
      * @param filename ChucK file to be run
      * @returns promise to shred ID
      */
-    runFile(filename: string): DeferredPromise<unknown>;
+    runFile(filename: string): Promise<unknown>;
     /**
      * Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??).
      * Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
@@ -93,7 +95,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param dacName dac for ChucK (??)
      * @returns promise to shred ID
      */
-    runFileWithReplacementDac(filename: string, dacName: string): DeferredPromise<unknown>;
+    runFileWithReplacementDac(filename: string, dacName: string): Promise<unknown>;
     /**
      * Run a ChucK file that is already in the WebChucK virtual file system with arguments.
      * e.g. native equivalent of `chuck myFile:arg`
@@ -101,7 +103,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param colonSeparatedArgs arguments to pass to the file
      * @returns promise to shred ID
      */
-    runFileWithArgs(filename: string, colonSeparatedArgs: string): DeferredPromise<unknown>;
+    runFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<unknown>;
     /**
      * Run a ChucK file that is already in the WebChucK virtual file system with arguments.
      * e.g. native equivalent of `chuck myFile:arg`
@@ -110,14 +112,14 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param dacName dac for ChucK (??)
      * @returns promise to shred ID
      */
-    runFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): DeferredPromise<unknown>;
+    runFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): Promise<unknown>;
     /**
      * Replace the last running shred with a file to execute.
      * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
      * @param filename file to be replace last
      * @returns promise to shred ID
      */
-    replaceFile(filename: string): DeferredPromise<unknown>;
+    replaceFile(filename: string): Promise<unknown>;
     /**
      * Replace the last running shred with a file to execute.
      * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
@@ -125,7 +127,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param dacName dac for ChucK (??)
      * @returns promise to shred ID
      */
-    replaceFileWithReplacementDac(filename: string, dacName: string): DeferredPromise<unknown>;
+    replaceFileWithReplacementDac(filename: string, dacName: string): Promise<unknown>;
     /**
      * Replace the last running shred with a file to execute, passing arguments.
      * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
@@ -133,7 +135,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param colonSeparatedArgs arguments to pass in to file
      * @returns promise to shred ID
      */
-    replaceFileWithArgs(filename: string, colonSeparatedArgs: string): DeferredPromise<unknown>;
+    replaceFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<unknown>;
     /**
      * Replace the last running shred with a file to execute, passing arguments, and dac.
      * Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
@@ -142,19 +144,19 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param dacName dac for ChucK (??)
      * @returns promise to shred ID
      */
-    replaceFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): DeferredPromise<unknown>;
+    replaceFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): Promise<unknown>;
     /**
      * Remove a shred from ChucK VM by ID
      * @param shred shred ID to be removed
      * @returns promise to whether Shred was removed successfully
      */
-    removeShred(shred: number | string): DeferredPromise<unknown>;
+    removeShred(shred: number | string): Promise<unknown>;
     /**
      * Check if a shred from ChucK VM is running
      * @param shred which shred ID to check
-     * @returns promise to whether Shred was removed successfully
+     * @returns promise to whether Shred was is running
      */
-    isShredActive(shred: number | string): DeferredPromise<unknown>;
+    isShredActive(shred: number | string): Promise<unknown>;
     /**
      * Signal a ChucK event, will wake the first waiting Shred
      * @param variable ChucK event variable to be signaled
@@ -179,7 +181,7 @@ export default class Chuck extends window.AudioWorkletNode {
      */
     startListeningForEvent(variable: string, callback: () => void): number;
     /**
-     * <more informatino needed>
+     * <more information needed>
      * @param variable
      * @param callbackID
      */
@@ -192,12 +194,10 @@ export default class Chuck extends window.AudioWorkletNode {
     setInt(variable: string, value: number): void;
     /**
      * Get the value of a global int variable in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getInt("var").value();
      * @param variable name of variable
-     * @returns deferred promise with value of the variable
+     * @returns promise with value of the variable
      */
-    getInt(variable: string): DeferredPromise<unknown>;
+    getInt(variable: string): Promise<unknown>;
     /**
      * Set the value of a global float variable in ChucK
      * @param variable name of variable
@@ -206,12 +206,10 @@ export default class Chuck extends window.AudioWorkletNode {
     setFloat(variable: string, value: number): void;
     /**
      * Get the value of a global float variable in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getFloat("var").value();
      * @param variable name of variable
-     * @returns deferred promise with value of the variable
+     * @returns promise with value of the variable
      */
-    getFloat(variable: string): DeferredPromise<unknown>;
+    getFloat(variable: string): Promise<unknown>;
     /**
      * Set the value of a global string variable in ChucK
      * @param variable name of string variable
@@ -220,12 +218,10 @@ export default class Chuck extends window.AudioWorkletNode {
     setString(variable: string, value: string): void;
     /**
      * Get the value of a global string variable in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getString("var").value();
      * @param variable name of string variable
-     * @returns deferred promise with string value
+     * @returns promise with string value
      */
-    getString(variable: string): DeferredPromise<unknown>;
+    getString(variable: string): Promise<unknown>;
     /**
      * Set the values of a global int array in ChucK
      * @param variable name of int array variable
@@ -234,12 +230,10 @@ export default class Chuck extends window.AudioWorkletNode {
     setIntArray(variable: string, values: number[]): void;
     /**
      * Get the values of a global int array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getIntArray("var").value();
      * @param variable name of int array variable
-     * @returns deferred promise of array of numbers
+     * @returns promise to array of numbers
      */
-    getIntArray(variable: string): DeferredPromise<unknown>;
+    getIntArray(variable: string): Promise<unknown>;
     /**
      * Set a single value (by index) in a global int array in ChucK
      * @param variable name of int array variable
@@ -249,13 +243,11 @@ export default class Chuck extends window.AudioWorkletNode {
     setIntArrayValue(variable: string, index: number, value: number[]): void;
     /**
      * Get a single value (by index) in a global int array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getIntArrayValue("var", index).value();
      * @param variable name of int array variable
      * @param index array index to get
-     * @returns deferred promise for a number
+     * @returns promise to the value
      */
-    getIntArrayValue(variable: string, index: number): DeferredPromise<unknown>;
+    getIntArrayValue(variable: string, index: number): Promise<unknown>;
     /**
      * Set the value (by key) of an associative int array in ChucK.
      * Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
@@ -266,13 +258,12 @@ export default class Chuck extends window.AudioWorkletNode {
     setAssociativeIntArrayValue(variable: string, key: string, value: number | string): void;
     /**
      * Get the value (by key) of an associative int array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
+     * e.g. theChucK.getAssociateIntArrayValue("var", "key");
      * @param variable name of gobal associative int arry
      * @param key the key index to get
      * @returns deferred promise with associative int array value
      */
-    getAssociativeIntArrayValue(variable: string, key: string): DeferredPromise<unknown>;
+    getAssociativeIntArrayValue(variable: string, key: string): Promise<unknown>;
     /**
      * Set the values of a global float array in ChucK
      * @param variable name of float array
@@ -281,12 +272,11 @@ export default class Chuck extends window.AudioWorkletNode {
     setFloatArray(variable: string, values: number[]): void;
     /**
      * Get the values of a global float array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getFloatArray("var").value();
+     * e.g. theChucK.getFloatArray("var");
      * @param variable name of float array
      * @returns deferred promise of float values
      */
-    getFloatArray(variable: string): DeferredPromise<unknown>;
+    getFloatArray(variable: string): Promise<unknown>;
     /**
      * Set the float value of a global float array by index
      * @param variable name of float array
@@ -296,13 +286,12 @@ export default class Chuck extends window.AudioWorkletNode {
     setFloatArrayValue(variable: string, index: number, value: number): void;
     /**
      * Get the float value of a global float arry by index.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getFloatArray("var", index).value();
+     * e.g. theChucK.getFloatArray("var", index);
      * @param variable name of float arry
      * @param index indfex of element
      * @returns deferred promise of float value
      */
-    getFloatArrayValue(variable: string, index: number): DeferredPromise<unknown>;
+    getFloatArrayValue(variable: string, index: number): Promise<unknown>;
     /**
      * Set the value (by key) of an associative float array in ChucK.
      * Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
@@ -313,13 +302,56 @@ export default class Chuck extends window.AudioWorkletNode {
     setAssociativeFloatArrayValue(variable: string, key: string, value: number): void;
     /**
      * Get the value (by key) of an associative float array in ChucK.
-     * Resolve the deferred promise with .value().
-     * e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
-     * @param variable name of gobal associative float arry
+     * e.g. theChucK.getAssociateIntArrayValue("var", "key");
+     * @param variable name of gobal associative float array
      * @param key the key index to get
      * @returns deferred promise with associative int array value
      */
-    getAssociativeFloatArrayValue(variable: string, key: string): DeferredPromise<unknown>;
+    getAssociativeFloatArrayValue(variable: string, key: string): Promise<unknown>;
+    /**
+     * Set an internal ChucK VM integer parameter.
+     * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "IS_REAL_TIME_AUDIO_HINT", "TTY_COLOR".
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamInt(name: string, value: number): void;
+    /**
+     * Get an internal ChucK VM integer parameter
+     * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+     * @param name name of value to get
+     * @returns deferred promise with int value
+     */
+    getParamInt(name: string): Promise<unknown>;
+    /**
+     * Set an internal ChucK VM float parameter
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamFloat(name: string, value: number): void;
+    /**
+     * Get an internal ChucK VM float parameter
+     * @param name name of value to get
+     * @returns deferred promise with float value
+     */
+    getParamFloat(name: string): Promise<unknown>;
+    /**
+     * Set an internal ChucK VM string parameter
+     * @param name name of value to set
+     * @param value value to set
+     */
+    setParamString(name: string, value: string): void;
+    /**
+     * Get an internal ChucK VM string parameter
+     * e.g. "VERSION"
+     * @param name name of value to get e.g. ("VERSION")
+     * @returns promise with string value
+     */
+    getParamString(name: string): Promise<unknown>;
+    /**
+     * Get the current time of the ChucK VM
+     * @returns promise to current Chuck time in samples
+     */
+    now(): Promise<unknown>;
     /**
      * Remove all shreds and reset the WebChucK instance
      */
@@ -335,11 +367,11 @@ export default class Chuck extends window.AudioWorkletNode {
      */
     chuckPrint(message: string): void;
     /**
-     * Internal: Communicate via JS to WebChucK WASM
+     * Internal: Message sending from JS to ChucK
      */
     private sendMessage;
     /**
-     * Internal: Communicate via JS to WebChucK WASM
+     * Internal: Message receiving from ChucK to JS
      */
     private receiveMessage;
 }

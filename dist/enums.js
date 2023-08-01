@@ -45,6 +45,15 @@ export var OutMessage;
     OutMessage["GET_FLOAT_ARRAY_VALUE"] = "getGlobalFloatArrayValue";
     OutMessage["SET_ASSOCIATIVE_FLOAT_ARRAY_VALUE"] = "setGlobalAssociativeFloatArrayValue";
     OutMessage["GET_ASSOCIATIVE_FLOAT_ARRAY_VALUE"] = "getGlobalAssociativeFloatArrayValue";
+    // VM Params
+    OutMessage["SET_PARAM_INT"] = "setParamInt";
+    OutMessage["GET_PARAM_INT"] = "getParamInt";
+    OutMessage["SET_PARAM_FLOAT"] = "setParamFloat";
+    OutMessage["GET_PARAM_FLOAT"] = "getParamFloat";
+    OutMessage["SET_PARAM_STRING"] = "setParamString";
+    OutMessage["GET_PARAM_STRING"] = "getParamString";
+    // VM
+    OutMessage["GET_CHUCK_NOW"] = "getChuckNow";
     // Clear
     OutMessage["CLEAR_INSTANCE"] = "clearChuckInstance";
     OutMessage["CLEAR_GLOBALS"] = "clearGlobals";

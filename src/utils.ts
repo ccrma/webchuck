@@ -85,10 +85,10 @@ export async function preloadFiles(
   return await Promise.all(promises);
 }
 
-export async function loadWasm(): Promise<ArrayBuffer> {
+export async function loadWasm(whereIsChuck: string): Promise<ArrayBuffer> {
   return await new Promise((resolve, reject) => {
     asyncLoadFile(
-      "https://chuck.stanford.edu/webchuck/src/webchuck.wasm",
+      whereIsChuck + "webchuck.wasm",
       resolve,
       reject
     );

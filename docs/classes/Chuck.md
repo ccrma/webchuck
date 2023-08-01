@@ -99,15 +99,15 @@ See init() to get started
 
 ### constructor
 
-• **new Chuck**(`preloadedFiles`, `audioContext`, `wasm`, `numOutChannels?`)
+• `Private` **new Chuck**(`preloadedFiles`, `audioContext`, `wasm`, `numOutChannels?`)
 
-Constructor for a ChucK Web Audio Node
+Internal constructor for a ChucK AudioWorklet Web Audio Node
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `preloadedFiles` | `File`[] | `undefined` | Files to preload into ChucK's filesystem |
+| `preloadedFiles` | `File`[] | `undefined` | Array of Files to preload into ChucK's filesystem |
 | `audioContext` | `AudioContext` | `undefined` | AudioContext to connect to |
 | `wasm` | `ArrayBuffer` | `undefined` | WebChucK WebAssembly binary |
 | `numOutChannels` | `number` | `2` | Number of output channels |
@@ -549,11 +549,10 @@ ___
 
 ### getAssociativeFloatArrayValue
 
-▸ **getAssociativeFloatArrayValue**(`variable`, `key`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getAssociativeFloatArrayValue**(`variable`, `key`): `Promise`<`unknown`\>
 
 Get the value (by key) of an associative float array in ChucK.
-Resolve the deferred promise with .value().
-e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
+e.g. theChucK.getAssociateIntArrayValue("var", "key");
 
 #### Parameters
 
@@ -564,7 +563,7 @@ e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 deferred promise with associative int array value
 
@@ -572,11 +571,10 @@ ___
 
 ### getAssociativeIntArrayValue
 
-▸ **getAssociativeIntArrayValue**(`variable`, `key`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getAssociativeIntArrayValue**(`variable`, `key`): `Promise`<`unknown`\>
 
 Get the value (by key) of an associative int array in ChucK.
-Resolve the deferred promise with .value().
-e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
+e.g. theChucK.getAssociateIntArrayValue("var", "key");
 
 #### Parameters
 
@@ -587,7 +585,7 @@ e.g. theChucK.getAssociateIntArrayValue("var", "key").value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 deferred promise with associative int array value
 
@@ -595,11 +593,9 @@ ___
 
 ### getFloat
 
-▸ **getFloat**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getFloat**(`variable`): `Promise`<`unknown`\>
 
 Get the value of a global float variable in ChucK.
-Resolve the deferred promise with .value().
-e.g. theChucK.getFloat("var").value();
 
 #### Parameters
 
@@ -609,19 +605,18 @@ e.g. theChucK.getFloat("var").value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
-deferred promise with value of the variable
+promise with value of the variable
 
 ___
 
 ### getFloatArray
 
-▸ **getFloatArray**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getFloatArray**(`variable`): `Promise`<`unknown`\>
 
 Get the values of a global float array in ChucK.
-Resolve the deferred promise with .value().
-e.g. theChucK.getFloatArray("var").value();
+e.g. theChucK.getFloatArray("var");
 
 #### Parameters
 
@@ -631,7 +626,7 @@ e.g. theChucK.getFloatArray("var").value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 deferred promise of float values
 
@@ -639,11 +634,10 @@ ___
 
 ### getFloatArrayValue
 
-▸ **getFloatArrayValue**(`variable`, `index`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getFloatArrayValue**(`variable`, `index`): `Promise`<`unknown`\>
 
 Get the float value of a global float arry by index.
-Resolve the deferred promise with .value().
-e.g. theChucK.getFloatArray("var", index).value();
+e.g. theChucK.getFloatArray("var", index);
 
 #### Parameters
 
@@ -654,7 +648,7 @@ e.g. theChucK.getFloatArray("var", index).value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 deferred promise of float value
 
@@ -662,11 +656,9 @@ ___
 
 ### getInt
 
-▸ **getInt**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getInt**(`variable`): `Promise`<`unknown`\>
 
 Get the value of a global int variable in ChucK.
-Resolve the deferred promise with .value().
-e.g. theChucK.getInt("var").value();
 
 #### Parameters
 
@@ -676,19 +668,17 @@ e.g. theChucK.getInt("var").value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
-deferred promise with value of the variable
+promise with value of the variable
 
 ___
 
 ### getIntArray
 
-▸ **getIntArray**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getIntArray**(`variable`): `Promise`<`unknown`\>
 
 Get the values of a global int array in ChucK.
-Resolve the deferred promise with .value().
-e.g. theChucK.getIntArray("var").value();
 
 #### Parameters
 
@@ -698,19 +688,17 @@ e.g. theChucK.getIntArray("var").value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
-deferred promise of array of numbers
+promise to array of numbers
 
 ___
 
 ### getIntArrayValue
 
-▸ **getIntArrayValue**(`variable`, `index`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getIntArrayValue**(`variable`, `index`): `Promise`<`unknown`\>
 
 Get a single value (by index) in a global int array in ChucK.
-Resolve the deferred promise with .value().
-e.g. theChucK.getIntArrayValue("var", index).value();
 
 #### Parameters
 
@@ -721,15 +709,15 @@ e.g. theChucK.getIntArrayValue("var", index).value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
-deferred promise for a number
+promise to the value
 
 ___
 
 ### getParamFloat
 
-▸ **getParamFloat**(`name`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getParamFloat**(`name`): `Promise`<`unknown`\>
 
 Get an internal ChucK VM float parameter
 
@@ -741,7 +729,7 @@ Get an internal ChucK VM float parameter
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 deferred promise with float value
 
@@ -749,7 +737,7 @@ ___
 
 ### getParamInt
 
-▸ **getParamInt**(`name`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getParamInt**(`name`): `Promise`<`unknown`\>
 
 Get an internal ChucK VM integer parameter
 e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
@@ -762,7 +750,7 @@ e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 deferred promise with int value
 
@@ -770,7 +758,7 @@ ___
 
 ### getParamString
 
-▸ **getParamString**(`name`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getParamString**(`name`): `Promise`<`unknown`\>
 
 Get an internal ChucK VM string parameter
 e.g. "VERSION"
@@ -783,19 +771,17 @@ e.g. "VERSION"
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
-deferred promise with string value
+promise with string value
 
 ___
 
 ### getString
 
-▸ **getString**(`variable`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **getString**(`variable`): `Promise`<`unknown`\>
 
 Get the value of a global string variable in ChucK.
-Resolve the deferred promise with .value().
-e.g. theChucK.getString("var").value();
 
 #### Parameters
 
@@ -805,15 +791,15 @@ e.g. theChucK.getString("var").value();
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
-deferred promise with string value
+promise with string value
 
 ___
 
 ### isShredActive
 
-▸ **isShredActive**(`shred`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **isShredActive**(`shred`): `Promise`<`unknown`\>
 
 Check if a shred from ChucK VM is running
 
@@ -825,9 +811,9 @@ Check if a shred from ChucK VM is running
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
-promise to whether Shred was removed successfully
+promise to whether Shred was is running
 
 ___
 
@@ -852,7 +838,7 @@ ___
 
 ### loadFile
 
-▸ **loadFile**(`filename`): `Promise`<`void`\>
+▸ **loadFile**(`url`): `Promise`<`void`\>
 
 Automatically fetch and load in a file from a URL to ChucK's virtual filesystem
 
@@ -860,7 +846,7 @@ Automatically fetch and load in a file from a URL to ChucK's virtual filesystem
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `filename` | `string` | URL to file to fetch and load file |
+| `url` | `string` | URL to a file to fetch and load file |
 
 #### Returns
 
@@ -885,11 +871,15 @@ ___
 
 ### now
 
-▸ **now**(): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **now**(): `Promise`<`unknown`\>
+
+Get the current time of the ChucK VM
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
+
+promise to current Chuck time in samples
 
 ___
 
@@ -959,13 +949,13 @@ ___
 
 ### removeLastCode
 
-▸ **removeLastCode**(): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **removeLastCode**(): `Promise`<`unknown`\>
 
 Remove the last running shred
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to the shred ID that was removed
 
@@ -973,7 +963,7 @@ ___
 
 ### removeShred
 
-▸ **removeShred**(`shred`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **removeShred**(`shred`): `Promise`<`unknown`\>
 
 Remove a shred from ChucK VM by ID
 
@@ -985,7 +975,7 @@ Remove a shred from ChucK VM by ID
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to whether Shred was removed successfully
 
@@ -993,7 +983,7 @@ ___
 
 ### replaceCode
 
-▸ **replaceCode**(`code`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **replaceCode**(`code`): `Promise`<`unknown`\>
 
 Replace last running shred with string of ChucK code to execute
 
@@ -1005,15 +995,15 @@ Replace last running shred with string of ChucK code to execute
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
-promise to shred ID
+promise to shred ID that is removed
 
 ___
 
 ### replaceCodeWithReplacementDac
 
-▸ **replaceCodeWithReplacementDac**(`code`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **replaceCodeWithReplacementDac**(`code`, `dacName`): `Promise`<`unknown`\>
 
 Replace last running shred with string of ChucK code to execute, to another dac (??)
 
@@ -1026,7 +1016,7 @@ Replace last running shred with string of ChucK code to execute, to another dac 
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1034,7 +1024,7 @@ ___
 
 ### replaceFile
 
-▸ **replaceFile**(`filename`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **replaceFile**(`filename`): `Promise`<`unknown`\>
 
 Replace the last running shred with a file to execute.
 Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
@@ -1047,7 +1037,7 @@ Note that the file must already be in the WebChucK virtual file system via prelo
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1055,7 +1045,7 @@ ___
 
 ### replaceFileWithArgs
 
-▸ **replaceFileWithArgs**(`filename`, `colonSeparatedArgs`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **replaceFileWithArgs**(`filename`, `colonSeparatedArgs`): `Promise`<`unknown`\>
 
 Replace the last running shred with a file to execute, passing arguments.
 Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
@@ -1069,7 +1059,7 @@ Note that the file must already be in the WebChucK virtual file system via prelo
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1077,7 +1067,7 @@ ___
 
 ### replaceFileWithArgsWithReplacementDac
 
-▸ **replaceFileWithArgsWithReplacementDac**(`filename`, `colonSeparatedArgs`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **replaceFileWithArgsWithReplacementDac**(`filename`, `colonSeparatedArgs`, `dacName`): `Promise`<`unknown`\>
 
 Replace the last running shred with a file to execute, passing arguments, and dac.
 Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
@@ -1092,7 +1082,7 @@ Note that the file must already be in the WebChucK virtual file system via prelo
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1100,7 +1090,7 @@ ___
 
 ### replaceFileWithReplacementDac
 
-▸ **replaceFileWithReplacementDac**(`filename`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **replaceFileWithReplacementDac**(`filename`, `dacName`): `Promise`<`unknown`\>
 
 Replace the last running shred with a file to execute.
 Note that the file must already be in the WebChucK virtual file system via preloadedFiles[], createFile(), or loadFile()
@@ -1114,7 +1104,7 @@ Note that the file must already be in the WebChucK virtual file system via prelo
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1122,7 +1112,7 @@ ___
 
 ### runCode
 
-▸ **runCode**(`code`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **runCode**(`code`): `Promise`<`unknown`\>
 
 Run a string of ChucK code
 
@@ -1134,7 +1124,7 @@ Run a string of ChucK code
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to the shred ID
 
@@ -1142,7 +1132,7 @@ ___
 
 ### runCodeWithReplacementDac
 
-▸ **runCodeWithReplacementDac**(`code`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **runCodeWithReplacementDac**(`code`, `dacName`): `Promise`<`unknown`\>
 
 Run a string of ChucK code using a different dac (unsure of functionality)
 -tf (5/30/2023)
@@ -1156,7 +1146,7 @@ Run a string of ChucK code using a different dac (unsure of functionality)
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to the shred ID
 
@@ -1164,7 +1154,7 @@ ___
 
 ### runFile
 
-▸ **runFile**(`filename`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **runFile**(`filename`): `Promise`<`unknown`\>
 
 Run a ChucK file that is already in the WebChucK virtual file system.
 Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
@@ -1177,7 +1167,7 @@ Note that the file must already have been loaded via preloadedFiles[], createFil
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1185,7 +1175,7 @@ ___
 
 ### runFileWithArgs
 
-▸ **runFileWithArgs**(`filename`, `colonSeparatedArgs`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **runFileWithArgs**(`filename`, `colonSeparatedArgs`): `Promise`<`unknown`\>
 
 Run a ChucK file that is already in the WebChucK virtual file system with arguments.
 e.g. native equivalent of `chuck myFile:arg`
@@ -1199,7 +1189,7 @@ e.g. native equivalent of `chuck myFile:arg`
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1207,7 +1197,7 @@ ___
 
 ### runFileWithArgsWithReplacementDac
 
-▸ **runFileWithArgsWithReplacementDac**(`filename`, `colonSeparatedArgs`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **runFileWithArgsWithReplacementDac**(`filename`, `colonSeparatedArgs`, `dacName`): `Promise`<`unknown`\>
 
 Run a ChucK file that is already in the WebChucK virtual file system with arguments.
 e.g. native equivalent of `chuck myFile:arg`
@@ -1222,7 +1212,7 @@ e.g. native equivalent of `chuck myFile:arg`
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1230,7 +1220,7 @@ ___
 
 ### runFileWithReplacementDac
 
-▸ **runFileWithReplacementDac**(`filename`, `dacName`): [`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+▸ **runFileWithReplacementDac**(`filename`, `dacName`): `Promise`<`unknown`\>
 
 Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??).
 Note that the file must already have been loaded via preloadedFiles[], createFile(), or loadFile()
@@ -1244,7 +1234,7 @@ Note that the file must already have been loaded via preloadedFiles[], createFil
 
 #### Returns
 
-[`DeferredPromise`](DeferredPromise.md)<`unknown`\>
+`Promise`<`unknown`\>
 
 promise to shred ID
 
@@ -1451,7 +1441,7 @@ ___
 ▸ **setParamInt**(`name`, `value`): `void`
 
 Set an internal ChucK VM integer parameter.
-e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
+e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "IS_REAL_TIME_AUDIO_HINT", "TTY_COLOR".
 
 #### Parameters
 
@@ -1545,7 +1535,7 @@ ___
 
 ▸ **stopListeningForEvent**(`variable`, `callbackID`): `void`
 
-<more informatino needed>
+<more information needed>
 
 #### Parameters
 
@@ -1562,18 +1552,33 @@ ___
 
 ### init
 
-▸ `Static` **init**(`filenamesToPreload`, `audioContext?`, `numOutChannels?`): `Promise`<[`Chuck`](Chuck.md)\>
+▸ `Static` **init**(`filenamesToPreload`, `audioContext?`, `numOutChannels?`, `whereIsChuck?`): `Promise`<[`Chuck`](Chuck.md)\>
 
-Quick initialize a default instance of the ChucK Web Audio Node
+Call me to initialize a ChucK Web Audio Node. Generally you only need one instance of this.
+
+**`Example`**
+
+```ts
+theChuck = await Chuck.init([]); // initialize ChucK with no preloaded files
+```
+
+**`Example`**
+
+```ts
+theChuck = await Chuck.init([{serverFilename: "./filename.ck", virtualFilename: "filename.ck"}...]); // initialize ChucK with preloaded files
+```
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `filenamesToPreload` | `Filename`[] | `undefined` | Files to preload into ChucK's filesystem [{serverFileName: ./path, virtualFileName: path}] |
-| `audioContext?` | `AudioContext` | `undefined` | AudioContext to connect connect WebChuck node to |
-| `numOutChannels` | `number` | `2` | Number of output channels |
+| `filenamesToPreload` | `Filename`[] | `undefined` | Array of Files to preload into ChucK's filesystem [{serverFilename: "./filename", virtualFilename: "filename"}...] |
+| `audioContext?` | `AudioContext` | `undefined` | Optional parameter if you want to use your own AudioContext. Otherwise, a new one will be created and the node will be connected to the output destination. |
+| `numOutChannels` | `number` | `2` | Optional number of output channels. Default is 2 and Web Audio supports up to 32. |
+| `whereIsChuck` | `string` | `"https://chuck.stanford.edu/webchuck/src/"` | Optional url to your src folder containing webchuck.js and webchuck.wasm |
 
 #### Returns
 
 `Promise`<[`Chuck`](Chuck.md)\>
+
+WebChucK ChucK instance
