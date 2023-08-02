@@ -71,41 +71,13 @@ You can also embed WebChucK as a JS module into your `index.html`. Here's an exa
 </script>
 ```
 
-## For Developers
-
-### Building 
-
-Clone this repository. Then make sure you have [Node](https://nodejs.org) installed.
-
-```
-git clone https://github.com/ccrma/webchuck.git
-```
-
-Then install npm dependencies and build WebChuck by running:
-
-```
-npm install
-npm run build
-```
-
-### Testing
-
-After you've built WebChucK, serve this repository using your local server. Then open `./test/index.html` in your browser.
-
-You can do this on your own or simply run
-
-```
-npm run test
-```
-
-**Additionallly**: The live WebChuck Test Suite can also be found [here](https://chuck.stanford.edu/webchuck/test)
+Once `theChuck` is initalized, you now have a web ChucK instance. Read the API reference to see how to communicate between JS and ChucK e.g. removing shreds, syncing variables, monitoring the VM etc.
 
 ## Documentation
 
-Check out WebChucK's full documentation [here](https://chuck.stanford.edu/webchuck/docs)
+WebChucK full documentation and API reference: [here](https://chuck.stanford.edu/webchuck/docs)
 
-Run this to generate the latest WebChucK documentation using [TypeDoc](https://typedoc.org/)
+## For Developers
 
-```
-npm run doc
-```
+If you are a developer, check out the [Developer Guide](https://github.com/ccrma/webchuck/blob/main/DEVELOPER_GUIDE.md) to get started.
+

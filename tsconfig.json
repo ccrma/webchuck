@@ -23,14 +23,12 @@
     "hideGenerator": true,
     "defaultCategory": "ChucK",
     "visibilityFilters": {
-      "private": true,
+      "private": false,
       "inherited": false,
     },
     "exclude": "src/DeferredPromise.ts",
     "plugin": [],
-    "navigationLinks": {
-      "WebChucK": "../"
-    },
+    "sidebarLinks": { },
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

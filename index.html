@@ -1,139 +1,170 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>WebChucK</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<!-- Animation -->
-<div id="animationContainer"></div>
 
-<!-- Hero -->
-<div class="px-4 pt-0 my-5 text-center border-bottom">
-    <h1 class="display-4 fw-bold">WebChucK
-    <div style="display: inline; height: auto; align-items: center;">
-      <a href="https://chuck.stanford.edu">
-        <img src="https://chuck.stanford.edu/doc/images/chuck-logo2023w.png" alt="ChucK logo" width="64" height="64" loading="lazy">
-      </a>
-    </div>
-  </h1>
-  <div class="col-lg-8 mx-auto">
-    <h2 class="lead mb-4"><em>ChucK => now on the Web</em></h2>
-    <p>Web-based computer music programming with ChucK for online audiovisual experiences, web apps, musical instruments and more! Take ChucK with you on the go!
-    </p>
-    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-2">
-      <div>
-        <button id="try" type="button" class="btn btn-success btn-md px-4 me-sm-3" disabled>Try WebChucK!</button>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>WebChucK</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <!-- Animation -->
+    <div id="animationContainer"></div>
+
+    <!-- Hero -->
+    <div class="px-4 pt-0 my-5 text-center border-bottom">
+      <h1 class="display-4 fw-bold">WebChucK
+        <div style="display: inline; height: auto; align-items: center;">
+          <a href="https://chuck.stanford.edu">
+            <img src="https://chuck.stanford.edu/doc/images/chuck-logo2023w.png" alt="ChucK logo" width="64" height="64"
+              loading="lazy">
+          </a>
+        </div>
+      </h1>
+      <div class="col-lg-8 mx-auto">
+        <h2 class="lead mb-4"><em>ChucK => now on the Web</em></h2>
+        <p>Web-based computer music programming with ChucK for online audiovisual experiences, web apps, musical
+          instruments and more! Take ChucK with you on the go!
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-2">
+          <div>
+            <button id="try" type="button" class="btn btn-success btn-md px-4 me-sm-3" disabled>Try WebChucK!</button>
+          </div>
+          <div>
+            <a href="https://chuck.stanford.edu/ide" target="_blank">
+              <button type="button" class="btn btn-warning btn-md px-4 me-sm-3">Explore WebChucK IDE! (new!)</button>
+            </a>
+          </div>
+        </div>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+          <div style="margin-right: 10px;">
+            <a href="./docs/classes/Chuck.html" target="_blank">
+              <button type="button" class="btn btn-outline-secondary btn-md px-4">Read the Documentation</button>
+            </a>
+          </div>
+        </div>
       </div>
-      <div>
-        <a href="https://chuck.stanford.edu/ide" target="_blank">
-          <button type="button" class="btn btn-warning btn-md px-4 me-sm-3">Explore WebChucK IDE! (new!)</button>
-        </a>
+
+
+
+      <div class="overflow-hidden" style="max-height: 30vh;">
+        <div class="container px-5">
+          <img src="img/webchuck-dark.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image"
+            width="700" height="500" loading="lazy">
+        </div>
       </div>
+
     </div>
-    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+
+    <h2 id="webchuck">WebChucK?</h2>
+    <p><a href="https://github.com/ccrma/webchuck" target="_blank">github</a> | <a
+        href="https://chuck.stanford.edu/webchuck/docs" target="_blank">docs</a>
+      | <a href="https://www.npmjs.com/package/webchuck" target="_blank">npm</a></p>
+    <p>WebChucK brings <a href="https://chuck.stanford.edu" target="_blank">ChucK</a>, the
+      strongly-timed audio programming language, to the web! ChucK’s C++
+      source code has been compiled with Emscripten to WebAssembly (WASM) and runs via
+      the <code>AudioWorkletNode</code> interface of the Web Audio API. With
+      near-native performance, WebChucK runs on modern desktop browsers as
+      well as tablets and mobile devices! Bring together ChucK’s real-time
+      sound synthesis engine and the interconnectivity of the web to create
+      new experiences and develop creative workflows. Embed WebChucK into any website to power
+      online audiovisual experiences, immersive multi-channel audio web apps,
+      or shareable musical instruments! Check out the <a href="https://github.com/ccrma/webchuck"
+        target="_blank">GitHub</a> to learn more or contribute!</p>
+
+    <p>WebChucK powers <b>WebChucK IDE</b>: an amazing web-based programming sandbox for ChucK</p>
+    <a href="https://chuck.stanford.edu/ide">
+      <button type="button" class="btn btn-warning btn-md px-4 me-sm-3">Try WebChucK IDE! (new!)</button>
+    </a>
+
+    <br>
+    <br>
+    <p>Read more about WebChucK and WebChucK IDE:</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-left mb-5">
       <div style="margin-right: 10px;">
         <a href="https://drive.google.com/file/d/1BbRtKw6y3q0CUppIq7cU4oE_A8RAGmWh/view" target="_blank">
           <button type="button" class="btn btn-outline-secondary btn-md px-4">WebChucK paper (NIME 2023)</button>
         </a>
       </div>
+      <div style="margin-right: 10px;">
+        <a href="https://ccrma.stanford.edu/~tzfeng/publish/2023-smc-webchuck-ide.pdf" target="_blank">
+          <button type="button" class="btn btn-outline-secondary btn-md px-4">WebChucK IDE paper (SMC 2023)</button>
+        </a>
+      </div>
       <div>
-        <!-- FUTURE SMC PAPER -->
-      </div>
-    </div>
-    
-    
-  </div>
-  <div class="overflow-hidden" style="max-height: 30vh;">
-    <div class="container px-5">
-      <img src="img/webchuck-dark.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="500" loading="lazy">
-    </div>
-  </div>
-
-</div>
-
-<h2 id="webchuck">WebChucK?</h2>
-<p><a href="https://github.com/ccrma/webchuck" target="_blank">github</a> | <a
-href="https://chuck.stanford.edu/webchuck/docs" target="_blank">docs</a>
-| <a href="https://www.npmjs.com/package/webchuck" target="_blank">npm</a></p>
-<p>WebChucK brings <a href="https://chuck.stanford.edu" target="_blank">ChucK</a>, the
-strongly-timed audio programming language, to the web! ChucK’s C++
-source code has been compiled with Emscripten to WebAssembly (WASM) and runs via
-the <code>AudioWorkletNode</code> interface of the Web Audio API. With
-near-native performance, WebChucK runs on modern desktop browsers as
-well as tablets and mobile devices! Bring together ChucK’s real-time
-sound synthesis engine and the interconnectivity of the web to create
-new experiences and develop creative workflows. Embed WebChucK into any website to power 
-online audiovisual experiences, immersive multi-channel audio web apps,
-or shareable musical instruments! Check out the <a
-href="https://github.com/ccrma/webchuck" target="_blank">GitHub</a> to learn more or contribute!</p>
-
-<p>WebChucK powers an amazing web-based programming sandbox for ChucK: <b>WebChucK IDE!</b></p>
-<a href="https://chuck.stanford.edu/ide">
-  <button type="button" class="btn btn-warning btn-md px-4 me-sm-3">Try WebChucK IDE! (new!)</button>
-</a>
-
-<!-- Carousel -->
-<h2>Featured Projects</h2>
-<div class="container-fluid py-2">
-  <div class="d-flex flex-row flex-nowrap overflow-scroll">
-
-    <div class="card text-bg-dark">
-      <img src="img/terry-soundscapeai.jpg" class="card-img-top" alt="SoundscapeAI">
-      <div class="card-body">
-        <h5 class="card-title">SoundscapeAI - Terry Feng</h5>
-        <p class="card-text">Extracting environmental sonic features for real-time ambient soundscape generation with concatenative synthesis. Utilizing tool from ChAI (Chuck for AI)</p>
-        <a href="https://ccrma.stanford.edu/~tzfeng/356/hw2/" class="btn btn-success" target="_blank">Explore</a>
       </div>
     </div>
 
-    <div class="card text-bg-dark">
-      <img src="img/jack-timbre-library.jpg" class="card-img-top" alt="ChucK Timbre Library">
-      <div class="card-body">
-        <h5 class="card-title">Virtual Instrument Timbre Library - Jack Atherton</h5>
-        <p class="card-text">Connect a MIDI keyboard to play some web-based virtual synths. Jack’s Timbre Library for ChucK provides several examples of web-based virtual synths in action.</p>
-        <a href="https://ccrma.stanford.edu/~lja/timbre-library/" class="btn btn-success" target="_blank">Explore</a>
+    <!-- Carousel -->
+    <h2>Featured Projects</h2>
+    <div class="container-fluid py-2">
+      <div class="d-flex flex-row flex-nowrap overflow-scroll">
+
+        <div class="card text-bg-dark">
+          <img src="img/terry-soundscapeai.jpg" class="card-img-top" alt="SoundscapeAI">
+          <div class="card-body">
+            <h5 class="card-title">SoundscapeAI - Terry Feng</h5>
+            <p class="card-text">Extracting environmental sonic features for real-time ambient soundscape generation
+              with concatenative synthesis. Utilizing tool from ChAI (Chuck for AI)</p>
+            <a href="https://ccrma.stanford.edu/~tzfeng/356/hw2/" class="btn btn-success" target="_blank">Explore</a>
+          </div>
+        </div>
+
+        <div class="card text-bg-dark">
+          <img src="img/jack-timbre-library.jpg" class="card-img-top" alt="ChucK Timbre Library">
+          <div class="card-body">
+            <h5 class="card-title">Virtual Instrument Timbre Library - Jack Atherton</h5>
+            <p class="card-text">Connect a MIDI keyboard to play some web-based virtual synths. Jack’s Timbre Library
+              for ChucK provides several examples of web-based virtual synths in action.</p>
+            <a href="https://ccrma.stanford.edu/~lja/timbre-library/" class="btn btn-success"
+              target="_blank">Explore</a>
+          </div>
+        </div>
+
+        <div class="card text-bg-dark">
+          <img src="img/luna-chauvet.jpg" class="card-img-top" alt="Chauvet Cave Beep Ploc Symphony">
+          <div class="card-body">
+            <h5 class="card-title">Chauvet Cave Beep Ploc Symphony - Luna Valentin</h5>
+            <p class="card-text">A data sonification project examining the effect of increased extreme weather phenomena
+              on the ecological balance of caves in France, previously inhabited by our Paleolithic ancestors 36,000
+              years ago.</p>
+            <a href="https://ccrma.stanford.edu/~luna/220a/fp/" class="btn btn-success" target="_blank">Explore</a>
+          </div>
+        </div>
+
+        <div class="card text-bg-dark">
+          <img src="img/cole-image-sonifier.jpg" class="card-img-top" alt="Image Sonifier">
+          <div class="card-body">
+            <h5 class="card-title">Image Sonifier - Cole Simmons</h5>
+            <p class="card-text">An image-to-sound converter that uploads an image from the user, retrieves various
+              parameters like minimum and maximum hue and saturation, and sonifies the calculated data with WebChucK.
+            </p>
+            <a href="https://image-sonification.vercel.app/" class="btn btn-success" target="_blank">Explore</a>
+          </div>
+        </div>
+
+        <div class="card text-bg-dark">
+          <img src="img/josh-gutter-synthesis.jpg" class="card-img-top" alt="Gutter Synthesis">
+          <div class="card-body">
+            <h5 class="card-title">Gutter Synthesis - Josh Mitchell</h5>
+            <p class="card-text">A unique virtual instrument inspired by Tom Mudd’s Gutter Synthesis algorithm. A bank
+              of sliders allows you to control the gain (and, therefore, feedback) between a set of chaotic duffing
+              oscillators and modal resonators routed to and from one another.</p>
+            <a href="https://ccrma.stanford.edu/~jomitch/220a/fp/" class="btn btn-success" target="_blank">Explore</a>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div class="card text-bg-dark">
-      <img src="img/luna-chauvet.jpg" class="card-img-top" alt="Chauvet Cave Beep Ploc Symphony">
-      <div class="card-body">
-        <h5 class="card-title">Chauvet Cave Beep Ploc Symphony - Luna Valentin</h5>
-        <p class="card-text">A data sonification project examining the effect of increased extreme weather phenomena on the ecological balance of caves in France, previously inhabited by our Paleolithic ancestors 36,000 years ago.</p>
-        <a href="https://ccrma.stanford.edu/~luna/220a/fp/" class="btn btn-success" target="_blank">Explore</a>
-      </div>
-    </div>
-
-    <div class="card text-bg-dark">
-      <img src="img/cole-image-sonifier.jpg" class="card-img-top" alt="Image Sonifier">
-      <div class="card-body">
-        <h5 class="card-title">Image Sonifier - Cole Simmons</h5>
-        <p class="card-text">An image-to-sound converter that uploads an image from the user, retrieves various parameters like minimum and maximum hue and saturation, and sonifies the calculated data with WebChucK.</p>
-        <a href="https://image-sonification.vercel.app/" class="btn btn-success" target="_blank">Explore</a>
-      </div>
-    </div>
-
-    <div class="card text-bg-dark">
-      <img src="img/josh-gutter-synthesis.jpg" class="card-img-top" alt="Gutter Synthesis">
-      <div class="card-body">
-        <h5 class="card-title">Gutter Synthesis - Josh Mitchell</h5>
-        <p class="card-text">A unique virtual instrument inspired by Tom Mudd’s Gutter Synthesis algorithm. A bank of sliders allows you to control the gain (and, therefore, feedback) between a set of chaotic duffing oscillators and modal resonators routed to and from one another.</p>
-        <a href="https://ccrma.stanford.edu/~jomitch/220a/fp/" class="btn btn-success" target="_blank">Explore</a>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<h2 id="usage">Getting Started</h2>
-<h4>CDN</h4>
-<p>Embed WebChucK as a JS module into your <code>index.html</code></p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;button</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;webchuck&quot;</span><span class="kw">&gt;</span>Start WebChucK<span class="kw">&lt;/button&gt;</span></span>
+    <h2 id="usage">Getting Started</h2>
+    <h4>CDN</h4>
+    <p>Embed WebChucK as a JS module into your <code>index.html</code></p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;button</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;webchuck&quot;</span><span class="kw">&gt;</span>Start WebChucK<span class="kw">&lt;/button&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;button</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;start&quot;</span><span class="kw">&gt;</span>Play<span class="kw">&lt;/button&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/javascript&quot;</span><span class="kw">&gt;</span></span>
@@ -151,12 +182,15 @@ class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;start&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;click&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        theChuck<span class="op">.</span><span class="fu">runCode</span>(<span class="st">&quot; SinOsc osc =&gt; dac; 440 =&gt; osc.freq; 1::second =&gt; now; &quot;</span>)<span class="op">;</span></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/script&gt;</span></span></code></pre></div>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/script&gt;</span></span></code></pre>
+    </div>
 
-<h4>NPM</h4>
-<p>Install WebChucK via npm. WebChucK can also be used with TypeScript.</p>
-<pre><code>npm install webchuck</code></pre>
-<div class="sourceCode" id="cb2"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Chuck } <span class="im">from</span> <span class="st">&#39;webchuck&#39;</span></span>
+    <h4>NPM</h4>
+    <p>Install WebChucK via npm. WebChucK can also be used with TypeScript.</p>
+    <pre><code>npm install webchuck</code></pre>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode ts"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Chuck } <span class="im">from</span> <span class="st">&#39;webchuck&#39;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the default ChucK object</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> theChuck <span class="op">=</span> <span class="cf">await</span> Chuck<span class="op">.</span><span class="fu">init</span>([])<span class="op">;</span></span>
@@ -166,22 +200,36 @@ class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="vs">    SinOsc sin =&gt; dac;</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="vs">    440 =&gt; sin.freq;</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="vs">    1::second =&gt; now;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span>)<span class="op">;</span></span></code></pre></div>
-<p>Note that many browsers do not let audio run without a user
-interaction (e.g. button press). You can check for a suspended audio
-context and resume like this:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (theChuck<span class="op">.</span><span class="at">context</span><span class="op">.</span><span class="at">state</span> <span class="op">===</span> <span class="st">&quot;suspended&quot;</span>) {</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span>)<span class="op">;</span></span></code></pre>
+    </div>
+    <p>Note that many browsers do not let audio run without a user
+      interaction (e.g. button press). You can check for a suspended audio
+      context and resume like this:</p>
+    <div class="sourceCode" id="cb3">
+      <pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (theChuck<span class="op">.</span><span class="at">context</span><span class="op">.</span><span class="at">state</span> <span class="op">===</span> <span class="st">&quot;suspended&quot;</span>) {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    theChuck<span class="op">.</span><span class="at">context</span><span class="op">.</span><span class="fu">resume</span>()<span class="op">;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre>
+    </div>
 
-<h2 id="documentation">Documentation</h2>
-<p>WebChucK has brand new documentation!</p>
-<a href="./docs/classes/Chuck.html">
-  <button type="button" class="btn btn-secondary btn-md px-4 me-sm-3">Read the documentation</button>
-</a>
+    <h2 id="documentation">Documentation</h2>
+    <p>Getting Started Documentation Guide: <a href="./docs">here</a> </p>
+    <p>WebChucK full documentation and API reference <em>(communicating between JS and ChucK)</em>:</p>
+    <a href="./docs/classes/Chuck.html">
+      <button type="button" class="btn btn-warning btn-md px-4 me-sm-3">Read the documentation</button>
+    </a>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-<script src="main.js"></script>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+
+  </body>
+
 </html>
