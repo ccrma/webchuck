@@ -1,3 +1,11 @@
+//-----------------------------------------------------------------------------
+// name: webchuck_host.js
+// desc: webchuck host code connecting WebChucK/wasm to WebAudio
+//       it also provides API to call ChucK inside the WASM
+//
+// author: Jack Atherton
+//   date: 2017 (original implementation)
+//-----------------------------------------------------------------------------
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext = undefined;
 var theChuck = undefined;
@@ -18,7 +26,7 @@ var chuckPrint = function( text )
 }
 
 // src: http://lea.verou.me/2016/12/resolve-promises-externally-with-this-one-weird-trick/
-function defer() 
+function defer()
 {
     var res, rej;
 
@@ -637,7 +645,71 @@ var createAChuck = function( chuckID, initPromise )
             } );
             return self.deferredPromises[callbackID];
         }
-        // ================= Clear ====================== //
+        // ================== ChucK VM parameters ============= //
+        self.setParamInt = function( name, value )
+        {
+            self.port.postMessage( {
+                type: 'setParamInt',
+                name: name,
+                value: value
+            } );
+        }
+        self.getParamInt = function( name )
+        {
+            var callbackID = self.nextDeferID();
+            self.port.postMessage( {
+                type: 'getParamInt',
+                name: name,
+                callback: callbackID
+            } );
+            return self.deferredPromises[callbackID];
+        }
+        self.setParamFloat = function( name, value )
+        {
+            self.port.postMessage( {
+                type: 'setParamFloat',
+                name: name,
+                value: value
+            } );
+        }
+        self.getParamFloat = function( name )
+        {
+            var callbackID = self.nextDeferID();
+            self.port.postMessage( {
+                type: 'getParamFloat',
+                name: name,
+                callback: callbackID
+            } );
+            return self.deferredPromises[callbackID];
+        }
+        self.setParamString = function( name, value )
+        {
+            self.port.postMessage( {
+                type: 'setParamString',
+                name: name,
+                value: value
+            } );
+        }
+        self.getParamString = function( name )
+        {
+            var callbackID = self.nextDeferID();
+            self.port.postMessage( {
+                type: 'getParamString',
+                name: name,
+                callback: callbackID
+            } );
+            return self.deferredPromises[callbackID];
+        }
+        // ================= VM ====================== //
+        self.now = function()
+        {
+            var callbackID = self.nextDeferID();
+            self.port.postMessage( {
+                type: 'getChuckNow',
+                callback: callbackID
+            } );
+            return self.deferredPromises[callbackID];
+        }
         self.clearChuckInstance = function()
         {
             self.port.postMessage( { type: 'clearChuckInstance' } );
@@ -854,7 +926,36 @@ var createASubChuck = function( chuck, dacName, initPromise )
         {
             return self.myChuck.getAssociativeFloatArrayValue( variable, key );
         }
-        // ================= Clear ====================== //
+        // ================== VM Params ============= //
+        self.setParamInt = function( name, value )
+        {
+            return self.myChuck.setParamInt( name, value );
+        }
+        self.getParamInt = function( name )
+        {
+            return self.myChuck.getParamInt( name );
+        }
+        self.setParamFloat = function( name, value )
+        {
+            return self.myChuck.setParamFloat( name, value );
+        }
+        self.getParamFloat = function( name )
+        {
+            return self.myChuck.getParamFloat( name );
+        }
+        self.setParamString = function( name, value )
+        {
+            return self.myChuck.setParamString( name, value );
+        }
+        self.getParamString = function( name )
+        {
+            return self.myChuck.getParamString( name );
+        }
+        // ================= VM ====================== //
+        self.now = function()
+        {
+            return self.myChuck.now();
+        }
         self.clearChuckInstance = function()
         {
             return self.myChuck.clearChuckInstance();
@@ -863,8 +964,7 @@ var createASubChuck = function( chuck, dacName, initPromise )
         {
             return self.myChuck.clearGlobals();
         }
-        
-        
+
     })( aSubChuck );
     
     return aSubChuck;

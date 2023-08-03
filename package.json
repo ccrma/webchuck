@@ -8,8 +8,9 @@
     "dist/**/*"
   ],
   "scripts": {
-    "build": "tsc",
-    "doc": "typedoc --plugin typedoc-plugin-markdown --out docs src/index.ts --hideBreadcrumbs --disableSources",
+    "build": "tsc && rollup dist/index.js --file src/wc-bundle.js --format esm",
+    "test": "npm run build && bash ./test.sh",
+    "doc": "typedoc --out docs src/index.ts",
     "prepare": "npm run build && npm run doc",
     "postversion": "git push && git push --tags"
   },
@@ -34,8 +35,8 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.11.10",
-    "typedoc": "^0.23.21",
-    "typedoc-plugin-markdown": "^3.14.0",
+    "rollup": "^3.26.3",
+    "typedoc": "^0.24.8",
     "typescript": "^4.9.3"
   }
 }

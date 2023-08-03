@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WebChucK Test Framework</title>
+
+        <style>
+            body {
+                font-family: monospace;
+            }
+
+            button {
+                padding: 1rem;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 960px;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>WebChuck Test Suite</h1>
+        <button id="run" disabled>Run All Tests</button>
+        <div>
+            <input type="checkbox" id="parallelize"> run in parallel
+        </div>
+        <p>==================================================================</p>
+        <div style="display: inline">
+            <h3>Tests Passed: <span id="score"></span></h3>
+        </div>
+        <p>==================================================================</p>
+        <table id="test-suite">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Result</th>
+                <th>WebChucK Output</th>
+            </tr>
+        </table>
+
+        <script src="chuckTest.js"></script>
+    </body>
+</html>

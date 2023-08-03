@@ -1,18 +1,20 @@
 # WebChucK
-[site](https://chuck.stanford.edu/webchuck/) | [docs](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md) | [npm](https://www.npmjs.com/package/webchuck)
+[site](https://chuck.stanford.edu/webchuck/) | [docs](https://chuck.stanford.edu/webchuck/docs) | [npm](https://www.npmjs.com/package/webchuck)
 
 WebChucK brings [ChucK](https://chuck.stanford.edu), a strongly-timed audio programming language, to 
-the web! ChucK's C++ source code has been compiled down to WebAssembly (WASM) and runs via the 
-`AudioWorkletNode` interface of the Web Audio API. With near-native performance, WebChucK runs on 
-modern desktop browsers as well as tablets and mobile devices! Bring together ChucK's real-time 
-sound synthesis engine and the interconnectivity of the web to create new experiences and develop 
-creative workflows. Use WebChucK to build online audiovisual experiences, immersive multi-channel 
-audio web apps, online musical instruments, simply by embedding WebChucK into any website! To learn 
-more about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
+the web! ChucK's C++ source code has been compiled with [Emscripten](https://emscripten.org) and 
+targets WebAssembly (WASM) to run via the `AudioWorkletNode` interface of the Web Audio API. 
+With near-native performance, WebChucK runs on modern desktop browsers as well as tablets and mobile 
+devices! Bring together ChucK's real-time sound synthesis engine and web tools to create new 
+experiences and develop creative workflows. Embed WebChucK into any website to build online audiovisual 
+experiences, immersive multi-channel audio web apps, or shareable musical instruments! To learn more 
+about WebChucK and what it can do, check out [https://chuck.stanford.edu/webchuck/](https://chuck.stanford.edu/webchuck/)
 
 Try out WebChucK in action through [WebChucK IDE](https://chuck.stanford.edu/ide/)!
 
-## Usage
+## Getting Started
+
+### NPM 
 
 Install WebChucK via npm and use it with TypeScript:
 
@@ -43,6 +45,8 @@ if (theChuck.context.state === "suspended") {
 }
 ```
 
+### CDN 
+
 You can also embed WebChucK as a JS module into your `index.html`. Here's an example below in JavaScript:
 
 ```html
@@ -67,7 +71,13 @@ You can also embed WebChucK as a JS module into your `index.html`. Here's an exa
 </script>
 ```
 
+Once `theChuck` is initalized, you now have a web ChucK instance. Read the API reference to see how to communicate between JS and ChucK e.g. removing shreds, syncing variables, monitoring the VM etc.
 
 ## Documentation
 
-Check out WebChucK's full documentation [here](https://github.com/ccrma/webchuck/blob/main/docs/classes/Chuck.md)
+WebChucK full documentation and API reference: [here](https://chuck.stanford.edu/webchuck/docs)
+
+## For Developers
+
+If you are a developer, check out the [Developer Guide](https://github.com/ccrma/webchuck/blob/main/DEVELOPER_GUIDE.md) to get started.
+

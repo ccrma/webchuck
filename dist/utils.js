@@ -40,9 +40,9 @@ export async function preloadFiles(filenamesToPreload) {
     }));
     return await Promise.all(promises);
 }
-export async function loadWasm() {
+export async function loadWasm(whereIsChuck) {
     return await new Promise((resolve, reject) => {
-        asyncLoadFile("https://chuck.stanford.edu/webchuck/src/webchuck.wasm", resolve, reject);
+        asyncLoadFile(whereIsChuck + "webchuck.wasm", resolve, reject);
     });
 }
 export const defer = () => new DeferredPromise();

@@ -15,6 +15,21 @@
     "declaration": true,
     "outDir": "./dist"
   },
+  "typedocOptions" : {
+    "githubPages": false,
+    "categorizeByGroup": false,
+    "excludeInternal": true,
+    "sort": "static-first",
+    "hideGenerator": true,
+    "defaultCategory": "ChucK",
+    "visibilityFilters": {
+      "private": false,
+      "inherited": false,
+    },
+    "exclude": "src/DeferredPromise.ts",
+    "plugin": [],
+    "sidebarLinks": { },
+  },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "test"]
+  "exclude": ["node_modules", "dist"]
 }

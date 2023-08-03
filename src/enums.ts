@@ -24,7 +24,7 @@ export enum OutMessage {
   // Event
   SIGNAL_EVENT = "signalChuckEvent",
   BROADCAST_EVENT = "broadcastChuckEvent",
-  LISTEN_FOR_EVENT_ONCE = "listenForEventOnce",
+  LISTEN_FOR_EVENT_ONCE = "listenForChuckEventOnce",
   START_LISTENING_FOR_EVENT = "startListeningForChuckEvent",
   STOP_LISTENING_FOR_EVENT = "stopListeningForChuckEvent",
 
@@ -51,6 +51,17 @@ export enum OutMessage {
   GET_FLOAT_ARRAY_VALUE = "getGlobalFloatArrayValue",
   SET_ASSOCIATIVE_FLOAT_ARRAY_VALUE = "setGlobalAssociativeFloatArrayValue",
   GET_ASSOCIATIVE_FLOAT_ARRAY_VALUE = "getGlobalAssociativeFloatArrayValue",
+
+  // VM Params
+  SET_PARAM_INT = "setParamInt",
+  GET_PARAM_INT = "getParamInt",
+  SET_PARAM_FLOAT = "setParamFloat",
+  GET_PARAM_FLOAT = "getParamFloat",
+  SET_PARAM_STRING = "setParamString",
+  GET_PARAM_STRING = "getParamString",
+
+  // VM
+  GET_CHUCK_NOW = "getChuckNow",
 
   // Clear
   CLEAR_INSTANCE = "clearChuckInstance",
