@@ -12,13 +12,13 @@ Getting started with WebChucK development!
 
 Make sure you have [Git](https://git-scm.com) and [Node](https://nodejs.org) installed.
 
-Clone the repository
+Clone the repository if you haven't already. 
 
 ```
 git clone https://github.com/ccrma/webchuck.git
 ```
 
-`cd` into webchuck and install npm dependencies
+In the webchuck repo, install npm dependencies
 
 ```
 npm install
@@ -32,7 +32,7 @@ Build WebChucK by running:
 npm run build
 ```
 
-This will build WebChucK and place all necessary files in the `./dist` folder. Additionally, it will build `./src/wc-bundle` which is a bundled ESM module of WebChucK (essentially all of `./dist`) for local use. 
+This will build WebChucK and place all necessary files in the `./dist` folder. Additionally, it will build `./src/wc-bundle` which is the bundled ESM module of WebChucK (essentially all of `./dist`) for local use. 
 
 ## Testing 
 
@@ -44,7 +44,7 @@ You can do this on your own or simply run
 npm run test
 ```
 
-Run the test bench in the browser, verifying tests pass and sound is made. If tests fail and need to be debugged or more tests are needed, modify `./test/chuckTest.js`.
+Run the test bench in the browser, verifying tests pass and sound is made. To debug tests and print or write more tests, modify `./test/chuckTest.js`.
 
 ## Documentation
 
