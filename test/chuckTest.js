@@ -79,7 +79,6 @@ import('../src/wc-bundle.js').then(async (module) => {
 
 // DEFINE ALL TESTS!!!
 const testSuite = [
-    /*
 
     new Test(1, "[sound] Define a ChucK and runCode 220hz 0.5 second", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
@@ -224,7 +223,6 @@ const testSuite = [
 
         return test1 && test2;
     }),
-    */
 
     new Test(9, "Machine add/replace/remove/clear", async () => {
         var aChuck = await Chuck.init([
