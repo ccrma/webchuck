@@ -31,19 +31,28 @@ export default class Chuck extends window.AudioWorkletNode {
      * ```
      * @example
      * ```ts
-     * // Initialize ChucK with a list of files to preload, default AudioContext, default output channels
-     * theChuck = await Chuck.init([{serverFilename: "./path/filename.ck", virtualFilename: "filename.ck"}...]);
+     * // Initialize ChucK with a list of files to preload
+     * theChuck = await Chuck.init([{ serverFilename: "./path/filename.ck", virtualFilename: "filename.ck" }...]);
      * ```
+     *
      * @example
      * ```ts
-     * // Initialize ChucK with no preloaded files, default AudioContext, default output channels, but with `whereIsChuck` at local folder "./src"
+     * // Initialize ChucK with a local audioContext, connect ChucK to the context destination
+     * var audioContext = new AudioContext();
+     * theChuck = await Chuck.init([], audioContext));
+     * theChuck.connect(audioContext.destination);
+     * ```
+     *
+     * @example
+     * ```ts
+     * // Initialize ChucK using local webchuck.js and webchuck.wasm files in "./src"
      * theChuck = await Chuck.init([], undefined, undefined, "./src");
      * ```
      *
      * @param filenamesToPreload Array of Files to preload into ChucK's filesystem `[{serverFilename: "./path/filename", virtualFilename: "filename"}...]`
-     * @param audioContext Optional parameter if you want to use your own AudioContext. If an AudioContext is passed in, you will need to connect the ChucK instance to your own destination.
+     * @param audioContext Optional parameter if you want to use your own AudioContext. **Note**: If an AudioContext is passed in, you will need to connect the ChucK instance to your own destination.
      * @param numOutChannels Optional custom number of output channels. Default is 2 channel stereo and the Web Audio API supports up to 32 channels.
-     * @param whereIsChuck Optional custom url to your WebChucK `src` folder containing `webchuck.js` and `webchuck.wasm`. By default, the `whereIsChuck` is {@link https://chuck.stanford.edu/webchuck/src | here}.
+     * @param whereIsChuck Optional custom url to your WebChucK `src` folder containing `webchuck.js` and `webchuck.wasm`. By default, `whereIsChuck` is {@link https://chuck.stanford.edu/webchuck/src | here}.
      * @returns WebChucK ChucK instance
      */
     static init(filenamesToPreload: Filename[], audioContext?: AudioContext, numOutChannels?: number, whereIsChuck?: string): Promise<Chuck>;
