@@ -224,6 +224,46 @@ const testSuite = [
         return test1 && test2;
     }),
 
+    new Test(9, "Machine add/replace/remove/clear", async () => {
+        var aChuck = await Chuck.init([
+            {serverFilename: "./testFiles/test9.ck", virtualFilename: "test9.ck"},
+        ], undefined, undefined, "../src/");
+        var outputBox = document.getElementById("output-" + 9);
+
+        // print lambda
+        print = (output) => {
+            outputBox.innerHTML += output + "<br>";
+        }
+        aChuck.chuckPrint = print;
+
+        aChuck.runCode(`
+            Machine.add("test9.ck") => int id;
+            100::ms => now;
+            Machine.replace(id, "test9.ck");
+            500::ms => now;
+            Machine.remove(id);
+            100::ms => now;
+            Machine.clearVM();
+        `)
+        await new Promise(resolve => setTimeout(resolve, 50));
+        var test1; var test2; var test3;
+        await aChuck.isShredActive(2).then((active) => {
+            print("@50ms - Shred 2 is added: " + active);
+            test1 = active == 1
+        });
+        await new Promise(resolve => setTimeout(resolve, 100));
+        await aChuck.isShredActive(2).then((active) => {
+            print("@150ms - Shred 2 is replaced: " + active);
+            test2 = active == 1
+        });
+        await new Promise(resolve => setTimeout(resolve, 700));
+        await aChuck.isShredActive(1).then((active) => {
+            print("@750ms - VM is clear: " + (active == 0))
+            test3 = active == 0
+        });
+        return test1 && test2 && test3;
+    }),
+
 
     new Test(99, "Chuck VM operations and parameters", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
