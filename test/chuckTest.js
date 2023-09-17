@@ -80,7 +80,6 @@ import('../src/wc-bundle.js').then(async (module) => {
 // DEFINE ALL TESTS!!!
 const testSuite = [
 
-    /*
     new Test(1, "[sound] Define a ChucK and runCode 220hz 0.5 second", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 1);
@@ -264,7 +263,6 @@ const testSuite = [
         });
         return test1 && test2 && test3;
     }),
-    */
 
     new Test(10, "Chuck get Promise<type> returns", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
