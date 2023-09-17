@@ -58,7 +58,7 @@ export default class Chuck extends window.AudioWorkletNode {
     static init(filenamesToPreload: Filename[], audioContext?: AudioContext, numOutChannels?: number, whereIsChuck?: string): Promise<Chuck>;
     /**
      * Private function for ChucK to handle execution of tasks.
-     * Will create a Deferred Promise that wraps a task for WebChucK to execute
+     * Will create a Deferred promise that wraps a task for WebChucK to execute
      * @returns callbackID to a an action for ChucK to perform
      */
     private nextDeferID;
@@ -78,44 +78,45 @@ export default class Chuck extends window.AudioWorkletNode {
      * theChuck.loadFile("./myFile.ck");
      * ```
      * @param url path or url to a file to fetch and load file
+     * @returns Promise of fetch request
      */
     loadFile(url: string): Promise<void>;
     /**
      * Run a string of ChucK code.
      * @example theChuck.runCode("SinOsc osc => dac; 1::second => now;");
      * @param code ChucK code string to be executed
-     * @returns Promise to the shred ID
+     * @returns Promise to shred ID
      */
-    runCode(code: string): Promise<unknown>;
+    runCode(code: string): Promise<number>;
     /**
      * @hidden
      * Run a string of ChucK code using a different dac (unsure of functionality)
      * -tf (5/30/2023)
      * @param code ChucK code string to be executed
      * @param dacName dac for ChucK (??)
-     * @returns promise to the shred ID
+     * @returns Promise to shred ID
      */
-    runCodeWithReplacementDac(code: string, dacName: string): Promise<unknown>;
+    runCodeWithReplacementDac(code: string, dacName: string): Promise<number>;
     /**
      * Replace the last currently running shred with string of ChucK code to execute.
      * @example theChuck.replaceCode("SinOsc osc => dac; 1::second => now;");
      * @param code ChucK code string to run and replace last shred
      * @returns Promise to shred ID that is replaced
      */
-    replaceCode(code: string): Promise<unknown>;
+    replaceCode(code: string): Promise<number>;
     /**
      * @hidden
      * Replace last running shred with string of ChucK code to execute, to another dac (??)
      * @param code ChucK code string to replace last Shred
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
-    replaceCodeWithReplacementDac(code: string, dacName: string): Promise<unknown>;
+    replaceCodeWithReplacementDac(code: string, dacName: string): Promise<number>;
     /**
      * Remove the last running shred from Chuck Virtual Machine.
-     * @returns promise to the shred ID that was removed
+     * @returns Promise to the shred ID that was removed
      */
-    removeLastCode(): Promise<unknown>;
+    removeLastCode(): Promise<number>;
     /**
      * Run a ChucK file that is already loaded in the WebChucK virtual file system.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
@@ -129,16 +130,16 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param filename ChucK file to be run
      * @returns Promise to running shred ID
      */
-    runFile(filename: string): Promise<unknown>;
+    runFile(filename: string): Promise<number>;
     /**
      * @hidden
      * Run a ChucK file that is already in the WebChucK virtual file system, on separate dac (??).
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
      * @param filename ChucK file to be run
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
-    runFileWithReplacementDac(filename: string, dacName: string): Promise<unknown>;
+    runFileWithReplacementDac(filename: string, dacName: string): Promise<number>;
     /**
      * Run a ChucK file already loaded in the WebChucK virtual file system and pass in arguments.
      * e.g. Thie is the chuck command line equivalent of `chuck myFile:1:2:foo`
@@ -147,7 +148,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param colonSeparatedArgs arguments to pass to the file separated by colons
      * @returns Promise to running shred ID
      */
-    runFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<unknown>;
+    runFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<number>;
     /**
      * @hidden
      * Run a ChucK file that is already in the WebChucK virtual file system with arguments.
@@ -155,33 +156,33 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param filename ChucK file to be run
      * @param colonSeparatedArgs arguments to pass to the file
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
-    runFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): Promise<unknown>;
+    runFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): Promise<number>;
     /**
      * Replace the last currently running shred with a Chuck file to execute.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
      * @param filename file to be replace last
      * @returns Promise to replaced shred ID
      */
-    replaceFile(filename: string): Promise<unknown>;
+    replaceFile(filename: string): Promise<number>;
     /**
      * @hidden
      * Replace the last running shred with a file to execute.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
      * @param filename file to be replace last
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
-    replaceFileWithReplacementDac(filename: string, dacName: string): Promise<unknown>;
+    replaceFileWithReplacementDac(filename: string, dacName: string): Promise<number>;
     /**
      * Replace the last running shred with a file to execute, passing arguments.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
      * @param filename file to be replace last running shred
      * @param colonSeparatedArgs arguments to pass in to file
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
-    replaceFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<unknown>;
+    replaceFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<number>;
     /**
      * @hidden
      * Replace the last running shred with a file to execute, passing arguments, and dac.
@@ -189,21 +190,21 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param filename file to be replace last running shred
      * @param colonSeparatedArgs arguments to pass in to file
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
-    replaceFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): Promise<unknown>;
+    replaceFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): Promise<number>;
     /**
      * Remove a shred from ChucK VM by ID
      * @param shred shred ID to be removed
      * @returns Promise to shred ID if removed successfully, otherwise "removing code failed"
      */
-    removeShred(shred: number | string): Promise<unknown>;
+    removeShred(shred: number | string): Promise<number>;
     /**
      * Check if shred with ID is running in the Chuck Virtual Machine.
      * @param shred The shred ID to check
      * @returns Promise to whether shred is running, 1 if running, 0 if not
      */
-    isShredActive(shred: number | string): Promise<unknown>;
+    isShredActive(shred: number | string): Promise<number>;
     /**
      * Signal a ChucK event global. This will wake the first waiting Shred.
      * @param variable ChucK global event variable to be signaled
@@ -252,7 +253,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param variable Name of int global variable
      * @returns Promise with int value of the variable
      */
-    getInt(variable: string): Promise<unknown>;
+    getInt(variable: string): Promise<number>;
     /**
      * Set the value of a global float variable in ChucK.
      * @param variable Name of float global variable
@@ -264,7 +265,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param variable Name of float global variable
      * @returns Promise with float value of the variable
      */
-    getFloat(variable: string): Promise<unknown>;
+    getFloat(variable: string): Promise<number>;
     /**
      * Set the value of a global string variable in ChucK.
      * @param variable Name of string global variable
@@ -276,7 +277,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param variable Name of string global variable
      * @returns Promise with string value of the variable
      */
-    getString(variable: string): Promise<unknown>;
+    getString(variable: string): Promise<string>;
     /**
      * Set the values of a global int array in ChucK.
      * @param variable Name of global int array variable
@@ -288,7 +289,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param variable Name of global int array variable
      * @returns Promise to array of numbers
      */
-    getIntArray(variable: string): Promise<unknown>;
+    getIntArray(variable: string): Promise<number[]>;
     /**
      * Set a single value (by index) in a global int array in ChucK.
      * @param variable Name of int array variable
@@ -302,7 +303,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param index Array index to get
      * @returns Promise to the value at the index
      */
-    getIntArrayValue(variable: string, index: number): Promise<unknown>;
+    getIntArrayValue(variable: string, index: number): Promise<number>;
     /**
      * Set the value (by key) of an associative int array in ChucK.
      * Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
@@ -319,7 +320,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param key The key index (string) to get
      * @returns Promise with int array value
      */
-    getAssociativeIntArrayValue(variable: string, key: string): Promise<unknown>;
+    getAssociativeIntArrayValue(variable: string, key: string): Promise<number>;
     /**
      * Set the values of a global float array in ChucK.
      * @param variable Name of global float array
@@ -332,7 +333,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param variable Name of float array
      * @returns Promise of float values
      */
-    getFloatArray(variable: string): Promise<unknown>;
+    getFloatArray(variable: string): Promise<number[]>;
     /**
      * Set the float value of a global float array at particular index.
      * @param variable Name of global float array
@@ -347,7 +348,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param index Index of element
      * @returns Promise of float value at index
      */
-    getFloatArrayValue(variable: string, index: number): Promise<unknown>;
+    getFloatArrayValue(variable: string, index: number): Promise<number>;
     /**
      * Set the value (by key) of an associative float array in ChucK.
      * Note that "associative array" is ChucK's version of a dictionary with string keys mapping to values (see ChucK documentation).
@@ -364,7 +365,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param key The key index (string) to get
      * @returns Promise with float array value
      */
-    getAssociativeFloatArrayValue(variable: string, key: string): Promise<unknown>;
+    getAssociativeFloatArrayValue(variable: string, key: string): Promise<number>;
     /**
      * Set an internal ChucK VM integer parameter.
      * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "IS_REAL_TIME_AUDIO_HINT", "TTY_COLOR".
@@ -378,7 +379,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param name Name of VM int parameter to get
      * @returns Promise with int value
      */
-    getParamInt(name: string): Promise<unknown>;
+    getParamInt(name: string): Promise<number>;
     /**
      * Set an internal ChucK VM float parameter.
      * @param name Name of VM float parameter to set
@@ -390,7 +391,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param name Name of VM float parameter to get
      * @returns Promise with float value
      */
-    getParamFloat(name: string): Promise<unknown>;
+    getParamFloat(name: string): Promise<number>;
     /**
      * Set an internal ChucK VM string parameter.
      * @param name Name of VM string parameter to set
@@ -403,12 +404,12 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param name Name of VM string parameter to get
      * @returns Promise with string value
      */
-    getParamString(name: string): Promise<unknown>;
+    getParamString(name: string): Promise<string>;
     /**
      * Get the current time in samples of the ChucK VM.
      * @returns Promise to current sample time in ChucK (int)
      */
-    now(): Promise<unknown>;
+    now(): Promise<number>;
     /**
      * Remove all shreds and reset the ChucK instance.
      */

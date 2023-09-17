@@ -110,7 +110,7 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Private function for ChucK to handle execution of tasks.
-     * Will create a Deferred Promise that wraps a task for WebChucK to execute
+     * Will create a Deferred promise that wraps a task for WebChucK to execute
      * @returns callbackID to a an action for ChucK to perform
      */
     nextDeferID() {
@@ -141,26 +141,25 @@ export default class Chuck extends window.AudioWorkletNode {
      * theChuck.loadFile("./myFile.ck");
      * ```
      * @param url path or url to a file to fetch and load file
+     * @returns Promise of fetch request
      */
     async loadFile(url) {
         const filename = url.split("/").pop();
-        if (url.endsWith(".ck")) {
-            return fetch(url).then((response) => response.text()).then((text) => {
-                this.createFile("", filename, text);
-            });
-        }
-        else {
-            return fetch(url).then((response) => response.arrayBuffer()).then((buffer) => {
-                this.createFile("", filename, new Uint8Array(buffer));
-            });
-        }
+        return fetch(url)
+            .then((response) => response.arrayBuffer())
+            .then((buffer) => {
+            this.createFile("", filename, new Uint8Array(buffer));
+        })
+            .catch((err) => {
+            throw new Error(err);
+        });
     }
     // ================== Run/Replace Code ================== //
     /**
      * Run a string of ChucK code.
      * @example theChuck.runCode("SinOsc osc => dac; 1::second => now;");
      * @param code ChucK code string to be executed
-     * @returns Promise to the shred ID
+     * @returns Promise to shred ID
      */
     runCode(code) {
         const callbackID = this.nextDeferID();
@@ -173,7 +172,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * -tf (5/30/2023)
      * @param code ChucK code string to be executed
      * @param dacName dac for ChucK (??)
-     * @returns promise to the shred ID
+     * @returns Promise to shred ID
      */
     runCodeWithReplacementDac(code, dacName) {
         const callbackID = this.nextDeferID();
@@ -203,7 +202,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * Replace last running shred with string of ChucK code to execute, to another dac (??)
      * @param code ChucK code string to replace last Shred
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
     replaceCodeWithReplacementDac(code, dacName) {
         const callbackID = this.nextDeferID();
@@ -216,7 +215,7 @@ export default class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Remove the last running shred from Chuck Virtual Machine.
-     * @returns promise to the shred ID that was removed
+     * @returns Promise to the shred ID that was removed
      */
     removeLastCode() {
         const callbackID = this.nextDeferID();
@@ -251,7 +250,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
      * @param filename ChucK file to be run
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
     runFileWithReplacementDac(filename, dacName) {
         const callbackID = this.nextDeferID();
@@ -286,7 +285,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param filename ChucK file to be run
      * @param colonSeparatedArgs arguments to pass to the file
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
     runFileWithArgsWithReplacementDac(filename, colonSeparatedArgs, dacName) {
         const callbackID = this.nextDeferID();
@@ -318,7 +317,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
      * @param filename file to be replace last
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
     replaceFileWithReplacementDac(filename, dacName) {
         const callbackID = this.nextDeferID();
@@ -334,7 +333,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
      * @param filename file to be replace last running shred
      * @param colonSeparatedArgs arguments to pass in to file
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
     replaceFileWithArgs(filename, colonSeparatedArgs) {
         const callbackID = this.nextDeferID();
@@ -352,7 +351,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param filename file to be replace last running shred
      * @param colonSeparatedArgs arguments to pass in to file
      * @param dacName dac for ChucK (??)
-     * @returns promise to shred ID
+     * @returns Promise to shred ID
      */
     replaceFileWithArgsWithReplacementDac(filename, colonSeparatedArgs, dacName) {
         const callbackID = this.nextDeferID();
