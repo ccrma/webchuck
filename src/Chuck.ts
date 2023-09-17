@@ -174,7 +174,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * theChuck.loadFile("./myFile.ck");
    * ```
    * @param url path or url to a file to fetch and load file
-   * @returns promise of fetch request
+   * @returns Promise of fetch request
    */
   public async loadFile(url: string): Promise<void> {
       const filename = url.split("/").pop()!;
@@ -528,7 +528,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * Get the value of a global int variable in ChucK.
    * @example const myGlobalInt = await theChuck.getInt("MY_GLOBAL_INT");
    * @param variable Name of int global variable
-   * @returns promise with int value of the variable
+   * @returns Promise with int value of the variable
    */
   public getInt(variable: string): Promise<number> {
     const callbackID = this.nextDeferID();
@@ -551,7 +551,7 @@ export default class Chuck extends window.AudioWorkletNode {
   /**
    * Get the value of a global float variable in ChucK.
    * @param variable Name of float global variable
-   * @returns promise with float value of the variable
+   * @returns Promise with float value of the variable
    */
   public getFloat(variable: string): Promise<number> {
     const callbackID = this.nextDeferID();
@@ -574,7 +574,7 @@ export default class Chuck extends window.AudioWorkletNode {
   /**
    * Get the value of a global string variable in ChucK.
    * @param variable Name of string global variable
-   * @returns promise with string value of the variable
+   * @returns Promise with string value of the variable
    */
   public getString(variable: string): Promise<string> {
     const callbackID = this.nextDeferID();
@@ -665,7 +665,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * e.g. theChucK.getAssociateIntArrayValue("MY_INT_ASSOCIATIVE_ARRAY", "key");
    * @param variable Name of gobal associative int arry
    * @param key The key index (string) to get 
-   * @returns promise with int array value
+   * @returns Promise with int array value
    */
   public getAssociativeIntArrayValue(variable: string, key: string): Promise<number> {
     const callbackID = this.nextDeferID();
@@ -691,7 +691,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * Get the values of a global float array in ChucK.
    * @example theChucK.getFloatArray("MY_FLOAT_ARRAY");
    * @param variable Name of float array
-   * @returns promise of float values
+   * @returns Promise of float values
    */
   public getFloatArray(variable: string): Promise<number[]> {
     const callbackID = this.nextDeferID();
@@ -721,7 +721,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * @example theChucK.getFloatArray("MY_FLOAT_ARRAY", 1);
    * @param variable Name of global float array
    * @param index Index of element
-   * @returns promise of float value at index
+   * @returns Promise of float value at index
    */
   public getFloatArrayValue(variable: string, index: number): Promise<number> {
     const callbackID = this.nextDeferID();
@@ -758,7 +758,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * @example theChucK.getAssociateFloatArrayValue("MY_FLOAT_ASSOCIATIVE_ARRAY", "key");
    * @param variable Name of gobal associative float array
    * @param key The key index (string) to get 
-   * @returns promise with float array value
+   * @returns Promise with float array value
    */
   public getAssociativeFloatArrayValue(variable: string, key: string): Promise<number> {
     const callbackID = this.nextDeferID();
@@ -785,7 +785,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * Get an internal ChucK VM integer parameter.
    * e.g. "SAMPLE_RATE", "INPUT_CHANNELS", "OUTPUT_CHANNELS", "BUFFER_SIZE", "IS_REAL_TIME_AUDIO_HINT".
    * @param name Name of VM int parameter to get 
-   * @returns promise with int value
+   * @returns Promise with int value
    */
   public getParamInt(name: string): Promise<number> {
     const callbackID = this.nextDeferID();
@@ -807,7 +807,7 @@ export default class Chuck extends window.AudioWorkletNode {
   /**
    * Get an internal ChucK VM float parameter.
    * @param name Name of VM float parameter to get
-   * @returns promise with float value
+   * @returns Promise with float value
    */
   public getParamFloat(name: string): Promise<number> {
     const callbackID = this.nextDeferID();
@@ -830,7 +830,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * Get an internal ChucK VM string parameter.
    * e.g. "VERSION".
    * @param name Name of VM string parameter to get
-   * @returns promise with string value
+   * @returns Promise with string value
    */
   public getParamString(name: string): Promise<string> {
     const callbackID = this.nextDeferID();
