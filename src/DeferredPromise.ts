@@ -40,7 +40,7 @@ export default class DeferredPromise<T = any> {
    * ``` 
    * @returns Promise to value `T`. If resolved, the value is returned. If rejected, the error is thrown.
    */
-  public async value() {
+  public async value(): Promise<T> {
     // whether resolve or reject, return the value wrapped in this.promise
     return await this.promise;
   }

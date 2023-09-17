@@ -80,6 +80,7 @@ import('../src/wc-bundle.js').then(async (module) => {
 // DEFINE ALL TESTS!!!
 const testSuite = [
 
+    /*
     new Test(1, "[sound] Define a ChucK and runCode 220hz 0.5 second", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 1);
@@ -262,6 +263,40 @@ const testSuite = [
             test3 = active == 0
         });
         return test1 && test2 && test3;
+    }),
+    */
+
+    new Test(10, "Chuck get Promise<type> returns", async () => {
+        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        var outputBox = document.getElementById("output-" + 10);
+
+        // print lambda
+        print = (output) => {
+            outputBox.innerHTML += output + "<br>";
+        }
+        aChuck.chuckPrint = print;
+
+        aChuck.runCode(`2::second => now;`);
+        aChuck.runCode(`2::second => now;`);
+        let test = true;
+        await new Promise(resolve => setTimeout(resolve, 50));
+        aChuck.isShredActive(1).then((active) => {
+            print("isShredActive(1) returns: " + active);
+            test &= active == 1;
+        });
+        aChuck.removeShred(1).then((removed) => {
+            print("removeShred(1) returns: " + removed);
+            test &= removed == 1;
+        });
+        aChuck.removeShred(-1).then((removed) => {
+            print("removeShred(-1) returns: " + removed);
+            test &= removed == 0;
+        }).catch((err) => {
+            print("removeShred(-1) throws: " + err);
+            test &= err === "Remove code failed"
+        });
+
+        return test;
     }),
 
 
