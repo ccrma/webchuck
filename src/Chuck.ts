@@ -225,13 +225,13 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param code ChucK code string to run and replace last shred
    * @returns Promise to shred ID that is replaced
    */
-  public replaceCode(code: string): Promise<number>{
+  public replaceCode(code: string): Promise<{oldShred: number, newShred: number}>{
     const callbackID = this.nextDeferID();
     this.sendMessage(OutMessage.REPLACE_CODE, {
       callback: callbackID,
       code,
     });
-    return this.deferredPromises[callbackID].value() as Promise<number>;
+    return this.deferredPromises[callbackID].value() as Promise<{oldShred: number, newShred: number}>;
   }
 
   /**
@@ -241,14 +241,14 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param dacName dac for ChucK (??)
    * @returns Promise to shred ID
    */
-  public replaceCodeWithReplacementDac(code: string, dacName: string): Promise<number>{
+  public replaceCodeWithReplacementDac(code: string, dacName: string): Promise<{oldShred: number, newShred: number}>{
     const callbackID = this.nextDeferID();
     this.sendMessage(OutMessage.REPLACE_CODE_WITH_REPLACEMENT_DAC, {
       callback: callbackID,
       code,
       dac_name: dacName,
     });
-    return this.deferredPromises[callbackID].value() as Promise<number>;
+    return this.deferredPromises[callbackID].value() as Promise<{oldShred: number, newShred: number}>;
   }
 
   /**
@@ -350,13 +350,13 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param filename file to be replace last 
    * @returns Promise to replaced shred ID
    */
-  public replaceFile(filename: string): Promise<number> {
+  public replaceFile(filename: string): Promise<{oldShred: number, newShred: number}> {
     const callbackID = this.nextDeferID();
     this.sendMessage(OutMessage.REPLACE_FILE, {
       callback: callbackID,
       filename,
     });
-    return this.deferredPromises[callbackID].value() as Promise<number>;
+    return this.deferredPromises[callbackID].value() as Promise<{oldShred: number, newShred: number}>;
   }
 
   /**
@@ -367,14 +367,14 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param dacName dac for ChucK (??)
    * @returns Promise to shred ID
    */
-  public replaceFileWithReplacementDac(filename: string, dacName: string): Promise<number> {
+  public replaceFileWithReplacementDac(filename: string, dacName: string): Promise<{oldShred: number, newShred: number}> {
     const callbackID = this.nextDeferID();
     this.sendMessage(OutMessage.REPLACE_FILE_WITH_REPLACEMENT_DAC, {
       callback: callbackID,
       dac_name: dacName,
       filename,
     });
-    return this.deferredPromises[callbackID].value() as Promise<number>;
+    return this.deferredPromises[callbackID].value() as Promise<{oldShred: number, newShred: number}>;
   }
 
   /**
@@ -384,14 +384,14 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param colonSeparatedArgs arguments to pass in to file
    * @returns Promise to shred ID
    */
-  public replaceFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<number> {
+  public replaceFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<{oldShred: number, newShred: number}> {
     const callbackID = this.nextDeferID();
     this.sendMessage(OutMessage.REPLACE_FILE_WITH_ARGS, {
       callback: callbackID,
       colon_separated_args: colonSeparatedArgs,
       filename,
     });
-    return this.deferredPromises[callbackID].value() as Promise<number>;
+    return this.deferredPromises[callbackID].value() as Promise<{oldShred: number, newShred: number}>;
   }
 
   /**
@@ -407,7 +407,7 @@ export default class Chuck extends window.AudioWorkletNode {
     filename: string,
     colonSeparatedArgs: string,
     dacName: string
-  ): Promise<number> {
+  ): Promise<{oldShred: number, newShred: number}> {
     const callbackID = this.nextDeferID();
     this.sendMessage(OutMessage.REPLACE_FILE_WITH_ARGS, {
       callback: callbackID,
@@ -415,7 +415,7 @@ export default class Chuck extends window.AudioWorkletNode {
       dac_name: dacName,
       filename,
     });
-    return this.deferredPromises[callbackID].value() as Promise<number>;
+    return this.deferredPromises[callbackID].value() as Promise<{oldShred: number, newShred: number}>;
   }
 
   // ================== Shred =================== //
