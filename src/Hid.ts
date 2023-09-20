@@ -1,7 +1,7 @@
 export default class HID {
-    public number;
+  public number;
 
-    constructor() {
-        this.number = 1;
-    }
+  constructor() {
+    this.number = 1;
+  }
 }
