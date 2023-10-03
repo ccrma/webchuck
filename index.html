@@ -179,25 +179,28 @@
       <pre><code class="language-html">&lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;!-- ... --&gt;
-    &lt;script src="script.js" type="module" defer&gt;&lt;/script&gt;
+    &lt;script type="module" defer&gt;
+      import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
+
+      action.addEventListener('click', async () => {
+        window.chuck ??= await Chuck.init([]);
+
+        chuck.runCode(`
+          SinOsc sin => dac;
+          440 => sin.freq;
+          1::second => now;
+        `);
+      });
+    &lt;/script&gt;
     &lt;!-- ... --&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;!-- ... --&gt;
-    &lt;button id="action"&gt;Play&lt;/button&gt;
+    &lt;button id="action"&gt;Start and Play&lt;/button&gt;
     &lt;!-- ... --&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
     </div>
-    <p>Then, in your <code>script.js</code>:</p>
-    <div>
-      <pre><code>import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
-  
-action.addEventListener('click', async () => {
-  window.chuck ??= await Chuck.init([]);
-});</code></pre>
-    </div>
-    <p>Then you can use the global <code>chuck</code> or <code>window.chuck</code> in any JS file.</p>
 
     <h4>NPM</h4>
     <p>Install WebChucK via npm. WebChucK can also be used with TypeScript.</p>
