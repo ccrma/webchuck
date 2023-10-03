@@ -56,3 +56,5 @@ document.getElementById("try").addEventListener("click", function() {
   }
   play = !play;
 });
+
+hljs.highlightAll();

@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>WebChucK</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   </head>
 
   <body>
@@ -170,54 +174,54 @@
 
     <h2 id="usage">Getting Started</h2>
     <h4>CDN</h4>
-    <p>Embed WebChucK as a JS module into your <code>index.html</code></p>
-    <div class="sourceCode" id="cb4">
-      <pre
-        class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;button</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;webchuck&quot;</span><span class="kw">&gt;</span>Start WebChucK<span class="kw">&lt;/button&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;button</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;start&quot;</span><span class="kw">&gt;</span>Play<span class="kw">&lt;/button&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/javascript&quot;</span><span class="kw">&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> theChuck<span class="op">;</span> </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Import WebChucK and create a ChucK object </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;webchuck&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;click&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span>(<span class="st">&#39;https://cdn.jsdelivr.net/npm/webchuck/+esm&#39;</span>)<span class="op">.</span><span class="fu">then</span>(<span class="kw">async</span> (module) <span class="kw">=&gt;</span> {</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            <span class="kw">const</span> Chuck <span class="op">=</span> module<span class="op">.</span><span class="at">Chuck</span><span class="op">;</span> <span class="co">// Chuck class</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            theChuck <span class="op">=</span> <span class="cf">await</span> Chuck<span class="op">.</span><span class="fu">init</span>([])<span class="op">;</span> <span class="co">// Create default ChucK object</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        })<span class="op">;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Button to run ChucK code</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;start&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;click&#39;</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        theChuck<span class="op">.</span><span class="fu">runCode</span>(<span class="st">&quot; SinOsc osc =&gt; dac; 440 =&gt; osc.freq; 1::second =&gt; now; &quot;</span>)<span class="op">;</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/script&gt;</span></span></code></pre>
+    <p>Embed WebChucK as a JS module into your <code>index.html</code>.</p>
+    <div>
+      <pre><code class="language-html">&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;!-- ... --&gt;
+    &lt;script src="script.js" type="module" defer&gt;&lt;/script&gt;
+    &lt;!-- ... --&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- ... --&gt;
+    &lt;button id="action"&gt;Play&lt;/button&gt;
+    &lt;!-- ... --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
     </div>
+    <p>Then, in your <code>script.js</code>:</p>
+    <div>
+      <pre><code>import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
+  
+action.addEventListener('click', async () => {
+  window.chuck ??= await Chuck.init([]);
+});</code></pre>
+    </div>
+    <p>Then you can use the global <code>chuck</code> or <code>window.chuck</code> in any JS file.</p>
 
     <h4>NPM</h4>
     <p>Install WebChucK via npm. WebChucK can also be used with TypeScript.</p>
-    <pre><code>npm install webchuck</code></pre>
+    <pre><code class="language-bash">$ npm install webchuck</code></pre>
     <div class="sourceCode" id="cb2">
-      <pre
-        class="sourceCode ts"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Chuck } <span class="im">from</span> <span class="st">&#39;webchuck&#39;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the default ChucK object</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> theChuck <span class="op">=</span> <span class="cf">await</span> Chuck<span class="op">.</span><span class="fu">init</span>([])<span class="op">;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Run ChucK code</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>theChuck<span class="op">.</span><span class="fu">runCode</span>(<span class="vs">`</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="vs">    SinOsc sin =&gt; dac;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="vs">    440 =&gt; sin.freq;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="vs">    1::second =&gt; now;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span>)<span class="op">;</span></span></code></pre>
+      <pre><code>import { Chuck } from 'webchuck'
+
+// Create the default ChucK object
+const theChuck = await Chuck.init([]);
+
+// Run ChucK code
+theChuck.runCode(`
+    SinOsc sin => dac;
+    440 => sin.freq;
+    1::second => now;
+`);</code></pre>
     </div>
     <p>Note that many browsers do not let audio run without a user
       interaction (e.g. button press). You can check for a suspended audio
       context and resume like this:</p>
     <div class="sourceCode" id="cb3">
-      <pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (theChuck<span class="op">.</span><span class="at">context</span><span class="op">.</span><span class="at">state</span> <span class="op">===</span> <span class="st">&quot;suspended&quot;</span>) {</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    theChuck<span class="op">.</span><span class="at">context</span><span class="op">.</span><span class="fu">resume</span>()<span class="op">;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre>
+      <pre><code>if (theChuck.context.state === 'suspended') {
+    theChuck.context.resume();
+}</code></pre>
     </div>
 
     <h2 id="documentation">Documentation</h2>
