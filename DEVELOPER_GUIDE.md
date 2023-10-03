@@ -1,6 +1,6 @@
 # WebChucK Developer Guide
 
-Getting started with WebChucK development!
+Getting started with WebChucK development! **NOTE**: All development is done on the `dev` branch. `main` is reserved for releases.
 
 ## Table of Contents
 1. [Setup](#setup)

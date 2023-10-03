@@ -176,31 +176,29 @@
     <h4>CDN</h4>
     <p>Embed WebChucK as a JS module into your <code>index.html</code>.</p>
     <div>
-      <pre><code class="language-html">&lt;html lang="en"&gt;
+      <pre><code class="language-html">&lt;html&gt;
   &lt;head&gt;
-    &lt;!-- ... --&gt;
     &lt;script type="module" defer&gt;
       import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
 
       document.getElementById('action').addEventListener('click', async () => {
-        window.chuck ??= await Chuck.init([]);
-
-        chuck.runCode(`
+        // Initialize default ChucK object, if not already initialized
+        window.theChuck ??= await Chuck.init([]);
+        // Run ChucK code
+        theChuck.runCode(`
           SinOsc sin => dac;
           440 => sin.freq;
           1::second => now;
         `);
       });
     &lt;/script&gt;
-    &lt;!-- ... --&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;!-- ... --&gt;
     &lt;button id="action"&gt;Start and Play&lt;/button&gt;
-    &lt;!-- ... --&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
     </div>
+    <p><code>theChuck</code> will be available as a global variable.</p>
 
     <h4>NPM</h4>
     <p>Install WebChucK via npm. WebChucK can also be used with TypeScript.</p>
@@ -208,7 +206,7 @@
     <div>
       <pre><code>import { Chuck } from 'webchuck'
 
-// Create the default ChucK object
+// Initialize default ChucK object
 const theChuck = await Chuck.init([]);
 
 // Run ChucK code

@@ -103,7 +103,10 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param code ChucK code string to run and replace last shred
      * @returns Promise to shred ID that is replaced
      */
-    replaceCode(code: string): Promise<number>;
+    replaceCode(code: string): Promise<{
+        oldShred: number;
+        newShred: number;
+    }>;
     /**
      * @hidden
      * Replace last running shred with string of ChucK code to execute, to another dac (??)
@@ -111,7 +114,10 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param dacName dac for ChucK (??)
      * @returns Promise to shred ID
      */
-    replaceCodeWithReplacementDac(code: string, dacName: string): Promise<number>;
+    replaceCodeWithReplacementDac(code: string, dacName: string): Promise<{
+        oldShred: number;
+        newShred: number;
+    }>;
     /**
      * Remove the last running shred from Chuck Virtual Machine.
      * @returns Promise to the shred ID that was removed
@@ -165,7 +171,10 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param filename file to be replace last
      * @returns Promise to replaced shred ID
      */
-    replaceFile(filename: string): Promise<number>;
+    replaceFile(filename: string): Promise<{
+        oldShred: number;
+        newShred: number;
+    }>;
     /**
      * @hidden
      * Replace the last running shred with a file to execute.
@@ -174,7 +183,10 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param dacName dac for ChucK (??)
      * @returns Promise to shred ID
      */
-    replaceFileWithReplacementDac(filename: string, dacName: string): Promise<number>;
+    replaceFileWithReplacementDac(filename: string, dacName: string): Promise<{
+        oldShred: number;
+        newShred: number;
+    }>;
     /**
      * Replace the last running shred with a file to execute, passing arguments.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
@@ -182,7 +194,10 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param colonSeparatedArgs arguments to pass in to file
      * @returns Promise to shred ID
      */
-    replaceFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<number>;
+    replaceFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<{
+        oldShred: number;
+        newShred: number;
+    }>;
     /**
      * @hidden
      * Replace the last running shred with a file to execute, passing arguments, and dac.
@@ -192,7 +207,10 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param dacName dac for ChucK (??)
      * @returns Promise to shred ID
      */
-    replaceFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): Promise<number>;
+    replaceFileWithArgsWithReplacementDac(filename: string, colonSeparatedArgs: string, dacName: string): Promise<{
+        oldShred: number;
+        newShred: number;
+    }>;
     /**
      * Remove a shred from ChucK VM by ID
      * @param shred shred ID to be removed

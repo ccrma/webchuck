@@ -47,31 +47,33 @@ if (theChuck.context.state === "suspended") {
 
 ### CDN 
 
-You can also embed WebChucK as a JS module into your `index.html`. Here's an example below in JavaScript:
+You can also embed WebChucK as a JS module into your `index.html`. 
 
 ```html
-<button id="webchuck">Start WebChucK</button>
-<button id="start">Play</button>
-    
-<script type="text/javascript">
-    var theChuck; 
-    
-    // Import WebChucK and create a ChucK object 
-    document.getElementById('webchuck').addEventListener('click', () => {
-        import('https://cdn.jsdelivr.net/npm/webchuck/+esm').then(async (module) => {
-            const Chuck = module.Chuck; // Chuck class
-            theChuck = await Chuck.init([]); // Create default ChucK object
-        });
-    });
-    
-    // Button to run ChucK code
-    document.getElementById('start').addEventListener('click', () => {
-        theChuck.runCode(" SinOsc osc => dac; 440 => osc.freq; 1::second => now; ");
-    });
-</script>
+<html>
+  <head>
+    <script type="module" defer>
+      import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
+
+      document.getElementById('action').addEventListener('click', async () => {
+        // Initialize default ChucK object, if not already initialized
+        window.theChuck ??= await Chuck.init([]);
+        // Run ChucK code
+        theChuck.runCode(`
+          SinOsc sin => dac;
+          440 => sin.freq;
+          1::second => now;
+        `);
+      });
+    </script>
+  </head>
+  <body>
+    <button id="action">Start and Play</button>
+  </body>
+</html>
 ```
 
-Once `theChuck` is initalized, you now have a web ChucK instance. Read the API reference to see how to communicate between JS and ChucK e.g. removing shreds, syncing variables, monitoring the VM etc.
+You now have a WebChucK instance in the global variable `theChuck`. Read the API reference to see how to communicate between JS and ChucK e.g. removing shreds, syncing variables, monitoring the VM etc.
 
 ## Documentation
 
