@@ -205,7 +205,7 @@
     <h4>NPM</h4>
     <p>Install WebChucK via npm. WebChucK can also be used with TypeScript.</p>
     <pre><code class="language-bash">$ npm install webchuck</code></pre>
-    <div class="sourceCode" id="cb2">
+    <div>
       <pre><code>import { Chuck } from 'webchuck'
 
 // Create the default ChucK object
@@ -221,7 +221,7 @@ theChuck.runCode(`
     <p>Note that many browsers do not let audio run without a user
       interaction (e.g. button press). You can check for a suspended audio
       context and resume like this:</p>
-    <div class="sourceCode" id="cb3">
+    <div>
       <pre><code>if (theChuck.context.state === 'suspended') {
     theChuck.context.resume();
 }</code></pre>
