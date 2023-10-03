@@ -182,7 +182,7 @@
     &lt;script type="module" defer&gt;
       import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
 
-      action.addEventListener('click', async () => {
+      document.getElementById('action').addEventListener('click', async () => {
         window.chuck ??= await Chuck.init([]);
 
         chuck.runCode(`
