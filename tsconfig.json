@@ -21,14 +21,16 @@
     "excludeInternal": true,
     "sort": "static-first",
     "hideGenerator": true,
-    "defaultCategory": "ChucK",
+    "defaultCategory": "Chuck",
     "visibilityFilters": {
       "private": false,
       "inherited": false,
     },
     "exclude": "src/DeferredPromise.ts",
     "plugin": [],
-    "sidebarLinks": { },
+    "sidebarLinks": { 
+      "Getting Started": "/docs",
+    },
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

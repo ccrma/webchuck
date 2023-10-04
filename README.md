@@ -73,7 +73,7 @@ You can also embed WebChucK as a JS module into your `index.html`.
 </html>
 ```
 
-You now have a WebChucK instance in the global variable `theChuck`. Read the API reference to see how to communicate between JS and ChucK e.g. removing shreds, syncing variables, monitoring the VM etc.
+You now have a WebChucK instance in the global variable `theChuck`. Read the [API reference](https://chuck.stanford.edu/webchuck/docs) to see how to communicate between JS and ChucK e.g. removing shreds, syncing variables, monitoring the VM etc.
 
 ## Documentation
 
