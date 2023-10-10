@@ -1048,4 +1048,10 @@ class Chuck extends window.AudioWorkletNode {
 /** @internal */
 Chuck.chuckID = 1;
 
-export { Chuck, DeferredPromise };
+class HID {
+    constructor() {
+        this.number = 1;
+    }
+}
+
+export { Chuck, DeferredPromise, HID };
