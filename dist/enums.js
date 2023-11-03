@@ -2,6 +2,7 @@ export var OutMessage;
 (function (OutMessage) {
     // Filesystem
     OutMessage["LOAD_FILE"] = "loadFile";
+    OutMessage["GET_FILE_SYSTEM"] = "getFileSystem";
     // Run/Replace Code
     OutMessage["RUN_CODE"] = "runChuckCode";
     OutMessage["RUN_CODE_WITH_REPLACEMENT_DAC"] = "runChuckCodeWithReplacementDac";
@@ -71,4 +72,5 @@ export var InMessage;
     InMessage["NEW_SHRED"] = "newShredCallback";
     InMessage["REPLACED_SHRED"] = "replacedShredCallback";
     InMessage["REMOVED_SHRED"] = "removedShredCallback";
+    InMessage["FILE_SYSTEM"] = "fileSystemCallback";
 })(InMessage || (InMessage = {}));

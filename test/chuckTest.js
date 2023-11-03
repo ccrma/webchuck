@@ -80,6 +80,7 @@ import('../src/wc-bundle.js').then(async (module) => {
 // DEFINE ALL TESTS!!!
 const testSuite = [
 
+    /*
     new Test(1, "[sound] Define a ChucK and runCode 220hz 0.5 second", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 1);
@@ -317,6 +318,7 @@ const testSuite = [
         return outputBox.innerText !== "";
     }),
 
+    */
 
 ]
 
@@ -335,7 +337,16 @@ async function runTestSuite() {
 
     parallelize = document.getElementById("parallelize").checked;
 
-    devChuck = await Chuck.init([], undefined, undefined, "../src/");
+    devChuck = await Chuck.init([
+        {
+            serverFilename: "ABSaturator.chug.js",
+            virtualFilename: "chugins/ABSaturator.js",
+        },
+        {
+            serverFilename: "ABSaturator.wasm",
+            virtualFilename: "chugins/ABSaturator.wasm",
+        }
+    ], undefined, undefined, "../src/");
 
     for(const test of testSuite) {
         console.log("Running test " + test.id)

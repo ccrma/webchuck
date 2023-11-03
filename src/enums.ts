@@ -1,6 +1,7 @@
 export enum OutMessage {
   // Filesystem
   LOAD_FILE = "loadFile",
+  GET_FILE_SYSTEM = "getFileSystem",
 
   // Run/Replace Code
   RUN_CODE = "runChuckCode",
@@ -82,4 +83,6 @@ export enum InMessage {
   NEW_SHRED = "newShredCallback",
   REPLACED_SHRED = "replacedShredCallback",
   REMOVED_SHRED = "removedShredCallback",
+
+  FILE_SYSTEM = "fileSystemCallback",
 }
