@@ -1,5 +1,5 @@
 export declare enum OutMessage {
-    LOAD_FILE = "loadFile",
+    CREATE_FILE = "createFile",
     RUN_CODE = "runChuckCode",
     RUN_CODE_WITH_REPLACEMENT_DAC = "runChuckCodeWithReplacementDac",
     REPLACE_CODE = "replaceChuckCode",

@@ -1,7 +1,6 @@
 export var OutMessage;
 (function (OutMessage) {
-    // Filesystem
-    OutMessage["LOAD_FILE"] = "loadFile";
+    OutMessage["CREATE_FILE"] = "createFile";
     // Run/Replace Code
     OutMessage["RUN_CODE"] = "runChuckCode";
     OutMessage["RUN_CODE_WITH_REPLACEMENT_DAC"] = "runChuckCodeWithReplacementDac";

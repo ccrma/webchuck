@@ -1,6 +1,5 @@
 export enum OutMessage {
-  // Filesystem
-  LOAD_FILE = "loadFile",
+  CREATE_FILE = "createFile",
 
   // Run/Replace Code
   RUN_CODE = "runChuckCode",

@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc && rollup dist/index.js --file src/wc-bundle.js --format esm",
     "test": "npm run build && bash ./test.sh",
+    "clean": "rm -rf dist/ && rm -rf docs/ && rm -rf src/wc-bundle.js",
     "doc": "typedoc --out docs src/index.ts",
     "prepare": "npm run build && npm run doc",
     "postversion": "git push && git push --tags"

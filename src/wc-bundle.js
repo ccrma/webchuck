@@ -85,8 +85,7 @@ const defer = () => new DeferredPromise();
 
 var OutMessage;
 (function (OutMessage) {
-    // Filesystem
-    OutMessage["LOAD_FILE"] = "loadFile";
+    OutMessage["CREATE_FILE"] = "createFile";
     // Run/Replace Code
     OutMessage["RUN_CODE"] = "runChuckCode";
     OutMessage["RUN_CODE_WITH_REPLACEMENT_DAC"] = "runChuckCodeWithReplacementDac";
@@ -286,7 +285,7 @@ class Chuck extends window.AudioWorkletNode {
      * @param data Data to write to the file
      */
     createFile(directory, filename, data) {
-        this.sendMessage(OutMessage.LOAD_FILE, {
+        this.sendMessage(OutMessage.CREATE_FILE, {
             directory,
             filename,
             data,
