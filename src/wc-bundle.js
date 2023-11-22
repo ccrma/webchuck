@@ -85,9 +85,7 @@ const defer = () => new DeferredPromise();
 
 var OutMessage;
 (function (OutMessage) {
-    // Filesystem
-    OutMessage["LOAD_FILE"] = "loadFile";
-    OutMessage["GET_FILE_SYSTEM"] = "getFileSystem";
+    OutMessage["CREATE_FILE"] = "createFile";
     // Run/Replace Code
     OutMessage["RUN_CODE"] = "runChuckCode";
     OutMessage["RUN_CODE_WITH_REPLACEMENT_DAC"] = "runChuckCodeWithReplacementDac";
@@ -157,7 +155,6 @@ var InMessage;
     InMessage["NEW_SHRED"] = "newShredCallback";
     InMessage["REPLACED_SHRED"] = "replacedShredCallback";
     InMessage["REMOVED_SHRED"] = "removedShredCallback";
-    InMessage["FILE_SYSTEM"] = "fileSystemCallback";
 })(InMessage || (InMessage = {}));
 
 /*
@@ -288,7 +285,7 @@ class Chuck extends window.AudioWorkletNode {
      * @param data Data to write to the file
      */
     createFile(directory, filename, data) {
-        this.sendMessage(OutMessage.LOAD_FILE, {
+        this.sendMessage(OutMessage.CREATE_FILE, {
             directory,
             filename,
             data,
@@ -313,13 +310,6 @@ class Chuck extends window.AudioWorkletNode {
             .catch((err) => {
             throw new Error(err);
         });
-    }
-    async getFileSystem() {
-        const callbackID = this.nextDeferID();
-        this.sendMessage(OutMessage.GET_FILE_SYSTEM, {
-            callback: callbackID,
-        });
-        return this.deferredPromises[callbackID].value();
     }
     // ================== Run/Replace Code ================== //
     /**
@@ -983,16 +973,6 @@ class Chuck extends window.AudioWorkletNode {
                 break;
             case InMessage.PRINT:
                 this.chuckPrint(event.data.message);
-                break;
-            case InMessage.FILE_SYSTEM:
-                if (event.data.callback in this.deferredPromises) {
-                    const promise = this.deferredPromises[event.data.callback];
-                    console.log(event.data.fileSystem);
-                    if (promise.resolve) {
-                        promise.resolve(event.data.fileSystem);
-                    }
-                    delete this.deferredPromises[event.data.callback];
-                }
                 break;
             case InMessage.EVENT:
                 if (event.data.callback in this.eventCallbacks) {

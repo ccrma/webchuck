@@ -81,7 +81,6 @@ export default class Chuck extends window.AudioWorkletNode {
      * @returns Promise of fetch request
      */
     loadFile(url: string): Promise<void>;
-    getFileSystem(): Promise<unknown>;
     /**
      * Run a string of ChucK code.
      * @example theChuck.runCode("SinOsc osc => dac; 1::second => now;");

@@ -161,7 +161,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param data Data to write to the file
    */
   public createFile(directory: string, filename: string, data: string | ArrayBuffer) {
-    this.sendMessage(OutMessage.LOAD_FILE, {
+    this.sendMessage(OutMessage.CREATE_FILE, {
       directory,
       filename,
       data,
@@ -187,15 +187,6 @@ export default class Chuck extends window.AudioWorkletNode {
               throw new Error(err);
           });
   }
-
-  public async getFileSystem(): Promise<unknown> {
-    const callbackID = this.nextDeferID();
-    this.sendMessage(OutMessage.GET_FILE_SYSTEM, {
-      callback: callbackID,
-    });
-    return this.deferredPromises[callbackID].value();
-  }
-
   // ================== Run/Replace Code ================== //
   /**
    * Run a string of ChucK code.
@@ -924,16 +915,6 @@ export default class Chuck extends window.AudioWorkletNode {
         break;
       case InMessage.PRINT:
         this.chuckPrint(event.data.message);
-        break;
-      case InMessage.FILE_SYSTEM:
-        if (event.data.callback in this.deferredPromises) {
-          const promise = this.deferredPromises[event.data.callback];
-          console.log(event.data.fileSystem);
-          if (promise.resolve) {
-            promise.resolve(event.data.fileSystem);
-          }
-          delete this.deferredPromises[event.data.callback];
-        }
         break;
       case InMessage.EVENT:
         if (event.data.callback in this.eventCallbacks) {

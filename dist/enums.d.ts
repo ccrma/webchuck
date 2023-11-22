@@ -1,6 +1,5 @@
 export declare enum OutMessage {
-    LOAD_FILE = "loadFile",
-    GET_FILE_SYSTEM = "getFileSystem",
+    CREATE_FILE = "createFile",
     RUN_CODE = "runChuckCode",
     RUN_CODE_WITH_REPLACEMENT_DAC = "runChuckCodeWithReplacementDac",
     REPLACE_CODE = "replaceChuckCode",
@@ -58,6 +57,5 @@ export declare enum InMessage {
     FLOAT_ARRAY = "floatArrayCallback",
     NEW_SHRED = "newShredCallback",
     REPLACED_SHRED = "replacedShredCallback",
-    REMOVED_SHRED = "removedShredCallback",
-    FILE_SYSTEM = "fileSystemCallback"
+    REMOVED_SHRED = "removedShredCallback"
 }
