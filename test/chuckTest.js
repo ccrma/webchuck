@@ -318,7 +318,8 @@ const testSuite = [
         `);
         await new Promise(resolve => setTimeout(resolve, 750));
 
-        return outputBox.innerText == "PASSED";
+        console.log(outputBox.innerText);
+        return outputBox.innerText == "I am in! \nPASSED";
     }),
 
 
