@@ -297,6 +297,31 @@ const testSuite = [
         return test;
     }),
 
+        new Test(11, "WebChugin Test, ABSaturator", async () => {
+        var aChuck = await Chuck.init([
+            {serverFilename: "./testFiles/ABSaturator.chug.wasm", virtualFilename: "/chugins/ABSaturator.chug.wasm"},
+        ], undefined, undefined, "../src/");
+        var outputBox = document.getElementById("output-" + 11);
+
+        // print lambda
+        print = (output) => {
+            outputBox.innerHTML += output + "<br>";
+        }
+        aChuck.chuckPrint = print;
+
+        aChuck.runCode(`
+        SinOsc osc => Delay d => ABSaturator sat => dac;
+        20 => sat.drive;
+        4 => sat.dcOffset;
+        0.5::second => now;
+        <<< "PASSED", "" >>>;
+        `);
+        await new Promise(resolve => setTimeout(resolve, 750));
+
+        console.log(outputBox.innerText);
+        return outputBox.innerText == "I am in! \nPASSED";
+    }),
+
 
     new Test(99, "Chuck VM operations and parameters", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
@@ -316,7 +341,6 @@ const testSuite = [
 
         return outputBox.innerText !== "";
     }),
-
 
 ]
 

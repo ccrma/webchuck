@@ -128,7 +128,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param data Data to write to the file
      */
     createFile(directory, filename, data) {
-        this.sendMessage(OutMessage.LOAD_FILE, {
+        this.sendMessage(OutMessage.CREATE_FILE, {
             directory,
             filename,
             data,
