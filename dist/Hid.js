@@ -1,4 +1,4 @@
-import { HID_ck, HidMsg_ck } from "./hidCk";
+import { Hid_ck, HidMsg_ck } from "./hidCk";
 export default class HID {
     /** @internal */
     constructor(theChuck) {
@@ -39,8 +39,8 @@ export default class HID {
     static async init(theChuck, enableMouse = true, enableKeyboard = true) {
         const hid = new HID(theChuck);
         // Add HID and HIDMsg classes to ChucK VM
-        await hid.theChuck.runCode(HID_ck);
         await hid.theChuck.runCode(HidMsg_ck);
+        await hid.theChuck.runCode(Hid_ck);
         // Enable mouse and keyboard
         if (enableMouse) {
             hid.enableMouse();
@@ -141,33 +141,23 @@ export default class HID {
         this.mouseActive();
         if (this._mouseActive) {
             this.mousePos = this.getMousePos(e);
-            if (this.lastPos.x == this.mousePos.x && this.lastPos.y == this.mousePos.y) {
-                this.theChuck.setInt("_mouseMotion", 0);
-            }
-            else {
-                this.theChuck.setInt("_mouseMotion", 1);
-                this.theChuck.broadcastEvent("_hid");
-                this.theChuck.setInt("_mouseX", this.mousePos.x);
-                this.theChuck.setInt("_mouseY", this.mousePos.y);
-                this.theChuck.setFloat("_deltaX", e.movementX);
-                this.theChuck.setFloat("_deltaY", e.movementY);
-                this.theChuck.setFloat("_scaledCursorX", this.mousePos.x / document.documentElement.clientWidth);
-                this.theChuck.setFloat("_scaledCursorY", this.mousePos.y / document.documentElement.clientHeight);
-                this.theChuck.broadcastEvent("_msg");
-            }
-            this.lastPos = this.mousePos;
+            this.theChuck.setInt("_mouseMotion", 1);
+            this.theChuck.broadcastEvent("_hid");
+            this.theChuck.setInt("_mouseX", this.mousePos.x);
+            this.theChuck.setInt("_mouseY", this.mousePos.y);
+            this.theChuck.setFloat("_deltaX", e.movementX);
+            this.theChuck.setFloat("_deltaY", e.movementY);
+            this.theChuck.setFloat("_scaledCursorX", this.mousePos.x / document.documentElement.clientWidth);
+            this.theChuck.setFloat("_scaledCursorY", this.mousePos.y / document.documentElement.clientHeight);
+            this.theChuck.broadcastEvent("_msg");
         }
+        this.lastPos = this.mousePos;
     }
     /** @internal */
     handleMouseDown(e) {
         this.mouseActive();
         if (this._mouseActive) {
-            if (this.lastPos.x == this.mousePos.x && this.lastPos.y == this.mousePos.y) {
-                this.theChuck.setInt("_mouseMotion", 0);
-            }
-            else {
-                this.theChuck.setInt("_mouseMotion", 1);
-            }
+            this.theChuck.setInt("_mouseMotion", 0);
             this.theChuck.setInt("_mouseDown", 1);
             this.theChuck.broadcastEvent("_hid");
             this.theChuck.setInt("_hidMouse", 1);
@@ -179,6 +169,7 @@ export default class HID {
     handleMouseUp(e) {
         this.mouseActive();
         if (this._mouseActive) {
+            this.theChuck.setInt("_mouseMotion", 0);
             this.theChuck.setInt("_mouseUp", 1);
             this.theChuck.broadcastEvent("_hid");
             this.theChuck.setInt("_hidMouse", 1);
@@ -190,6 +181,7 @@ export default class HID {
     handleMouseWheel(e) {
         this.mouseActive();
         if (this._mouseActive) {
+            this.theChuck.setInt("_mouseMotion", 0);
             this.theChuck.setInt("_isScroll", 1);
             this.theChuck.setInt("_deltaX", clamp(e.deltaX, -1, 1));
             this.theChuck.setInt("_deltaY", clamp(e.deltaY, -1, 1));
@@ -233,6 +225,9 @@ export default class HID {
         this.theChuck.broadcastEvent("_msg");
     }
 }
+//-----------------------------------------------
+// HELPER FUNCTIONS
+//-----------------------------------------------
 /**
  * Clamp a value between two numbers
  * @param val value to clamp

@@ -1,4 +1,4 @@
-const HID_ck = `
+const HidMsg_ck = `
 global Event _msg;
             
 global Event _hid;
@@ -91,7 +91,7 @@ public class HidMsg {
     spork~_set();
 }
 `;
-const HidMsg_ck = `
+const Hid_ck = `
 global Event _msg;
 
 global Event _hid;
@@ -167,4 +167,4 @@ public class Hid extends Event{
     }
 }
 `;
-export { HidMsg_ck, HID_ck };
+export { HidMsg_ck, Hid_ck };
