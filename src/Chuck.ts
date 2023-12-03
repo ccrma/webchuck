@@ -15,7 +15,7 @@
  */
 
 import DeferredPromise from "./DeferredPromise";
-import { defer, loadWasm, preloadFiles } from "./utils";
+import { defer, isPlaintextFile, loadWasm, preloadFiles } from "./utils";
 import type { File, Filename } from "./utils";
 import { InMessage, OutMessage } from "./enums";
 
@@ -176,10 +176,22 @@ export default class Chuck extends window.AudioWorkletNode {
    */
   public async loadFile(url: string): Promise<void> {
     const filename = url.split("/").pop()!;
+    const isText: boolean = isPlaintextFile(filename);
+    console.log(filename, isText);
     return fetch(url)
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => {
-        this.createFile("", filename, new Uint8Array(buffer));
+      .then((response: Promise<string> | Promise<ArrayBuffer> | any) => {
+        if (isText) {
+          return response.text();
+        } else {
+          return response.arrayBuffer();
+        }
+      })
+      .then((data) => {
+        if (isText) {
+          this.createFile("", filename, data as string);
+        } else {
+          this.createFile("", filename, new Uint8Array(data as ArrayBuffer));
+        }
       })
       .catch((err) => {
         throw new Error(err);
