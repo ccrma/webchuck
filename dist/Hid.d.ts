@@ -2,7 +2,6 @@ import Chuck from "./Chuck";
 export default class HID {
     private theChuck;
     private keymap;
-    private keysPressed;
     private mousePos;
     private lastPos;
     private _mouseActive;

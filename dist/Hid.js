@@ -2,7 +2,6 @@ import { Hid_ck, HidMsg_ck } from "./hidCk";
 export default class HID {
     /** @internal */
     constructor(theChuck) {
-        this.keysPressed = 0;
         this._mouseActive = false;
         this._kbdActive = false;
         // Initialize members
@@ -195,7 +194,6 @@ export default class HID {
         this.kbdActive();
         if (this._kbdActive && !this.keymap[e.keyCode]) {
             this.keymap[e.keyCode] = true;
-            this.keysPressed++;
             this.keyPressManager(e, true);
         }
     }
@@ -204,7 +202,6 @@ export default class HID {
         this.kbdActive();
         if (this._kbdActive) {
             this.keymap[e.keyCode] = false;
-            this.keysPressed--;
             this.keyPressManager(e, false);
         }
     }
@@ -215,14 +212,11 @@ export default class HID {
      * @param isDown Is key down
      */
     keyPressManager(e, isDown) {
-        this.theChuck.broadcastEvent("_hid");
         this.theChuck.setString("_key", e.key);
         this.theChuck.setInt("_which", e.which);
         this.theChuck.setInt("_ascii", e.keyCode);
-        this.theChuck.setInt("_isDown", isDown ? 1 : 0);
-        this.theChuck.setInt("_isUp", isDown ? 0 : 1);
-        this.theChuck.setInt("_hidMultiple", this.keysPressed);
-        this.theChuck.broadcastEvent("_msg");
+        this.theChuck.setInt("_type", isDown ? 1 : 2);
+        this.theChuck.broadcastEvent("_hid");
     }
 }
 //-----------------------------------------------

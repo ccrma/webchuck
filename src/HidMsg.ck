@@ -23,69 +23,49 @@ global float _scaledCursorX;
 global float _scaledCursorY;
 
 public class HidMsg {
+    int type; 
+    int deviceType;
     int cursorX;
     int cursorY;
     float deltaX;
     float deltaY;
-    string key;
-    int ascii;
-    int which;
     float scaledCursorX;
     float scaledCursorY;
+    int which;
+    int ascii;
+    string key;
 
+    // type 1 message
     function int isButtonDown() {
-        if(_mouseActive){
-            if(_isMouseDown){
-                0 => _isMouseDown;
-                return 1;
-            }
-        }
-        if(_kbdActive){
-            if(_isDown){
-                0 => _isDown;
-                return 1;
-            }
-        }
-        return 0;
+        return type == 1;
     }
 
+    // type 2 message
     function int isButtonUp() {
-        if(_mouseActive){
-            if(_isMouseUp){
-                0 => _isMouseUp;
-                return 1;
-            }
-        }
-        if(_kbdActive){
-            if(_isUp){
-                0 => _isUp;
-                return 1;
-            }
-        }
-        return 0;
+        return type == 2;
     }
 
+    // type 5 message
     function int isMouseMotion(){
-        return _mouseMotion;
+        return type == 5;
     }
 
+    // type 6 message
     function int isWheelMotion(){
-        return _isScroll;
+        return type == 6;
     }
 
-    function void _set(){
-        while(true){
-            _hid => now;
-            _cursorX => cursorX;
-            _cursorY => cursorY;
-            _key => key;
-            _ascii => ascii;
-            _which => which;
-            _deltaX => deltaX;
-            _deltaY => deltaY;
-            _scaledCursorX => scaledCursorX;
-            _scaledCursorY => scaledCursorY;
-        }
+    function void _copy(HidMsg localMsg) {
+        localMsg.type => type;
+        localMsg.deviceType => deviceType;
+        localMsg.cursorX => cursorX;
+        localMsg.cursorY => cursorY;
+        localMsg.deltaX => deltaX;
+        localMsg.deltaY => deltaY;
+        localMsg.scaledCursorX => scaledCursorX;
+        localMsg.scaledCursorY => scaledCursorY;
+        localMsg.which => which;
+        localMsg.ascii => ascii;
+        localMsg.key => key;
     }
-    spork~_set();
 }

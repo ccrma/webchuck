@@ -1093,84 +1093,68 @@ global float _scaledCursorX;
 global float _scaledCursorY;
 
 public class HidMsg {
+    int type;
+    int deviceType;
     int cursorX;
     int cursorY;
     float deltaX;
     float deltaY;
-    string key;
-    int ascii;
-    int which;
     float scaledCursorX;
     float scaledCursorY;
+    int which;
+    int ascii;
+    string key;
 
+    // type 1 message
     function int isButtonDown() {
-        if(_mouseActive){
-            if(_isMouseDown){
-                0 => _isMouseDown;
-                return 1;
-            }
-        }
-        if(_kbdActive){
-            if(_isDown){
-                0 => _isDown;
-                return 1;
-            }
-        }
+        if (type == 1) { return 1; }
         return 0;
     }
 
+    // type 2 message
     function int isButtonUp() {
-        if(_mouseActive){
-            if(_isMouseUp){
-                0 => _isMouseUp;
-                return 1;
-            }
-        }
-        if(_kbdActive){
-            if(_isUp){
-                0 => _isUp;
-                return 1;
-            }
-        }
+        if (type == 2) { return 1; }
         return 0;
     }
 
+    // type 5 message
     function int isMouseMotion(){
-        return _mouseMotion;
+        if (type == 5) { return 1; }
+        return 0;
     }
 
+    // type 6 message
     function int isWheelMotion(){
-        return _isScroll;
+        if (type == 6) { return 1; }
+        return 0;
     }
 
-    function void _set(){
-        while(true){
-            _hid => now;
-            _cursorX => cursorX;
-            _cursorY => cursorY;
-            _key => key;
-            _ascii => ascii;
-            _which => which;
-            _deltaX => deltaX;
-            _deltaY => deltaY;
-            _scaledCursorX => scaledCursorX;
-            _scaledCursorY => scaledCursorY;
-        }
+    function void _copy(HidMsg localMsg) {
+        localMsg.type => type;
+        localMsg.deviceType => deviceType;
+        localMsg.cursorX => cursorX;
+        localMsg.cursorY => cursorY;
+        localMsg.deltaX => deltaX;
+        localMsg.deltaY => deltaY;
+        localMsg.scaledCursorX => scaledCursorX;
+        localMsg.scaledCursorY => scaledCursorY;
+        localMsg.which => which;
+        localMsg.ascii => ascii;
+        localMsg.key => key;
     }
-    spork~_set();
 }
 `;
 const Hid_ck = `
 global Event _msg;
 
 global Event _hid;
-global int _hidMultiple;
 global int _cursorX;
 global int _cursorY;
 
 global float _deltaX;
 global float _deltaY;
 
+global int _type;
 global string _key;
 global int _isDown;
 global int _isUp;
@@ -1185,62 +1169,92 @@ global int _mouseMotion;
 global float _scaledCursorX;
 global float _scaledCursorY;
 
-public class Hid extends Event{
+public class Hid extends Event {
 
     0 => int isMouseOpen;
     0 => int isKBDOpen;
     0 => int active;
 
     string deviceName; 
+    int deviceType; // mouse = 2, keyboard = 3
 
-    function string name(){
+    // HidMsg Queue
+    HidMsg _hidMsgQueue[0];
+
+    function string name() {
         return deviceName;
     }
 
-    // just a way to stop the interface for now
-    function int openMouse(int num){
-        if(num == -1){
+    function int openMouse(int num) {
+        if (num < 0) {
             false => active;
         } else {
             "virtualJS mouse/trackpad" => deviceName;
+            2 => deviceType;
             true => active;
         }
-        active => isMouseOpen => _mouseActive;;
+        active => isMouseOpen => _mouseActive;
         return active;
     }
 
-    function int openKeyboard(int num){
-        if(num == -1){
-            false => active => _kbdActive;
+    function int openKeyboard(int num) {
+        if (num < 0) {
+            false => active;
         } else {
             "virtualJS keyboard" => deviceName;
-            true => active ;
+            3 => deviceType;
+            true => active;
         }
         active => isKBDOpen => _kbdActive;
         return active;
     }
 
-    // Global event gets hacked by local object
-    function void _hackEvent(){
+    // Pop the first HidMsg from the queue
+    // Write it to msg and return 1
+    function int recv(HidMsg msg) {
+        // is empty
+        if (_hidMsgQueue.size() <= 0) {
+            return 0;
+        }
+
+        // pop the first HidMsg to msg, return true
+        _hidMsgQueue[0] @=> HidMsg localMsg;
+        msg._copy(localMsg);    
+        _hidMsgQueue.popFront();
+        return 1;
+    }
+
+    // Hid Listener
+    // Get variables from JS and write to the HidMsg 
+    function void _HidListener() {
+        HidMsg @ msg;
         while(true){
+            new HidMsg @=> msg;
+            deviceType => msg.deviceType;
             _hid => now;
+
+            _type => msg.type;
+            _cursorX => msg.cursorX;
+            _cursorY => msg.cursorY;
+            _deltaX => msg.deltaX;
+            _deltaY => msg.deltaY;
+            _scaledCursorX => msg.scaledCursorX;
+            _scaledCursorY => msg.scaledCursorY;
+            _which => msg.which;
+            _ascii => msg.ascii;
+            _key => msg.key;
+
+            _hidMsgQueue << msg;
             this.broadcast();
         }
     }
-    spork~_hackEvent();
-
-    //The argument here is just to execute older code
-    function int recv(HidMsg msg){
-        _msg => now;
-        return 1;
-    }
+    spork ~ _HidListener();
 }
 `;
 
 class HID {
     /** @internal */
     constructor(theChuck) {
-        this.keysPressed = 0;
         this._mouseActive = false;
         this._kbdActive = false;
         // Initialize members
@@ -1433,7 +1447,6 @@ class HID {
         this.kbdActive();
         if (this._kbdActive && !this.keymap[e.keyCode]) {
             this.keymap[e.keyCode] = true;
-            this.keysPressed++;
             this.keyPressManager(e, true);
         }
     }
@@ -1442,7 +1455,6 @@ class HID {
         this.kbdActive();
         if (this._kbdActive) {
             this.keymap[e.keyCode] = false;
-            this.keysPressed--;
             this.keyPressManager(e, false);
         }
     }
@@ -1453,14 +1465,11 @@ class HID {
      * @param isDown Is key down
      */
     keyPressManager(e, isDown) {
-        this.theChuck.broadcastEvent("_hid");
         this.theChuck.setString("_key", e.key);
         this.theChuck.setInt("_which", e.which);
         this.theChuck.setInt("_ascii", e.keyCode);
-        this.theChuck.setInt("_isDown", isDown ? 1 : 0);
-        this.theChuck.setInt("_isUp", isDown ? 0 : 1);
-        this.theChuck.setInt("_hidMultiple", this.keysPressed);
-        this.theChuck.broadcastEvent("_msg");
+        this.theChuck.setInt("_type", isDown ? 1 : 2);
+        this.theChuck.broadcastEvent("_hid");
     }
 }
 //-----------------------------------------------

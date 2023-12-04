@@ -346,7 +346,6 @@ const testSuite = [
         var outputBox = document.getElementById("output-" + 13);
         print = (output) => {
             outputBox.innerHTML = output + "<br>";
-            console.log(output);
         }
         aChuck.chuckPrint = print;
 
