@@ -13,7 +13,7 @@
  *  - Clear: Methods like clearChuckInstance and clearGlobals allow clearing the ChucK instance and its global state.
  *  - Private: Private methods like sendMessage and receiveMessage handle messaging between the Chuck class and the AudioWorklet.
  */
-import { defer, loadWasm, preloadFiles } from "./utils";
+import { defer, isPlaintextFile, loadWasm, preloadFiles } from "./utils";
 import { InMessage, OutMessage } from "./enums";
 /**
  * WebChucK: ChucK Web Audio Node class.
@@ -145,10 +145,24 @@ export default class Chuck extends window.AudioWorkletNode {
      */
     async loadFile(url) {
         const filename = url.split("/").pop();
+        const isText = isPlaintextFile(filename);
+        console.log(filename, isText);
         return fetch(url)
-            .then((response) => response.arrayBuffer())
-            .then((buffer) => {
-            this.createFile("", filename, new Uint8Array(buffer));
+            .then((response) => {
+            if (isText) {
+                return response.text();
+            }
+            else {
+                return response.arrayBuffer();
+            }
+        })
+            .then((data) => {
+            if (isText) {
+                this.createFile("", filename, data);
+            }
+            else {
+                this.createFile("", filename, new Uint8Array(data));
+            }
         })
             .catch((err) => {
             throw new Error(err);
