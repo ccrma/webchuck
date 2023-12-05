@@ -20,11 +20,7 @@ export interface File {
   data: ArrayBuffer;
 }
 
-function readAsync(
-  url: string,
-  onload: (buffer: ArrayBuffer) => void,
-  onerror: () => void
-): void {
+function readAsync(url: string, onload: (buffer: ArrayBuffer) => void, onerror: () => void): void {
   const xhr = new XMLHttpRequest();
   xhr.open("GET", url, true);
   xhr.responseType = "arraybuffer";
@@ -42,7 +38,7 @@ function readAsync(
 export function asyncLoadFile(
   url: string,
   onload: (buffer: ArrayBuffer) => void,
-  onerror: () => void
+  onerror: () => void,
 ): void {
   readAsync(
     url,
@@ -56,13 +52,11 @@ export function asyncLoadFile(
       } else {
         throw new Error(`Loading data file ${url} failed.`);
       }
-    }
+    },
   );
 }
 
-export async function preloadFiles(
-  filenamesToPreload: Filename[]
-): Promise<File[]> {
+export async function preloadFiles(filenamesToPreload: Filename[]): Promise<File[]> {
   const promises = filenamesToPreload.map(
     (filenameToPreload) =>
       new Promise<File>((resolve, _reject) => {
@@ -75,24 +69,24 @@ export async function preloadFiles(
             });
           },
           () => {
-            console.error(
-              `Error fetching file: ${filenameToPreload.serverFilename}`
-            );
-          }
+            console.error(`Error fetching file: ${filenameToPreload.serverFilename}`);
+          },
         );
-      })
+      }),
   );
   return await Promise.all(promises);
 }
 
 export async function loadWasm(whereIsChuck: string): Promise<ArrayBuffer> {
   return await new Promise((resolve, reject) => {
-    asyncLoadFile(
-      whereIsChuck + "webchuck.wasm",
-      resolve,
-      reject
-    );
+    asyncLoadFile(whereIsChuck + "webchuck.wasm", resolve, reject);
   });
+}
+
+const textFileExtensions: string[] = ["ck", "txt", "csv", "json", "xml", "html", "js"];
+export function isPlaintextFile(filename: string): boolean {
+  const ext: string = filename.split(".").pop()!;
+  return textFileExtensions.includes(ext);
 }
 
 export const defer = () => new DeferredPromise();

@@ -32,12 +32,12 @@ export default class DeferredPromise<T = any> {
 
   /**
    * Returns the Promise to value `T` from the DeferredPromise. WebChucK occasionally returns a DeferredPromise and the value can be accessed in the following way:
-   * 
+   *
    * @example
    * ```ts
    * const deferredPromise = new DeferredPromise();
    * const value = await deferredPromise.value(); // await the Promise to value `T`
-   * ``` 
+   * ```
    * @returns Promise to value `T`. If resolved, the value is returned. If rejected, the error is thrown.
    */
   public async value(): Promise<T> {

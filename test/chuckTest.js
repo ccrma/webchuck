@@ -74,6 +74,7 @@ var runButton = document.getElementById("run");
     
 import('../src/wc-bundle.js').then(async (module) => {
     Chuck = module.Chuck; // Import Chuck class
+    HID = module.HID; // Import HID class
     runButton.disabled = false;
 });
 
@@ -322,6 +323,35 @@ const testSuite = [
         return outputBox.innerText == "I am in! \nPASSED";
     }),
 
+    new Test(12, "HID - mouse", async () => {
+        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        var outputBox = document.getElementById("output-" + 12);
+        print = (output) => {
+            outputBox.innerHTML = output + "<br>";
+        }
+        aChuck.chuckPrint = print;
+
+        var hid = await HID.init(aChuck);
+        await aChuck.loadFile("./testFiles/mouse.ck")
+        aChuck.runFile("mouse.ck")
+
+        return true;
+    }),
+
+    new Test(13, "HID - keyboard", async () => {
+        aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        var outputBox = document.getElementById("output-" + 13);
+        print = (output) => {
+            outputBox.innerHTML = output + "<br>";
+        }
+        aChuck.chuckPrint = print;
+
+        var hid = await HID.init(aChuck);
+        await aChuck.loadFile("./testFiles/kb.ck")
+        aChuck.runFile("kb.ck")
+
+        return true;
+    }),
 
     new Test(99, "Chuck VM operations and parameters", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
