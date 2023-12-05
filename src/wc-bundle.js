@@ -84,7 +84,6 @@ async function loadWasm(whereIsChuck) {
 const textFileExtensions = ["ck", "txt", "csv", "json", "xml", "html", "js"];
 function isPlaintextFile(filename) {
     const ext = filename.split(".").pop();
-    console.log(ext);
     return textFileExtensions.includes(ext);
 }
 const defer = () => new DeferredPromise();
@@ -309,7 +308,6 @@ class Chuck extends window.AudioWorkletNode {
     async loadFile(url) {
         const filename = url.split("/").pop();
         const isText = isPlaintextFile(filename);
-        console.log(filename, isText);
         return fetch(url)
             .then((response) => {
             if (isText) {

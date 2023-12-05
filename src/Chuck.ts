@@ -177,7 +177,6 @@ export default class Chuck extends window.AudioWorkletNode {
   public async loadFile(url: string): Promise<void> {
     const filename = url.split("/").pop()!;
     const isText: boolean = isPlaintextFile(filename);
-    console.log(filename, isText);
     return fetch(url)
       .then((response: Promise<string> | Promise<ArrayBuffer> | any) => {
         if (isText) {

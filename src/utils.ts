@@ -86,7 +86,6 @@ export async function loadWasm(whereIsChuck: string): Promise<ArrayBuffer> {
 const textFileExtensions: string[] = ["ck", "txt", "csv", "json", "xml", "html", "js"];
 export function isPlaintextFile(filename: string): boolean {
   const ext: string = filename.split(".").pop()!;
-  console.log(ext);
   return textFileExtensions.includes(ext);
 }
 

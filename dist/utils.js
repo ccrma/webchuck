@@ -48,7 +48,6 @@ export async function loadWasm(whereIsChuck) {
 const textFileExtensions = ["ck", "txt", "csv", "json", "xml", "html", "js"];
 export function isPlaintextFile(filename) {
     const ext = filename.split(".").pop();
-    console.log(ext);
     return textFileExtensions.includes(ext);
 }
 export const defer = () => new DeferredPromise();
