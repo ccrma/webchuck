@@ -1,9 +1,20 @@
 import Chuck from "./Chuck";
+/**
+ * Introducing HID (Human Interface Device) support for WebChucK. WebChucK HID
+ * brings mouse and keyboard support to work with the native {@link https://chuck.stanford.edu/doc/reference/io.html#Hid | Hid}
+ * class in ChucK. WebChucK HID wraps JavaScript mouse and keyboard event
+ * listeners. To get started with HID:
+ * @example
+ * ```ts
+ * import { Chuck, HID } from "webchuck";
+ *
+ * const theChuck = await Chuck.init([]);
+ * const hid = await HID.init(theChuck);
+ * ```
+ */
 export default class HID {
     private theChuck;
     private keymap;
-    private mousePos;
-    private lastPos;
     private _mouseActive;
     private _kbdActive;
     private boundHandleMouseMove;
@@ -20,12 +31,12 @@ export default class HID {
      * Mouse and keyboard event listeners are added if `enableMouse` and `enableKeyboard` are true (default).
      * @example
      * ```ts
-     * theChuck = await Chuck.init(); // Initialize WebChucK
+     * theChuck = await Chuck.init([]);
      * hid = await HID.init(theChuck); // Initialize HID with mouse and keyboard
      * ```
      * @example
      * ```ts
-     * theChuck = await Chuck.init(); // Initialize WebChucK
+     * theChuck = await Chuck.init([]);
      * hid = await HID.init(theChuck, false, true); // Initialize HID, no mouse, only keyboard
      * ```
      * @param theChuck WebChucK instance
@@ -54,7 +65,7 @@ export default class HID {
         y: number;
     };
     /**
-     * Enable Mouse HID Javascript event listeners to communicate with ChucK
+     * Enable Mouse HID Javascript event listeners for Chuck HID
      * Adds a mousemove, mousedown, mouseup, and wheel listener to the document.
      * @example
      * ```ts
@@ -73,7 +84,7 @@ export default class HID {
      */
     disableMouse(): void;
     /**
-     * Enable keyboard HID Javascript event listeners to communicate with ChucK.
+     * Enable keyboard HID Javascript event listeners for Chuck HID
      * Adds a keydown and keyup listener to the document.
      * @example
      * ```ts
@@ -92,22 +103,24 @@ export default class HID {
      */
     disableKeyboard(): void;
     /** @internal */
-    handleMouseMove(e: MouseEvent): void;
+    private handleMouseMove;
     /** @internal */
-    handleMouseDown(e: MouseEvent): void;
+    private handleMouseDown;
     /** @internal */
-    handleMouseUp(e: MouseEvent): void;
+    private handleMouseUp;
     /** @internal */
-    handleMouseWheel(e: WheelEvent): void;
+    private handleMouseWheel;
     /** @internal */
-    handleKeyDown(e: KeyboardEvent): void;
+    private static handleContextMenu;
     /** @internal */
-    handleKeyUp(e: KeyboardEvent): void;
+    private handleKeyDown;
+    /** @internal */
+    private handleKeyUp;
     /**
      * @internal
      * Handle keyboard presses to send to chuck
      * @param e Keyboard event
      * @param isDown Is key down
      */
-    keyPressManager(e: KeyboardEvent, isDown: boolean): void;
+    private keyPressManager;
 }

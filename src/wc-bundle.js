@@ -1068,30 +1068,6 @@ class Chuck extends window.AudioWorkletNode {
 Chuck.chuckID = 1;
 
 const HidMsg_ck = `
-global Event _msg;
-            
-global Event _hid;
-global int _hidMultiple;
-0 => global int _cursorX;
-0 => global int _cursorY;
-
-0 => global float _deltaX;
-0 => global float _deltaY;
-
-global string _key;
-global int _isDown;
-global int _isUp;
-global int _isMouseDown;
-global int _isMouseUp;
-global int _isScroll;
-global int _ascii;
-global int _which;
-global int _mouseActive;
-global int _kbdActive;
-global int _mouseMotion;
-global float _scaledCursorX;
-global float _scaledCursorY;
-
 public class HidMsg {
     int type;
     int deviceType;
@@ -1107,26 +1083,22 @@ public class HidMsg {
 
     // type 1 message
     function int isButtonDown() {
-        if (type == 1) { return 1; }
-        return 0;
+        return type == 1;
     }
 
     // type 2 message
     function int isButtonUp() {
-        if (type == 2) { return 1; }
-        return 0;
+        return type == 2;
     }
 
     // type 5 message
     function int isMouseMotion(){
-        if (type == 5) { return 1; }
-        return 0;
+        return type == 5;
     }
 
     // type 6 message
     function int isWheelMotion(){
-        if (type == 6) { return 1; }
-        return 0;
+        return type == 6;
     }
 
     function void _copy(HidMsg localMsg) {
@@ -1145,29 +1117,21 @@ public class HidMsg {
 }
 `;
 const Hid_ck = `
-global Event _msg;
-
 global Event _hid;
-global int _cursorX;
-global int _cursorY;
-
-global float _deltaX;
-global float _deltaY;
-
 global int _type;
-global string _key;
-global int _isDown;
-global int _isUp;
-global int _isMouseDown;
-global int _isMouseUp;
-global int _isScroll;
-global int _ascii;
-global int _which;
 global int _mouseActive;
 global int _kbdActive;
-global int _mouseMotion;
+
+global int _cursorX;
+global int _cursorY;
+global float _deltaX;
+global float _deltaY;
 global float _scaledCursorX;
 global float _scaledCursorY;
+
+global int _ascii;
+global int _which;
+global string _key;
 
 public class Hid extends Event {
 
@@ -1246,12 +1210,35 @@ public class Hid extends Event {
 
             _hidMsgQueue << msg;
             this.broadcast();
+
+            // Clear message type
+            0 => _type;
         }
     }
     spork ~ _HidListener();
 }
 `;
 
+var HidMsgType;
+(function (HidMsgType) {
+    HidMsgType[HidMsgType["BUTTON_DOWN"] = 1] = "BUTTON_DOWN";
+    HidMsgType[HidMsgType["BUTTON_UP"] = 2] = "BUTTON_UP";
+    HidMsgType[HidMsgType["MOUSE_MOTION"] = 5] = "MOUSE_MOTION";
+    HidMsgType[HidMsgType["WHEEL_MOTION"] = 6] = "WHEEL_MOTION";
+})(HidMsgType || (HidMsgType = {}));
+/**
+ * Introducing HID (Human Interface Device) support for WebChucK. WebChucK HID
+ * brings mouse and keyboard support to work with the native {@link https://chuck.stanford.edu/doc/reference/io.html#Hid | Hid}
+ * class in ChucK. WebChucK HID wraps JavaScript mouse and keyboard event
+ * listeners. To get started with HID:
+ * @example
+ * ```ts
+ * import { Chuck, HID } from "webchuck";
+ *
+ * const theChuck = await Chuck.init([]);
+ * const hid = await HID.init(theChuck);
+ * ```
+ */
 class HID {
     /** @internal */
     constructor(theChuck) {
@@ -1260,8 +1247,6 @@ class HID {
         // Initialize members
         this.theChuck = theChuck;
         this.keymap = new Array(256).fill(false);
-        this.mousePos = { x: 0, y: 0 };
-        this.lastPos = { x: 0, y: 0 };
         // Bind handlers
         this.boundHandleMouseMove = this.handleMouseMove.bind(this);
         this.boundHandleMouseDown = this.handleMouseDown.bind(this);
@@ -1276,12 +1261,12 @@ class HID {
      * Mouse and keyboard event listeners are added if `enableMouse` and `enableKeyboard` are true (default).
      * @example
      * ```ts
-     * theChuck = await Chuck.init(); // Initialize WebChucK
+     * theChuck = await Chuck.init([]);
      * hid = await HID.init(theChuck); // Initialize HID with mouse and keyboard
      * ```
      * @example
      * ```ts
-     * theChuck = await Chuck.init(); // Initialize WebChucK
+     * theChuck = await Chuck.init([]);
      * hid = await HID.init(theChuck, false, true); // Initialize HID, no mouse, only keyboard
      * ```
      * @param theChuck WebChucK instance
@@ -1331,7 +1316,7 @@ class HID {
         };
     }
     /**
-     * Enable Mouse HID Javascript event listeners to communicate with ChucK
+     * Enable Mouse HID Javascript event listeners for Chuck HID
      * Adds a mousemove, mousedown, mouseup, and wheel listener to the document.
      * @example
      * ```ts
@@ -1344,6 +1329,7 @@ class HID {
         document.addEventListener("mousedown", this.boundHandleMouseDown);
         document.addEventListener("mouseup", this.boundHandleMouseUp);
         document.addEventListener("wheel", this.boundHandleMouseWheel);
+        document.addEventListener("contextmenu", HID.handleContextMenu);
     }
     /**
      * Disable Mouse HID Javascript event listeners
@@ -1358,9 +1344,10 @@ class HID {
         document.removeEventListener("mousedown", this.boundHandleMouseDown);
         document.removeEventListener("mouseup", this.boundHandleMouseUp);
         document.removeEventListener("wheel", this.boundHandleMouseWheel);
+        document.removeEventListener("contextmenu", HID.handleContextMenu);
     }
     /**
-     * Enable keyboard HID Javascript event listeners to communicate with ChucK.
+     * Enable keyboard HID Javascript event listeners for Chuck HID
      * Adds a keydown and keyup listener to the document.
      * @example
      * ```ts
@@ -1392,54 +1379,46 @@ class HID {
     handleMouseMove(e) {
         this.mouseActive();
         if (this._mouseActive) {
-            this.mousePos = this.getMousePos(e);
-            this.theChuck.setInt("_mouseMotion", 1);
-            this.theChuck.broadcastEvent("_hid");
-            this.theChuck.setInt("_mouseX", this.mousePos.x);
-            this.theChuck.setInt("_mouseY", this.mousePos.y);
+            const mousePos = this.getMousePos(e);
             this.theChuck.setFloat("_deltaX", e.movementX);
             this.theChuck.setFloat("_deltaY", e.movementY);
-            this.theChuck.setFloat("_scaledCursorX", this.mousePos.x / document.documentElement.clientWidth);
-            this.theChuck.setFloat("_scaledCursorY", this.mousePos.y / document.documentElement.clientHeight);
-            this.theChuck.broadcastEvent("_msg");
+            this.theChuck.setFloat("_scaledCursorX", mousePos.x / document.documentElement.clientWidth);
+            this.theChuck.setFloat("_scaledCursorY", mousePos.y / document.documentElement.clientHeight);
+            this.theChuck.setInt("_type", HidMsgType.MOUSE_MOTION);
+            this.theChuck.broadcastEvent("_hid");
         }
-        this.lastPos = this.mousePos;
     }
     /** @internal */
     handleMouseDown(e) {
         this.mouseActive();
         if (this._mouseActive) {
-            this.theChuck.setInt("_mouseMotion", 0);
-            this.theChuck.setInt("_mouseDown", 1);
-            this.theChuck.broadcastEvent("_hid");
-            this.theChuck.setInt("_hidMouse", 1);
             this.theChuck.setInt("_which", e.which);
-            this.theChuck.broadcastEvent("_msg");
+            this.theChuck.setInt("_type", HidMsgType.BUTTON_DOWN);
+            this.theChuck.broadcastEvent("_hid");
         }
     }
     /** @internal */
     handleMouseUp(e) {
         this.mouseActive();
         if (this._mouseActive) {
-            this.theChuck.setInt("_mouseMotion", 0);
-            this.theChuck.setInt("_mouseUp", 1);
-            this.theChuck.broadcastEvent("_hid");
-            this.theChuck.setInt("_hidMouse", 1);
             this.theChuck.setInt("_which", e.which);
-            this.theChuck.broadcastEvent("_msg");
+            this.theChuck.setInt("_type", HidMsgType.BUTTON_UP);
+            this.theChuck.broadcastEvent("_hid");
         }
     }
     /** @internal */
     handleMouseWheel(e) {
         this.mouseActive();
         if (this._mouseActive) {
-            this.theChuck.setInt("_mouseMotion", 0);
-            this.theChuck.setInt("_isScroll", 1);
-            this.theChuck.setInt("_deltaX", clamp(e.deltaX, -1, 1));
-            this.theChuck.setInt("_deltaY", clamp(e.deltaY, -1, 1));
+            this.theChuck.setFloat("_deltaX", clamp(e.deltaX, -1, 1));
+            this.theChuck.setFloat("_deltaY", clamp(e.deltaY, -1, 1));
+            this.theChuck.setInt("_type", HidMsgType.WHEEL_MOTION);
             this.theChuck.broadcastEvent("_hid");
-            this.theChuck.broadcastEvent("_msg");
         }
+    }
+    /** @internal */
+    static handleContextMenu(e) {
+        e.preventDefault();
     }
     //----------- KEYBOARD --------- //
     /** @internal */
@@ -1468,7 +1447,7 @@ class HID {
         this.theChuck.setString("_key", e.key);
         this.theChuck.setInt("_which", e.which);
         this.theChuck.setInt("_ascii", e.keyCode);
-        this.theChuck.setInt("_type", isDown ? 1 : 2);
+        this.theChuck.setInt("_type", isDown ? HidMsgType.BUTTON_DOWN : HidMsgType.BUTTON_UP);
         this.theChuck.broadcastEvent("_hid");
     }
 }
@@ -1480,7 +1459,7 @@ class HID {
  * @param val value to clamp
  * @param min min value
  * @param max max value
- * @returns clamp value
+ * @returns clamped value
  */
 function clamp(val, min, max) {
     return Math.min(Math.max(val, min), max);

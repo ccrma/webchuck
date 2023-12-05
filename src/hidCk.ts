@@ -1,28 +1,4 @@
 const HidMsg_ck = `
-global Event _msg;
-            
-global Event _hid;
-global int _hidMultiple;
-0 => global int _cursorX;
-0 => global int _cursorY;
-
-0 => global float _deltaX;
-0 => global float _deltaY;
-
-global string _key;
-global int _isDown;
-global int _isUp;
-global int _isMouseDown;
-global int _isMouseUp;
-global int _isScroll;
-global int _ascii;
-global int _which;
-global int _mouseActive;
-global int _kbdActive;
-global int _mouseMotion;
-global float _scaledCursorX;
-global float _scaledCursorY;
-
 public class HidMsg {
     int type;
     int deviceType;
@@ -38,26 +14,22 @@ public class HidMsg {
 
     // type 1 message
     function int isButtonDown() {
-        if (type == 1) { return 1; }
-        return 0;
+        return type == 1;
     }
 
     // type 2 message
     function int isButtonUp() {
-        if (type == 2) { return 1; }
-        return 0;
+        return type == 2;
     }
 
     // type 5 message
     function int isMouseMotion(){
-        if (type == 5) { return 1; }
-        return 0;
+        return type == 5;
     }
 
     // type 6 message
     function int isWheelMotion(){
-        if (type == 6) { return 1; }
-        return 0;
+        return type == 6;
     }
 
     function void _copy(HidMsg localMsg) {
@@ -77,29 +49,21 @@ public class HidMsg {
 `;
 
 const Hid_ck = `
-global Event _msg;
-
 global Event _hid;
-global int _cursorX;
-global int _cursorY;
-
-global float _deltaX;
-global float _deltaY;
-
 global int _type;
-global string _key;
-global int _isDown;
-global int _isUp;
-global int _isMouseDown;
-global int _isMouseUp;
-global int _isScroll;
-global int _ascii;
-global int _which;
 global int _mouseActive;
 global int _kbdActive;
-global int _mouseMotion;
+
+global int _cursorX;
+global int _cursorY;
+global float _deltaX;
+global float _deltaY;
 global float _scaledCursorX;
 global float _scaledCursorY;
+
+global int _ascii;
+global int _which;
+global string _key;
 
 public class Hid extends Event {
 
@@ -178,6 +142,9 @@ public class Hid extends Event {
 
             _hidMsgQueue << msg;
             this.broadcast();
+
+            // Clear message type
+            0 => _type;
         }
     }
     spork ~ _HidListener();

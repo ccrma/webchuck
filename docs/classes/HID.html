@@ -15,12 +15,23 @@
 <li><a href="../modules.html">webchuck</a></li>
 <li><a href="HID.html">HID</a></li></ul>
 <h1>Class HID</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>Introducing HID (Human Interface Device) support for WebChucK. HID wraps
+JavaScript mouse/keyboard event listeners enabling mouse and keyboard
+communication with the native <a href="https://chuck.stanford.edu/doc/reference/io.html#Hid">HID</a>
+class in ChucK.</p>
+<p>To get started with HID:</p>
+</div>
+<div class="tsd-comment tsd-typography">
+<h4>Example</h4><pre><code class="language-ts"><span class="hl-2">import</span><span class="hl-1"> { </span><span class="hl-0">Chuck</span><span class="hl-1">, </span><span class="hl-0">HID</span><span class="hl-1"> } </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&quot;webchuck&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">([]);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">hid</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-6">HID</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">(</span><span class="hl-0">theChuck</span><span class="hl-1">); </span><span class="hl-4">// Initialize HID with mouse and keyboard</span>
+</code><button>Copy</button></pre>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">HID</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L5">src/Hid.ts:5</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L27">src/Hid.ts:27</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -30,9 +41,6 @@
 <h3 class="tsd-index-heading">Properties</h3>
 <div class="tsd-index-list"><a href="HID.html#theChuck" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>the<wbr/>Chuck</span></a>
 <a href="HID.html#keymap" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>keymap</span></a>
-<a href="HID.html#keysPressed" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>keys<wbr/>Pressed</span></a>
-<a href="HID.html#mousePos" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>mouse<wbr/>Pos</span></a>
-<a href="HID.html#lastPos" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>last<wbr/>Pos</span></a>
 <a href="HID.html#_mouseActive" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_mouse<wbr/>Active</span></a>
 <a href="HID.html#_kbdActive" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_kbd<wbr/>Active</span></a>
 <a href="HID.html#boundHandleMouseMove" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>bound<wbr/>Handle<wbr/>Mouse<wbr/>Move</span></a>
@@ -56,51 +64,22 @@
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>the<wbr/>Chuck</span><a href="#theChuck" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">the<wbr/>Chuck</span><span class="tsd-signature-symbol">:</span> <a href="Chuck.html" class="tsd-signature-type tsd-kind-class">Chuck</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L7">src/Hid.ts:7</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L29">src/Hid.ts:29</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="keymap" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>keymap</span><a href="#keymap" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">keymap</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L8">src/Hid.ts:8</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="keysPressed" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>keys<wbr/>Pressed</span><a href="#keysPressed" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">keys<wbr/>Pressed</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L9">src/Hid.ts:9</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="mousePos" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>mouse<wbr/>Pos</span><a href="#mousePos" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">mouse<wbr/>Pos</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">x</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">y</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
-<div class="tsd-type-declaration">
-<h4>Type declaration</h4>
-<ul class="tsd-parameters">
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">x</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">y</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5></li></ul></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L10">src/Hid.ts:10</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="lastPos" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>last<wbr/>Pos</span><a href="#lastPos" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">last<wbr/>Pos</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">x</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">y</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
-<div class="tsd-type-declaration">
-<h4>Type declaration</h4>
-<ul class="tsd-parameters">
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">x</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">y</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5></li></ul></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L11">src/Hid.ts:11</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L30">src/Hid.ts:30</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="_mouseActive" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>_mouse<wbr/>Active</span><a href="#_mouseActive" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">_mouse<wbr/>Active</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L12">src/Hid.ts:12</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L31">src/Hid.ts:31</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="_kbdActive" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>_kbd<wbr/>Active</span><a href="#_kbdActive" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">_kbd<wbr/>Active</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L13">src/Hid.ts:13</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L32">src/Hid.ts:32</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="boundHandleMouseMove" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>bound<wbr/>Handle<wbr/>Mouse<wbr/>Move</span><a href="#boundHandleMouseMove" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">bound<wbr/>Handle<wbr/>Mouse<wbr/>Move</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
@@ -110,7 +89,7 @@
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures"></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L16">src/Hid.ts:16</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L35">src/Hid.ts:35</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="boundHandleMouseDown" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>bound<wbr/>Handle<wbr/>Mouse<wbr/>Down</span><a href="#boundHandleMouseDown" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">bound<wbr/>Handle<wbr/>Mouse<wbr/>Down</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
@@ -120,7 +99,7 @@
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures"></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L17">src/Hid.ts:17</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L36">src/Hid.ts:36</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="boundHandleMouseUp" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>bound<wbr/>Handle<wbr/>Mouse<wbr/>Up</span><a href="#boundHandleMouseUp" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">bound<wbr/>Handle<wbr/>Mouse<wbr/>Up</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
@@ -130,7 +109,7 @@
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures"></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L18">src/Hid.ts:18</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L37">src/Hid.ts:37</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="boundHandleMouseWheel" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>bound<wbr/>Handle<wbr/>Mouse<wbr/>Wheel</span><a href="#boundHandleMouseWheel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">bound<wbr/>Handle<wbr/>Mouse<wbr/>Wheel</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
@@ -140,7 +119,7 @@
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures"></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L19">src/Hid.ts:19</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L38">src/Hid.ts:38</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="boundHandleKeyDown" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>bound<wbr/>Handle<wbr/>Key<wbr/>Down</span><a href="#boundHandleKeyDown" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">bound<wbr/>Handle<wbr/>Key<wbr/>Down</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
@@ -150,7 +129,7 @@
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures"></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L20">src/Hid.ts:20</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L39">src/Hid.ts:39</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="boundHandleKeyUp" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>bound<wbr/>Handle<wbr/>Key<wbr/>Up</span><a href="#boundHandleKeyUp" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">bound<wbr/>Handle<wbr/>Key<wbr/>Up</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
@@ -160,7 +139,7 @@
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures"></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L21">src/Hid.ts:21</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L40">src/Hid.ts:40</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="init" class="tsd-anchor"></a>
@@ -168,7 +147,7 @@
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="init.init-1"><span class="tsd-kind-call-signature">init</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">theChuck</span>, <span class="tsd-kind-parameter">enableMouse</span><span class="tsd-signature-symbol">?</span>, <span class="tsd-kind-parameter">enableKeyboard</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="HID.html" class="tsd-signature-type tsd-kind-class">HID</a><span class="tsd-signature-symbol">&gt;</span><a href="#init.init-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Initialize HID functionality in your WebChucK instance. 
+<div class="tsd-comment tsd-typography"><p>Initialize HID functionality in your WebChucK instance.
 This adds a <code>Hid</code> and <code>HidMsg</code> class to the ChucK Virtual Machine (VM).
 Mouse and keyboard event listeners are added if <code>enableMouse</code> and <code>enableKeyboard</code> are true (default).</p>
 </div>
@@ -192,21 +171,22 @@ Mouse and keyboard event listeners are added if <code>enableMouse</code> and <co
 <div class="tsd-comment tsd-typography"></div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="HID.html" class="tsd-signature-type tsd-kind-class">HID</a><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography">
-<h4>Example</h4><pre><code class="language-ts"><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">(); </span><span class="hl-4">// Initialize WebChucK</span><br/><span class="hl-0">hid</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-6">HID</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">(</span><span class="hl-0">theChuck</span><span class="hl-1">); </span><span class="hl-4">// Initialize HID with mouse and keyboard</span>
+<h4>Example</h4><pre><code class="language-ts"><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">([]);</span><br/><span class="hl-0">hid</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-6">HID</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">(</span><span class="hl-0">theChuck</span><span class="hl-1">); </span><span class="hl-4">// Initialize HID with mouse and keyboard</span>
 </code><button>Copy</button></pre>
 
-<h4>Example</h4><pre><code class="language-ts"><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">(); </span><span class="hl-4">// Initialize WebChucK</span><br/><span class="hl-0">hid</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-6">HID</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">(</span><span class="hl-0">theChuck</span><span class="hl-1">, </span><span class="hl-5">false</span><span class="hl-1">, </span><span class="hl-5">true</span><span class="hl-1">); </span><span class="hl-4">// Initialize HID, no mouse, only keyboard</span>
+<h4>Example</h4><pre><code class="language-ts"><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">([]);</span><br/><span class="hl-0">hid</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-6">HID</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">(</span><span class="hl-0">theChuck</span><span class="hl-1">, </span><span class="hl-5">false</span><span class="hl-1">, </span><span class="hl-5">true</span><span class="hl-1">); </span><span class="hl-4">// Initialize HID, no mouse, only keyboard</span>
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L57">src/Hid.ts:57</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L75">src/Hid.ts:75</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="enableMouse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>enable<wbr/>Mouse</span><a href="#enableMouse" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="enableMouse.enableMouse-1"><span class="tsd-kind-call-signature">enable<wbr/>Mouse</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#enableMouse.enableMouse-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Enable Mouse HID Javascript event listeners to communicate with ChucK
-Adds a mousemove, mousedown, mouseup, and wheel listener to the document.</p>
+<div class="tsd-comment tsd-typography"><p>Enable Mouse HID Javascript event listeners for HID.
+Adds a mousemove, mousedown, mouseup, and wheel listener to the document.
+This will also disable the context menu on right click.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography">
@@ -214,7 +194,7 @@ Adds a mousemove, mousedown, mouseup, and wheel listener to the document.</p>
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L117">src/Hid.ts:117</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L136">src/Hid.ts:136</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="disableMouse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>disable<wbr/>Mouse</span><a href="#disableMouse" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -228,13 +208,13 @@ Adds a mousemove, mousedown, mouseup, and wheel listener to the document.</p>
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L132">src/Hid.ts:132</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L152">src/Hid.ts:152</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="enableKeyboard" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>enable<wbr/>Keyboard</span><a href="#enableKeyboard" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="enableKeyboard.enableKeyboard-1"><span class="tsd-kind-call-signature">enable<wbr/>Keyboard</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#enableKeyboard.enableKeyboard-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Enable keyboard HID Javascript event listeners to communicate with ChucK.
+<div class="tsd-comment tsd-typography"><p>Enable keyboard HID Javascript event listeners for HID.
 Adds a keydown and keyup listener to the document.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -243,7 +223,7 @@ Adds a keydown and keyup listener to the document.</p>
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L148">src/Hid.ts:148</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L169">src/Hid.ts:169</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="disableKeyboard" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>disable<wbr/>Keyboard</span><a href="#disableKeyboard" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -257,7 +237,7 @@ Adds a keydown and keyup listener to the document.</p>
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/2def433/src/Hid.ts#L161">src/Hid.ts:161</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/82cbb45/src/Hid.ts#L182">src/Hid.ts:182</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -277,9 +257,6 @@ Adds a keydown and keyup listener to the document.</p>
 <ul>
 <li><a href="#theChuck" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>the<wbr/>Chuck</span></a></li>
 <li><a href="#keymap" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>keymap</span></a></li>
-<li><a href="#keysPressed" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>keys<wbr/>Pressed</span></a></li>
-<li><a href="#mousePos" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>mouse<wbr/>Pos</span></a></li>
-<li><a href="#lastPos" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>last<wbr/>Pos</span></a></li>
 <li><a href="#_mouseActive" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_mouse<wbr/>Active</span></a></li>
 <li><a href="#_kbdActive" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_kbd<wbr/>Active</span></a></li>
 <li><a href="#boundHandleMouseMove" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>bound<wbr/>Handle<wbr/>Mouse<wbr/>Move</span></a></li>

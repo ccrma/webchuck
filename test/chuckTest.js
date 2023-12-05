@@ -81,7 +81,6 @@ import('../src/wc-bundle.js').then(async (module) => {
 // DEFINE ALL TESTS!!!
 const testSuite = [
 
-    /*
     new Test(1, "[sound] Define a ChucK and runCode 220hz 0.5 second", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 1);
@@ -323,14 +322,12 @@ const testSuite = [
         console.log(outputBox.innerText);
         return outputBox.innerText == "I am in! \nPASSED";
     }),
-    */
 
     new Test(12, "HID - mouse", async () => {
         var aChuck = await Chuck.init([], undefined, undefined, "../src/");
         var outputBox = document.getElementById("output-" + 12);
         print = (output) => {
             outputBox.innerHTML = output + "<br>";
-            console.log(output);
         }
         aChuck.chuckPrint = print;
 
@@ -349,7 +346,7 @@ const testSuite = [
         }
         aChuck.chuckPrint = print;
 
-        window.hid = await HID.init(aChuck);
+        var hid = await HID.init(aChuck);
         await aChuck.loadFile("./testFiles/kb.ck")
         aChuck.runFile("kb.ck")
 
