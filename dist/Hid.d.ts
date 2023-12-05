@@ -1,15 +1,17 @@
 import Chuck from "./Chuck";
 /**
- * Introducing HID (Human Interface Device) support for WebChucK. WebChucK HID
- * brings mouse and keyboard support to work with the native {@link https://chuck.stanford.edu/doc/reference/io.html#Hid | Hid}
- * class in ChucK. WebChucK HID wraps JavaScript mouse and keyboard event
- * listeners. To get started with HID:
+ * Introducing HID (Human Interface Device) support for WebChucK. HID wraps
+ * JavaScript mouse/keyboard event listeners enabling mouse and keyboard
+ * communication with the native {@link https://chuck.stanford.edu/doc/reference/io.html#Hid | HID}
+ * class in ChucK.
+ *
+ * To get started with HID:
  * @example
  * ```ts
  * import { Chuck, HID } from "webchuck";
  *
  * const theChuck = await Chuck.init([]);
- * const hid = await HID.init(theChuck);
+ * const hid = await HID.init(theChuck); // Initialize HID with mouse and keyboard
  * ```
  */
 export default class HID {
@@ -65,8 +67,9 @@ export default class HID {
         y: number;
     };
     /**
-     * Enable Mouse HID Javascript event listeners for Chuck HID
+     * Enable Mouse HID Javascript event listeners for HID.
      * Adds a mousemove, mousedown, mouseup, and wheel listener to the document.
+     * This will also disable the context menu on right click.
      * @example
      * ```ts
      * // If mouse HID is not yet enabled
@@ -84,7 +87,7 @@ export default class HID {
      */
     disableMouse(): void;
     /**
-     * Enable keyboard HID Javascript event listeners for Chuck HID
+     * Enable keyboard HID Javascript event listeners for HID.
      * Adds a keydown and keyup listener to the document.
      * @example
      * ```ts
