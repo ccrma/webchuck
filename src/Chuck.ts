@@ -132,7 +132,7 @@ export default class Chuck extends window.AudioWorkletNode {
     filenamesToPreload = filenamesToPreload.concat(Chuck.chugins);
 
     const preloadedFiles = await preloadFiles(filenamesToPreload);
-      
+
     const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
 
     // connect node to default destination if using default audio context
@@ -210,12 +210,10 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param url url to webchugin to load
    */
   public loadChugin(url: string): void {
-    Chuck.chugins.concat(
-      {
-        serverFilename: url,
-        virtualFilename: "/chugins/" + url.split("/").pop()!,
-      }
-    )
+    Chuck.chugins.concat({
+      serverFilename: url,
+      virtualFilename: "/chugins/" + url.split("/").pop()!,
+    });
   }
   /**
    * Return a list of loaded WebChugins.

@@ -13,7 +13,7 @@
     "clean": "rm -rf dist/ && rm -rf docs/ && rm -rf src/wc-bundle.js",
     "doc": "typedoc --out docs src/index.ts",
     "format": "prettier --write src/*.ts",
-    "prepare": "npm run build && npm run doc",
+    "prepare": "npm run build",
     "postversion": "git push && git push --tags"
   },
   "repository": {
