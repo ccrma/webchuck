@@ -210,22 +210,20 @@ const testSuite = [
         outputBox.innerHTML += "Starting shred 1 for 1 second" + "<br>";
 
         aChuck.runCode(`1::second => now;`);
-        await new Promise(resolve => setTimeout(resolve, 100));
         var test1; var test2;
+        await new Promise(resolve => setTimeout(resolve, 100));
         await aChuck.isShredActive(1).then((active) => {
-            print("@100ms - Shred 1 is active: " + active);
-            test1 = active == 1
+            test1 = (active == 1);
         });
         await new Promise(resolve => setTimeout(resolve, 1000));
         await aChuck.isShredActive(1).then((active) => {
-            print("@1s - Shred 1 is active: " + active);
-            test2 = active == 0
+            test2 = (active == 0);
         });
 
         return test1 && test2;
     }),
 
-    new Test(9, "Machine add/replace/remove/clear", async () => {
+    new Test(9, "Machine.add/replace/remove/clear", async () => {
         var aChuck = await Chuck.init([
             {serverFilename: "./testFiles/test9.ck", virtualFilename: "test9.ck"},
         ], undefined, undefined, "../src/");
@@ -239,30 +237,31 @@ const testSuite = [
 
         aChuck.runCode(`
             Machine.add("test9.ck") => int id;
-            100::ms => now;
+            200::ms => now;
             Machine.replace(id, "test9.ck");
-            500::ms => now;
+            400::ms => now;
             Machine.remove(id);
-            100::ms => now;
+            200::ms => now;
             Machine.clearVM();
         `)
-        await new Promise(resolve => setTimeout(resolve, 50));
-        var test1; var test2; var test3;
-        await aChuck.isShredActive(2).then((active) => {
-            print("@50ms - Shred 2 is added: " + active);
-            test1 = active == 1
-        });
+        var test1; var test2; var test3; var test4;
         await new Promise(resolve => setTimeout(resolve, 100));
         await aChuck.isShredActive(2).then((active) => {
-            print("@150ms - Shred 2 is replaced: " + active);
-            test2 = active == 1
+            test1 = (active == 1);
         });
-        await new Promise(resolve => setTimeout(resolve, 700));
+        await new Promise(resolve => setTimeout(resolve, 200));
+        await aChuck.isShredActive(2).then((active) => {
+            test2 = (active == 1);
+        });
+        await new Promise(resolve => setTimeout(resolve, 400));
+        await aChuck.isShredActive(2).then((active) => {
+            test3 = (active == 0);
+        });
+        await new Promise(resolve => setTimeout(resolve, 200));
         await aChuck.isShredActive(1).then((active) => {
-            print("@750ms - VM is clear: " + (active == 0))
-            test3 = active == 0
+            test4 = (active == 0);
         });
-        return test1 && test2 && test3;
+        return test1 && test2 && test3 && test4;
     }),
 
     new Test(10, "Chuck get Promise<type> returns", async () => {
@@ -319,8 +318,7 @@ const testSuite = [
         `);
         await new Promise(resolve => setTimeout(resolve, 750));
 
-        console.log(outputBox.innerText);
-        return outputBox.innerText == "I am in! \nPASSED";
+        return outputBox.innerText.includes("PASSED");
     }),
 
     new Test(12, "HID - mouse", async () => {

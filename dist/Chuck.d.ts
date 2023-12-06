@@ -11,6 +11,8 @@ export default class Chuck extends window.AudioWorkletNode {
     private isReady;
     /** @internal */
     static chuckID: number;
+    /** @internal */
+    static chugins: Filename[];
     /**
      * Private internal constructor for a ChucK AudioWorklet Web Audio Node. Use public **{@link init| Init}** to create a ChucK instance.
      * @param preloadedFiles Array of Files to preload into ChucK's filesystem
@@ -81,6 +83,18 @@ export default class Chuck extends window.AudioWorkletNode {
      * @returns Promise of fetch request
      */
     loadFile(url: string): Promise<void>;
+    /**
+     * Load a WebChugin (.chug.wasm) via url into WebChucK.
+     * The list of WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
+     * **Note:** WebChugins must be loaded before `theChuck` is initialized.
+     * @param url url to webchugin to load
+     */
+    loadChugin(url: string): void;
+    /**
+     * Return a list of loaded WebChugins.
+     * @returns Array string of loaded WebChugins
+     */
+    loadedChugins(): string[];
     /**
      * Run a string of ChucK code.
      * @example theChuck.runCode("SinOsc osc => dac; 1::second => now;");
