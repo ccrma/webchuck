@@ -261,6 +261,8 @@ class Chuck extends window.AudioWorkletNode {
             await audioContext.resume();
         }
         await audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js");
+        // Add Chugins to filenamesToPreload
+        filenamesToPreload = filenamesToPreload.concat(Chuck.chugins);
         const preloadedFiles = await preloadFiles(filenamesToPreload);
         const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
         // connect node to default destination if using default audio context
@@ -328,6 +330,30 @@ class Chuck extends window.AudioWorkletNode {
             .catch((err) => {
             throw new Error(err);
         });
+    }
+    // ================== WebChugins ================== //
+    /**
+     * Load a WebChugin (.chug.wasm) via url into WebChucK.
+     * The list of WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
+     * **Note:** WebChugins must be loaded before `theChuck` is initialized.
+     * @param url url to webchugin to load
+     */
+    loadChugin(url) {
+        Chuck.chugins.concat({
+            serverFilename: url,
+            virtualFilename: "/chugins/" + url.split("/").pop(),
+        });
+    }
+    /**
+     * Return a list of loaded WebChugins.
+     * @returns Array string of loaded WebChugins
+     */
+    loadedChugins() {
+        let chugins = [];
+        Chuck.chugins.map((chugin) => {
+            chugins.push(chugin.serverFilename.split("/").pop());
+        });
+        return chugins;
     }
     // ================== Run/Replace Code ================== //
     /**
@@ -1064,6 +1090,8 @@ class Chuck extends window.AudioWorkletNode {
 }
 /** @internal */
 Chuck.chuckID = 1;
+/** @internal */
+Chuck.chugins = [];
 
 const HidMsg_ck = `
 public class HidMsg {
