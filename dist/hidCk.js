@@ -138,9 +138,6 @@ public class Hid extends Event {
 
             _hidMsgQueue << msg;
             this.broadcast();
-
-            // Clear message type
-            // 0 => _type;
         }
     }
 
@@ -164,9 +161,6 @@ public class Hid extends Event {
 
             _hidMsgQueue << msg;
             this.broadcast();
-
-            // Clear message type
-            // 0 => _type;
         }
     }
 }
