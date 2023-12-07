@@ -195,12 +195,14 @@ export default class HID {
     this.mouseActive();
     if (this._mouseActive) {
       const mousePos = this.getMousePos(e);
+      this.theChuck.setInt("_cursorX", mousePos.x);
+      this.theChuck.setInt("_cursorY", mousePos.y);
       this.theChuck.setFloat("_deltaX", e.movementX);
       this.theChuck.setFloat("_deltaY", e.movementY);
       this.theChuck.setFloat("_scaledCursorX", mousePos.x / document.documentElement.clientWidth);
       this.theChuck.setFloat("_scaledCursorY", mousePos.y / document.documentElement.clientHeight);
       this.theChuck.setInt("_type", HidMsgType.MOUSE_MOTION);
-      this.theChuck.broadcastEvent("_hid");
+      this.theChuck.broadcastEvent("_mouseHid");
     }
   }
 
@@ -210,7 +212,7 @@ export default class HID {
     if (this._mouseActive) {
       this.theChuck.setInt("_which", e.which);
       this.theChuck.setInt("_type", HidMsgType.BUTTON_DOWN);
-      this.theChuck.broadcastEvent("_hid");
+      this.theChuck.broadcastEvent("_mouseHid");
     }
   }
 
@@ -220,7 +222,7 @@ export default class HID {
     if (this._mouseActive) {
       this.theChuck.setInt("_which", e.which);
       this.theChuck.setInt("_type", HidMsgType.BUTTON_UP);
-      this.theChuck.broadcastEvent("_hid");
+      this.theChuck.broadcastEvent("_mouseHid");
     }
   }
 
@@ -231,7 +233,7 @@ export default class HID {
       this.theChuck.setFloat("_deltaX", clamp(e.deltaX, -1, 1));
       this.theChuck.setFloat("_deltaY", clamp(e.deltaY, -1, 1));
       this.theChuck.setInt("_type", HidMsgType.WHEEL_MOTION);
-      this.theChuck.broadcastEvent("_hid");
+      this.theChuck.broadcastEvent("_mouseHid");
     }
   }
 
@@ -271,7 +273,7 @@ export default class HID {
     this.theChuck.setInt("_which", e.which);
     this.theChuck.setInt("_ascii", e.keyCode);
     this.theChuck.setInt("_type", isDown ? HidMsgType.BUTTON_DOWN : HidMsgType.BUTTON_UP);
-    this.theChuck.broadcastEvent("_hid");
+    this.theChuck.broadcastEvent("_kbHid");
   }
 }
 
