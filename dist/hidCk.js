@@ -48,7 +48,8 @@ public class HidMsg {
 }
 `;
 const Hid_ck = `
-global Event _hid;
+global Event _kbHid;
+global Event _mouseHid;
 global int _type;
 global int _mouseActive;
 global int _kbdActive;
@@ -89,6 +90,7 @@ public class Hid extends Event {
             true => active;
         }
         active => isMouseOpen => _mouseActive;
+        spork ~ _mouseListener();
         return active;
     }
 
@@ -101,6 +103,7 @@ public class Hid extends Event {
             true => active;
         }
         active => isKBDOpen => _kbdActive;
+        spork ~ _keyboardListener();
         return active;
     }
 
@@ -119,14 +122,33 @@ public class Hid extends Event {
         return 1;
     }
 
-    // Hid Listener
+    // Keyboard Hid Listener
     // Get variables from JS and write to the HidMsg 
-    function void _HidListener() {
+    function void _keyboardListener() {
         HidMsg @ msg;
         while(true){
             new HidMsg @=> msg;
             deviceType => msg.deviceType;
-            _hid => now;
+            _kbHid => now;
+
+            _type => msg.type;
+            _which => msg.which;
+            _ascii => msg.ascii;
+            _key => msg.key;
+
+            _hidMsgQueue << msg;
+            this.broadcast();
+        }
+    }
+
+    // Mouse Hid Listener
+    // Get variables from JS and write to the HidMsg 
+    function void _mouseListener() {
+        HidMsg @ msg;
+        while(true){
+            new HidMsg @=> msg;
+            deviceType => msg.deviceType;
+            _mouseHid => now;
 
             _type => msg.type;
             _cursorX => msg.cursorX;
@@ -136,17 +158,11 @@ public class Hid extends Event {
             _scaledCursorX => msg.scaledCursorX;
             _scaledCursorY => msg.scaledCursorY;
             _which => msg.which;
-            _ascii => msg.ascii;
-            _key => msg.key;
 
             _hidMsgQueue << msg;
             this.broadcast();
-
-            // Clear message type
-            0 => _type;
         }
     }
-    spork ~ _HidListener();
 }
 `;
 export { HidMsg_ck, Hid_ck };

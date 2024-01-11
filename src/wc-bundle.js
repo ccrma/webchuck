@@ -1143,7 +1143,8 @@ public class HidMsg {
 }
 `;
 const Hid_ck = `
-global Event _hid;
+global Event _kbHid;
+global Event _mouseHid;
 global int _type;
 global int _mouseActive;
 global int _kbdActive;
@@ -1184,6 +1185,7 @@ public class Hid extends Event {
             true => active;
         }
         active => isMouseOpen => _mouseActive;
+        spork ~ _mouseListener();
         return active;
     }
 
@@ -1196,6 +1198,7 @@ public class Hid extends Event {
             true => active;
         }
         active => isKBDOpen => _kbdActive;
+        spork ~ _keyboardListener();
         return active;
     }
 
@@ -1214,14 +1217,33 @@ public class Hid extends Event {
         return 1;
     }
 
-    // Hid Listener
+    // Keyboard Hid Listener
     // Get variables from JS and write to the HidMsg 
-    function void _HidListener() {
+    function void _keyboardListener() {
         HidMsg @ msg;
         while(true){
             new HidMsg @=> msg;
             deviceType => msg.deviceType;
-            _hid => now;
+            _kbHid => now;
+
+            _type => msg.type;
+            _which => msg.which;
+            _ascii => msg.ascii;
+            _key => msg.key;
+
+            _hidMsgQueue << msg;
+            this.broadcast();
+        }
+    }
+
+    // Mouse Hid Listener
+    // Get variables from JS and write to the HidMsg 
+    function void _mouseListener() {
+        HidMsg @ msg;
+        while(true){
+            new HidMsg @=> msg;
+            deviceType => msg.deviceType;
+            _mouseHid => now;
 
             _type => msg.type;
             _cursorX => msg.cursorX;
@@ -1231,17 +1253,11 @@ public class Hid extends Event {
             _scaledCursorX => msg.scaledCursorX;
             _scaledCursorY => msg.scaledCursorY;
             _which => msg.which;
-            _ascii => msg.ascii;
-            _key => msg.key;
 
             _hidMsgQueue << msg;
             this.broadcast();
-
-            // Clear message type
-            0 => _type;
         }
     }
-    spork ~ _HidListener();
 }
 `;
 
@@ -1410,12 +1426,14 @@ class HID {
         this.mouseActive();
         if (this._mouseActive) {
             const mousePos = this.getMousePos(e);
+            this.theChuck.setInt("_cursorX", mousePos.x);
+            this.theChuck.setInt("_cursorY", mousePos.y);
             this.theChuck.setFloat("_deltaX", e.movementX);
             this.theChuck.setFloat("_deltaY", e.movementY);
             this.theChuck.setFloat("_scaledCursorX", mousePos.x / document.documentElement.clientWidth);
             this.theChuck.setFloat("_scaledCursorY", mousePos.y / document.documentElement.clientHeight);
             this.theChuck.setInt("_type", HidMsgType.MOUSE_MOTION);
-            this.theChuck.broadcastEvent("_hid");
+            this.theChuck.broadcastEvent("_mouseHid");
         }
     }
     /** @internal */
@@ -1424,7 +1442,7 @@ class HID {
         if (this._mouseActive) {
             this.theChuck.setInt("_which", e.which);
             this.theChuck.setInt("_type", HidMsgType.BUTTON_DOWN);
-            this.theChuck.broadcastEvent("_hid");
+            this.theChuck.broadcastEvent("_mouseHid");
         }
     }
     /** @internal */
@@ -1433,7 +1451,7 @@ class HID {
         if (this._mouseActive) {
             this.theChuck.setInt("_which", e.which);
             this.theChuck.setInt("_type", HidMsgType.BUTTON_UP);
-            this.theChuck.broadcastEvent("_hid");
+            this.theChuck.broadcastEvent("_mouseHid");
         }
     }
     /** @internal */
@@ -1443,7 +1461,7 @@ class HID {
             this.theChuck.setFloat("_deltaX", clamp(e.deltaX, -1, 1));
             this.theChuck.setFloat("_deltaY", clamp(e.deltaY, -1, 1));
             this.theChuck.setInt("_type", HidMsgType.WHEEL_MOTION);
-            this.theChuck.broadcastEvent("_hid");
+            this.theChuck.broadcastEvent("_mouseHid");
         }
     }
     /** @internal */
@@ -1478,7 +1496,7 @@ class HID {
         this.theChuck.setInt("_which", e.which);
         this.theChuck.setInt("_ascii", e.keyCode);
         this.theChuck.setInt("_type", isDown ? HidMsgType.BUTTON_DOWN : HidMsgType.BUTTON_UP);
-        this.theChuck.broadcastEvent("_hid");
+        this.theChuck.broadcastEvent("_kbHid");
     }
 }
 //-----------------------------------------------

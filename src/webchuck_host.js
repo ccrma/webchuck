@@ -268,7 +268,7 @@ var createAChuck = function( chuckID, initPromise )
         self.createFile = function( directory, filename, data )
         {
             self.port.postMessage( {
-                type: 'loadFile',
+                type: 'createFile',
                 directory: directory,
                 filename: filename,
                 data: data
