@@ -209,19 +209,10 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param url url to webchugin to load
    */
   public loadChugin(url: string): void {
-<<<<<<< HEAD
-    Chuck.chugins.concat(
-      {
-        serverFilename: url,
-        virtualFilename: "/chugins/" + url.split("/").pop()!,
-      }
-    )
-=======
     Chuck.chugins.concat({
       serverFilename: url,
       virtualFilename: "/chugins/" + url.split("/").pop()!,
     });
->>>>>>> dbc70b826f6e77e1fbec79727acde83049e605d4
   }
   /**
    * Return a list of loaded WebChugins.
