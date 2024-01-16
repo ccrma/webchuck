@@ -257,9 +257,6 @@ class Chuck extends window.AudioWorkletNode {
             audioContext = new AudioContext();
             defaultAudioContext = true;
         }
-        if (audioContext.state === "suspended") {
-            await audioContext.resume();
-        }
         await audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js");
         // Add Chugins to filenamesToPreload
         filenamesToPreload = filenamesToPreload.concat(Chuck.chugins);
