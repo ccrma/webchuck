@@ -1,4 +1,7 @@
 # WebChucK
+
+[![](https://data.jsdelivr.com/v1/package/npm/webchuck/badge)](https://www.jsdelivr.com/package/npm/webchuck)
+
 [site](https://chuck.stanford.edu/webchuck/) | [docs](https://chuck.stanford.edu/webchuck/docs) | [npm](https://www.npmjs.com/package/webchuck)
 
 WebChucK brings [ChucK](https://chuck.stanford.edu), a strongly-timed audio programming language, to 
