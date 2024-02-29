@@ -272,7 +272,7 @@ const testSuite = [
         return test;
     }),
 
-    new Test(11, "WebChugin Test, ABSaturator", async () => {
+    new Test(11, "[sound] WebChugin Test, ABSaturator", async () => {
         const aChuck = await Chuck.init([
             { serverFilename: "./testFiles/ABSaturator.chug.wasm", virtualFilename: "/chugins/ABSaturator.chug.wasm" },
         ], undefined, undefined, "../src/");
@@ -321,7 +321,7 @@ const testSuite = [
         return true;
     }),
 
-    new Test(14, "Offline mode - 10 seconds", async () => {
+    new Test(14, "Use Offline Context - 10 seconds", async () => {
         const offlineContext = new OfflineAudioContext(2, 44100 * 10, 44100);
         const aChuck = await Chuck.init([], offlineContext, undefined, "../src/");
         aChuck.connect(offlineContext.destination);
@@ -332,6 +332,21 @@ const testSuite = [
 
         aChuck.runCode(`SinOsc osc => dac; 10::second => now; <<< "PASSED", "" >>>;`);
         await offlineContext.startRendering();
+        return outputBox.innerText.includes("PASSED");
+    }),
+
+    new Test(15, "Use Local Audio Context, unconnected node", async () => {
+        const audioContext = new AudioContext();
+        audioContext.suspend();
+        const aChuck = await Chuck.init([], audioContext, undefined, "../src/");
+        audioContext.resume();
+        const outputBox = document.getElementById("output-" + 15);
+        aChuck.chuckPrint = (output) => {
+            outputBox.innerHTML = output + "<br>";
+        }
+
+        aChuck.runCode(`<<< "PASSED", "" >>>;`);
+        await new Promise(resolve => setTimeout(resolve, 750));
         return outputBox.innerText.includes("PASSED");
     }),
 
@@ -422,10 +437,10 @@ function filterDisplay(filteredTests) {
 async function init() {
     audioContext = new AudioContext();
     audioContext.suspend();
-    devChuck = await Chuck.init([], audioContext, undefined, "../src/");
-    devChuck.connect(audioContext.destination);
-    window.audioContext = audioContext;
-    window.devChuck = devChuck;
+    // devChuck = await Chuck.init([], audioContext, undefined, "../src/");
+    // devChuck.connect(audioContext.destination);
+    // window.audioContext = audioContext;
+    // window.devChuck = devChuck;
     runButton.disabled = false;
 }
 

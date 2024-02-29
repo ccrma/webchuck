@@ -464,7 +464,7 @@ export default class Chuck extends window.AudioWorkletNode {
      *
      * // Output: "ChucK says: Hello World!"
      * ```
-     * @param message Message that ChucK wil print to console
+     * @param message Message that ChucK will print to console
      */
     chuckPrint(message: string): void;
     /**
