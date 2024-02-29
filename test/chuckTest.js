@@ -334,6 +334,21 @@ const testSuite = [
         return true;
     }),
 
+    new Test(14, "Offline mode - 10 seconds", async () => {
+        const offlineContext = new OfflineAudioContext(2, 44100 * 10, 44100); 
+        const aChuck = await Chuck.init([], offlineContext, undefined, "../src/");
+        aChuck.connect(offlineContext.destination);
+        const outputBox = document.getElementById("output-" + 14);
+        print = (output) => {
+            outputBox.innerHTML = output + "<br>";
+        }
+        aChuck.chuckPrint = print;
+
+        aChuck.runCode(`SinOsc osc => dac; 10::second => now; <<< "PASSED", "" >>>;`);
+        await offlineContext.startRendering();
+        return outputBox.innerText.includes("PASSED");
+    }),
+
 
     new Test(99, "Chuck VM operations and parameters", async () => {
         let aChuck = await Chuck.init([], undefined, undefined, "../src/");
