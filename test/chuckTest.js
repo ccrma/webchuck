@@ -273,9 +273,8 @@ const testSuite = [
     }),
 
     new Test(11, "[sound] WebChugin Test, ABSaturator", async () => {
-        const aChuck = await Chuck.init([
-            { serverFilename: "./testFiles/ABSaturator.chug.wasm", virtualFilename: "/chugins/ABSaturator.chug.wasm" },
-        ], undefined, undefined, "../src/");
+        Chuck.loadChugin("./testFiles/ABSaturator.chug.wasm")
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
         const outputBox = document.getElementById("output-" + 11);
         aChuck.chuckPrint = (output) => {
             outputBox.innerHTML += output + "<br>";
@@ -437,10 +436,13 @@ function filterDisplay(filteredTests) {
 async function init() {
     audioContext = new AudioContext();
     audioContext.suspend();
-    // devChuck = await Chuck.init([], audioContext, undefined, "../src/");
-    // devChuck.connect(audioContext.destination);
-    // window.audioContext = audioContext;
-    // window.devChuck = devChuck;
+
+    // Uncomment me to have a global chuck object for debugging
+    devChuck = await Chuck.init([], audioContext, undefined, "../src/");
+    devChuck.connect(audioContext.destination);
+    window.audioContext = audioContext;
+    window.devChuck = devChuck;
+
     runButton.disabled = false;
 }
 

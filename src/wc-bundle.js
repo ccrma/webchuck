@@ -210,6 +210,7 @@ class Chuck extends window.AudioWorkletNode {
         this.eventCallbacks = {};
         this.eventCallbackCounter = 0;
         this.isReady = defer();
+        this.chugins = [];
         this.port.onmessage = this.receiveMessage.bind(this);
         this.onprocessorerror = (e) => console.error(e);
         Chuck.chuckID++;
@@ -259,10 +260,13 @@ class Chuck extends window.AudioWorkletNode {
         }
         await audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js");
         // Add Chugins to filenamesToPreload
-        filenamesToPreload = filenamesToPreload.concat(Chuck.chugins);
+        filenamesToPreload = filenamesToPreload.concat(Chuck.chuginsToLoad);
         const preloadedFiles = await preloadFiles(filenamesToPreload);
         const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
-        // connect node to default destination if using default audio context
+        // Remember the chugins that were loaded
+        chuck.chugins = Chuck.chuginsToLoad.map((chugin) => chugin.virtualFilename.split("/").pop());
+        Chuck.chuginsToLoad = []; // clear
+        // Connect node to default destination if using default audio context
         if (defaultAudioContext) {
             chuck.connect(audioContext.destination); // default connection source
         }
@@ -335,8 +339,8 @@ class Chuck extends window.AudioWorkletNode {
      * **Note:** WebChugins must be loaded before `theChuck` is initialized.
      * @param url url to webchugin to load
      */
-    loadChugin(url) {
-        Chuck.chugins.concat({
+    static loadChugin(url) {
+        Chuck.chuginsToLoad.push({
             serverFilename: url,
             virtualFilename: "/chugins/" + url.split("/").pop(),
         });
@@ -346,11 +350,7 @@ class Chuck extends window.AudioWorkletNode {
      * @returns Array string of loaded WebChugins
      */
     loadedChugins() {
-        let chugins = [];
-        Chuck.chugins.map((chugin) => {
-            chugins.push(chugin.serverFilename.split("/").pop());
-        });
-        return chugins;
+        return this.chugins;
     }
     // ================== Run/Replace Code ================== //
     /**
@@ -1088,7 +1088,7 @@ class Chuck extends window.AudioWorkletNode {
 /** @internal */
 Chuck.chuckID = 1;
 /** @internal */
-Chuck.chugins = [];
+Chuck.chuginsToLoad = [];
 
 const HidMsg_ck = `
 public class HidMsg {
