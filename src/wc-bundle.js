@@ -334,10 +334,15 @@ class Chuck extends window.AudioWorkletNode {
     }
     // ================== WebChugins ================== //
     /**
-     * Load a WebChugin (.chug.wasm) via url into WebChucK.
-     * The list of WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
+     * Load a single WebChugin (.chug.wasm) via url into WebChucK.
+     * A list of publicly available WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
      * **Note:** WebChugins must be loaded before `theChuck` is initialized.
      * @param url url to webchugin to load
+     * @example
+     * ```ts
+     * Chuck.loadChugin("https://url/to/myChugin.chug.wasm");
+     * theChuck = await Chuck.init([]);
+     * ```
      */
     static loadChugin(url) {
         Chuck.chuginsToLoad.push({
@@ -347,7 +352,7 @@ class Chuck extends window.AudioWorkletNode {
     }
     /**
      * Return a list of loaded WebChugins.
-     * @returns Array string of loaded WebChugins
+     * @returns String array of loaded WebChugin names
      */
     loadedChugins() {
         return this.chugins;
