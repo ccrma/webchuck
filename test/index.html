@@ -25,16 +25,21 @@
                 text-align: left;
                 padding: 8px;
             }
-
         </style>
     </head>
 
     <body>
         <h1>WebChuck Test Suite</h1>
-        <button id="run" disabled>Run All Tests</button>
-        <div>
-            <input type="checkbox" id="parallelize"> run in parallel
-        </div>
+        <button id="run" disabled>Run Tests</button>
+        <p>
+            <input type="checkbox" id="parallelize"> run in parallel 
+        </p>
+
+        <form id="filterTests">
+            <label><b>Filter Tests:</b></label>
+            <input type="text" id="test-filter" placeholder="e.g. 1,2,3-5 (leave empty to run all)" style="padding: 4px 2px; width: 350px; font-family: monospace;">
+            <button id="filter" style="padding: 4px;">Filter</button>
+        </form>
         <p>==================================================================</p>
         <div style="display: inline">
             <h3>Tests Passed: <span id="score"></span></h3>
@@ -49,6 +54,6 @@
             </tr>
         </table>
 
-        <script src="chuckTest.js"></script>
+        <script src="chuckTest.js" type="module"></script>
     </body>
 </html>

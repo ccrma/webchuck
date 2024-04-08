@@ -37,7 +37,8 @@ export default class Chuck extends window.AudioWorkletNode {
   /** @internal */
   static chuckID: number = 1;
   /** @internal */
-  static chugins: Filename[] = [];
+  static chuginsToLoad: Filename[] = [];
+  private chugins: string[] = [];
 
   /**
    * Private internal constructor for a ChucK AudioWorklet Web Audio Node. Use public **{@link init| Init}** to create a ChucK instance.
@@ -124,13 +125,17 @@ export default class Chuck extends window.AudioWorkletNode {
     await audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js");
 
     // Add Chugins to filenamesToPreload
-    filenamesToPreload = filenamesToPreload.concat(Chuck.chugins);
+    filenamesToPreload = filenamesToPreload.concat(Chuck.chuginsToLoad);
 
     const preloadedFiles = await preloadFiles(filenamesToPreload);
 
     const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
 
-    // connect node to default destination if using default audio context
+    // Remember the chugins that were loaded
+    chuck.chugins = Chuck.chuginsToLoad.map((chugin) => chugin.virtualFilename.split("/").pop()!);
+    Chuck.chuginsToLoad = []; // clear
+
+    // Connect node to default destination if using default audio context
     if (defaultAudioContext) {
       chuck.connect(audioContext.destination); // default connection source
     }
@@ -199,27 +204,28 @@ export default class Chuck extends window.AudioWorkletNode {
   }
   // ================== WebChugins ================== //
   /**
-   * Load a WebChugin (.chug.wasm) via url into WebChucK.
-   * The list of WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
+   * Load a single WebChugin (.chug.wasm) via url into WebChucK.
+   * A list of publicly available WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
    * **Note:** WebChugins must be loaded before `theChuck` is initialized.
    * @param url url to webchugin to load
+   * @example
+   * ```ts
+   * Chuck.loadChugin("https://url/to/myChugin.chug.wasm");
+   * theChuck = await Chuck.init([]);
+   * ```
    */
-  public loadChugin(url: string): void {
-    Chuck.chugins.concat({
+  public static loadChugin(url: string): void {
+    Chuck.chuginsToLoad.push({
       serverFilename: url,
       virtualFilename: "/chugins/" + url.split("/").pop()!,
     });
   }
   /**
    * Return a list of loaded WebChugins.
-   * @returns Array string of loaded WebChugins
+   * @returns String array of loaded WebChugin names
    */
   public loadedChugins(): string[] {
-    let chugins: string[] = [];
-    Chuck.chugins.map((chugin) => {
-      chugins.push(chugin.serverFilename.split("/").pop()!);
-    });
-    return chugins;
+    return this.chugins;
   }
   // ================== Run/Replace Code ================== //
   /**
@@ -931,7 +937,7 @@ export default class Chuck extends window.AudioWorkletNode {
    *
    * // Output: "ChucK says: Hello World!"
    * ```
-   * @param message Message that ChucK wil print to console
+   * @param message Message that ChucK will print to console
    */
   public chuckPrint(message: string) {
     // Default ChucK output destination

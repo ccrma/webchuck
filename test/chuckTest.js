@@ -1,15 +1,11 @@
 //=======================================================================
-// Test Class
+// WebChucK Test Suite
 //=======================================================================
+import { Chuck, HID } from '../src/wc-bundle.js';
+
+/** WebChucK Test Class */
 class Test {
-    // keep track of test IDs
-    static totalTests = 0;
-    static testScore = 0;
-
     constructor(id, name, callback) {
-        // increment total tests
-        Test.totalTests++;
-
         this.id = id;
         this.name = name;
         this.callback = callback;
@@ -18,7 +14,7 @@ class Test {
 
     async run() {
         // set status to running
-        var result = document.getElementById("result-" + this.id);
+        let result = document.getElementById("result-" + this.id);
         result.innerHTML = "RUNNING";
         result.style.color = "orange";
 
@@ -27,20 +23,20 @@ class Test {
 
     static addTestHTML(id, name) {
         const suite = document.getElementById("test-suite");
-        var test = document.createElement("tr");
+        let test = document.createElement("tr");
         test.id = "test-" + id;
 
-        var testNumber = document.createElement("td");
+        let testNumber = document.createElement("td");
         testNumber.innerText = id;
 
-        var testName = document.createElement("td");
+        let testName = document.createElement("td");
         testName.innerText = name;
 
-        var result = document.createElement("td");
+        let result = document.createElement("td");
         result.innerHTML = "--";
         result.id = "result-" + id;
 
-        var output = document.createElement("td");
+        let output = document.createElement("td");
         output.id = "output-" + id;
 
         test.appendChild(testNumber);
@@ -52,38 +48,25 @@ class Test {
 
     renderTestResult(passed) {
         // update test result
-        var result = document.getElementById("result-" + this.id);
+        let result = document.getElementById("result-" + this.id);
         result.innerHTML = passed ? "PASSED" : "FAILED";
         result.style.color = passed ? "green" : "red";
 
-        // update score
-        Test.testScore += passed ? 1 : 0;
-        const score = document.getElementById("score");
-        score.innerText = Test.testScore + " / " + Test.totalTests; 
+        updateTestSuiteScore(passed)
     }
 }
 
-//=======================================================================
-// Test Suite
-//=======================================================================
-var Chuck;
-var devChuck; // = Chuck.init([], undefined, undefined, "../src/")
-
-
-var runButton = document.getElementById("run");
-    
-import('../src/wc-bundle.js').then(async (module) => {
-    Chuck = module.Chuck; // Import Chuck class
-    HID = module.HID; // Import HID class
-    runButton.disabled = false;
-});
-
-// DEFINE ALL TESTS!!!
+//=============================================================
+// DEFINE TESTS HERE!
+// 1. Create a new Test object with a unique id, name, and callback
+//    - callback should return a promise that resolves to a boolean
+// 2. Add the test to the testSuite array
+//=============================================================
 const testSuite = [
 
     new Test(1, "[sound] Define a ChucK and runCode 220hz 0.5 second", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 1);
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 1);
         aChuck.chuckPrint = (output) => {
             outputBox.innerText = output;
         }
@@ -95,31 +78,31 @@ const testSuite = [
     }),
 
     new Test(2, "[sound] Preload a server chuck file, runFile, 440Hz 1 second", async () => {
-        var aChuck = await Chuck.init([{serverFilename: "./testFiles/test2.ck", virtualFilename: "test2.ck"}], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 2);
+        const aChuck = await Chuck.init([{ serverFilename: "./testFiles/test2.ck", virtualFilename: "test2.ck" }], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 2);
         aChuck.chuckPrint = (output) => {
             outputBox.innerText = output;
         }
         aChuck.runFile("test2.ck");
-        await new Promise(resolve => setTimeout(resolve, 1500)); 
+        await new Promise(resolve => setTimeout(resolve, 1500));
         return outputBox.innerText == "PASSED";
     }),
 
     new Test(3, "[sound] Dynamic load in a chuck file from URL, 880Hz 1 second", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 3);
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 3);
         aChuck.chuckPrint = (output) => {
             outputBox.innerText = output;
         }
         await aChuck.loadFile("./testFiles/test3.ck");
         aChuck.runFile("test3.ck");
-        await new Promise(resolve => setTimeout(resolve, 1500)); 
+        await new Promise(resolve => setTimeout(resolve, 1500));
         return outputBox.innerText == "PASSED";
     }),
 
     new Test(4, "[sound] Dynamic load in a kick wav file from URL", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 4);
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 4);
         aChuck.chuckPrint = (output) => {
             outputBox.innerText = output;
         }
@@ -130,30 +113,31 @@ const testSuite = [
             1::second => now;
             <<< "KICKED", "" >>>;
         `);
-        await new Promise(resolve => setTimeout(resolve, 1500)); 
+        await new Promise(resolve => setTimeout(resolve, 1500));
         return outputBox.innerText.includes("KICKED");
     }),
 
     new Test(5, "Sync test set/get int and float, webchuck and js", async () => {
-        var outputBox = document.getElementById("output-" + 5);
-        devChuck.runCode(`
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 5);
+        aChuck.runCode(`
             1 => global int GLOBAL_INT;
             1.0 => global float GLOBAL_FLOAT;
         `);
         await new Promise(resolve => setTimeout(resolve, 100));
-        test1 = await devChuck.getInt("GLOBAL_INT") == 1 && await devChuck.getFloat("GLOBAL_FLOAT") == 1.0;
+        let test1 = await aChuck.getInt("GLOBAL_INT") == 1 && await aChuck.getFloat("GLOBAL_FLOAT") == 1.0;
         outputBox.innerHTML += "Get OK " + test1 + "<br>";
-        devChuck.setInt("GLOBAL_INT", 2);
-        devChuck.setFloat("GLOBAL_FLOAT", 2.0);
+        aChuck.setInt("GLOBAL_INT", 2);
+        aChuck.setFloat("GLOBAL_FLOAT", 2.0);
         await new Promise(resolve => setTimeout(resolve, 300));
-        test2 = await devChuck.getInt("GLOBAL_INT") == 2 && await devChuck.getFloat("GLOBAL_FLOAT") == 2.0;
+        let test2 = await aChuck.getInt("GLOBAL_INT") == 2 && await aChuck.getFloat("GLOBAL_FLOAT") == 2.0;
         outputBox.innerHTML += "Set OK " + test2 + "<br>";
         return test1 && test2;
     }),
 
     new Test(6, "Test shred management, add, remove, replace", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 6);
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 6);
         aChuck.chuckPrint = (output) => {
             outputBox.innerHTML += output + "<br>";
         }
@@ -166,51 +150,47 @@ const testSuite = [
             1::week => now;
         `)
         await new Promise(resolve => setTimeout(resolve, 100));
-        var removed = await aChuck.removeLastCode() == 2;
+        let removed = await aChuck.removeLastCode() == 2;
         await new Promise(resolve => setTimeout(resolve, 100));
-        var replaced = (await aChuck.replaceCode(`<<< "REPLACED Shred 1 with a new program\n", "" >>>; 1::second => now;`)).newShred == 1;
+        let replaced = (await aChuck.replaceCode(`<<< "REPLACED Shred 1 with a new program\n", "" >>>; 1::second => now;`)).newShred == 1;
         await new Promise(resolve => setTimeout(resolve, 100));
-        var active = await aChuck.isShredActive(1);
+        let active = await aChuck.isShredActive(1);
         await new Promise(resolve => setTimeout(resolve, 100));
-        var removed2 = await aChuck.removeShred(1) == 1;
+        let removed2 = await aChuck.removeShred(1) == 1;
         await new Promise(resolve => setTimeout(resolve, 100));
         return removed == true &&
-               replaced == true && 
-               active == true && 
-               removed2 == true;
+            replaced == true &&
+            active == true &&
+            removed2 == true;
     }),
 
     new Test(7, "Test RunFileWithArgs", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 7);
-
-        // print lambda
-        print = (output) => {
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 7);
+        aChuck.chuckPrint = (output) => {
             outputBox.innerHTML += output + "<br>";
         }
-        aChuck.chuckPrint = print;
+
         outputBox.innerHTML += "Passing in arguments: 1 2 foo" + "<br>";
 
         await aChuck.loadFile("./testFiles/test7.ck");
         await aChuck.runFileWithArgs("test7.ck", "1:2:foo");
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 200));
 
         return outputBox.innerText.includes("number of arguments: 3");
     }),
-    
-    new Test(8, "Test isShredActive", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 8);
 
-        // print lambda
-        print = (output) => {
+    new Test(8, "Test isShredActive", async () => {
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 8);
+        aChuck.chuckPrint = (output) => {
             outputBox.innerHTML += output + "<br>";
         }
-        aChuck.chuckPrint = print;
+
         outputBox.innerHTML += "Starting shred 1 for 1 second" + "<br>";
 
         aChuck.runCode(`1::second => now;`);
-        var test1; var test2;
+        let test1; let test2;
         await new Promise(resolve => setTimeout(resolve, 100));
         await aChuck.isShredActive(1).then((active) => {
             test1 = (active == 1);
@@ -224,16 +204,13 @@ const testSuite = [
     }),
 
     new Test(9, "Machine.add/replace/remove/clear", async () => {
-        var aChuck = await Chuck.init([
-            {serverFilename: "./testFiles/test9.ck", virtualFilename: "test9.ck"},
+        const aChuck = await Chuck.init([
+            { serverFilename: "./testFiles/test9.ck", virtualFilename: "test9.ck" },
         ], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 9);
-
-        // print lambda
-        print = (output) => {
+        const outputBox = document.getElementById("output-" + 9);
+        aChuck.chuckPrint = (output) => {
             outputBox.innerHTML += output + "<br>";
         }
-        aChuck.chuckPrint = print;
 
         aChuck.runCode(`
             Machine.add("test9.ck") => int id;
@@ -244,7 +221,7 @@ const testSuite = [
             200::ms => now;
             Machine.clearVM();
         `)
-        var test1; var test2; var test3; var test4;
+        let test1; let test2; let test3; let test4;
         await new Promise(resolve => setTimeout(resolve, 100));
         await aChuck.isShredActive(2).then((active) => {
             test1 = (active == 1);
@@ -265,10 +242,8 @@ const testSuite = [
     }),
 
     new Test(10, "Chuck get Promise<type> returns", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 10);
-
-        // print lambda
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 10);
         print = (output) => {
             outputBox.innerHTML += output + "<br>";
         }
@@ -297,17 +272,13 @@ const testSuite = [
         return test;
     }),
 
-        new Test(11, "WebChugin Test, ABSaturator", async () => {
-        var aChuck = await Chuck.init([
-            {serverFilename: "./testFiles/ABSaturator.chug.wasm", virtualFilename: "/chugins/ABSaturator.chug.wasm"},
-        ], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 11);
-
-        // print lambda
-        print = (output) => {
+    new Test(11, "[sound] WebChugin Test, ABSaturator", async () => {
+        Chuck.loadChugin("./testFiles/ABSaturator.chug.wasm")
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 11);
+        aChuck.chuckPrint = (output) => {
             outputBox.innerHTML += output + "<br>";
         }
-        aChuck.chuckPrint = print;
 
         aChuck.runCode(`
         SinOsc osc => Delay d => ABSaturator sat => dac;
@@ -322,14 +293,13 @@ const testSuite = [
     }),
 
     new Test(12, "HID - mouse", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 12);
-        print = (output) => {
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 12);
+        aChuck.chuckPrint = (output) => {
             outputBox.innerHTML = output + "<br>";
         }
-        aChuck.chuckPrint = print;
 
-        var hid = await HID.init(aChuck);
+        let hid = await HID.init(aChuck);
         await aChuck.loadFile("./testFiles/mouse.ck")
         aChuck.runFile("mouse.ck")
 
@@ -337,68 +307,186 @@ const testSuite = [
     }),
 
     new Test(13, "HID - keyboard", async () => {
-        aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 13);
-        print = (output) => {
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 13);
+        aChuck.chuckPrint = (output) => {
             outputBox.innerHTML = output + "<br>";
         }
-        aChuck.chuckPrint = print;
 
-        var hid = await HID.init(aChuck);
+        let hid = await HID.init(aChuck);
         await aChuck.loadFile("./testFiles/kb.ck")
         aChuck.runFile("kb.ck")
 
         return true;
     }),
 
-    new Test(99, "Chuck VM operations and parameters", async () => {
-        var aChuck = await Chuck.init([], undefined, undefined, "../src/");
-        var outputBox = document.getElementById("output-" + 99);
+    new Test(14, "Use Offline Context - 10 seconds", async () => {
+        const offlineContext = new OfflineAudioContext(2, 44100 * 10, 44100);
+        const aChuck = await Chuck.init([], offlineContext, undefined, "../src/");
+        aChuck.connect(offlineContext.destination);
+        const outputBox = document.getElementById("output-" + 14);
+        aChuck.chuckPrint = (output) => {
+            outputBox.innerHTML = output + "<br>";
+        }
 
-        // print lambda
+        aChuck.runCode(`SinOsc osc => dac; 10::second => now; <<< "PASSED", "" >>>;`);
+        await offlineContext.startRendering();
+        return outputBox.innerText.includes("PASSED");
+    }),
+
+    new Test(15, "Use Local Audio Context, unconnected node", async () => {
+        const audioContext = new AudioContext();
+        audioContext.suspend();
+        const aChuck = await Chuck.init([], audioContext, undefined, "../src/");
+        audioContext.resume();
+        const outputBox = document.getElementById("output-" + 15);
+        aChuck.chuckPrint = (output) => {
+            outputBox.innerHTML = output + "<br>";
+        }
+
+        aChuck.runCode(`<<< "PASSED", "" >>>;`);
+        await new Promise(resolve => setTimeout(resolve, 750));
+        return outputBox.innerText.includes("PASSED");
+    }),
+
+
+    new Test(99, "Chuck VM operations and parameters", async () => {
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 99);
         print = (output) => {
             outputBox.innerHTML += output + "<br>";
         }
         aChuck.chuckPrint = print;
 
-        print( await aChuck.getParamString("VERSION") );
-        print( "sample rate: " + await aChuck.getParamInt("SAMPLE_RATE") );
-        print( "input channels: " + await aChuck.getParamInt("INPUT_CHANNELS") );
-        print( "output channels: " + await aChuck.getParamInt("OUTPUT_CHANNELS") );
-        print( "now: " + await aChuck.now() );
+        print(await aChuck.getParamString("VERSION"));
+        print("sample rate: " + await aChuck.getParamInt("SAMPLE_RATE"));
+        print("input channels: " + await aChuck.getParamInt("INPUT_CHANNELS"));
+        print("output channels: " + await aChuck.getParamInt("OUTPUT_CHANNELS"));
+        print("now: " + await aChuck.now());
 
         return outputBox.innerText !== "";
     }),
 
 ]
+//=============================================================
+// END DEFINE TESTS!
+//=============================================================
+
+
+/** Build Test Suite */
+let devChuck;
+let audioContext;
+let filteredTests = testSuite; // by default, display all tests
+let filteredIndices = testSuite.map(test => test.id); // by default, display all tests
+let testScore = 0;
+let testSize = testSuite.length;
+let runButton = document.getElementById("run");
+let filterButton = document.getElementById("filter");
+
+// Update test suite score
+function updateTestSuiteScore(passed) {
+    testScore += passed ? 1 : 0;
+    const score = document.getElementById("score");
+    score.innerText = testScore + " / " + testSize;
+}
+
+// filter tests
+function filterTests() {
+    const testFilter = document.getElementById("test-filter").value;
+    filteredTests = []; // Tests here
+    filteredIndices = []; // Test IDs here
+    // If no filter, display all tests
+    if (testFilter === "") {
+        filteredTests = testSuite;
+        filteredIndices = testSuite.map(test => test.id);
+    } else {
+        // Parse tests to filter
+        const testRanges = testFilter.split(',');
+        filteredIndices = [];
+        testRanges.forEach(range => {
+            if (range.includes('-')) {
+                const [start, end] = range.split('-').map(Number);
+                for (let i = start; i <= end; i++) {
+                    filteredIndices.push(i);
+                }
+            } else {
+                filteredIndices.push(Number(range));
+            }
+        });
+        // Filter tests
+        filteredTests = testSuite.filter(test => filteredIndices.includes(test.id));
+    }
+    filterDisplay(filteredTests);
+}
+
+
+// filter display
+function filterDisplay(filteredTests) {
+    const suite = document.getElementById("test-suite");
+    // Remove all but first row
+    while (suite.rows.length > 1) {
+        suite.deleteRow(1);
+    }
+    filteredTests.forEach(test => {
+        Test.addTestHTML(test.id, test.name);
+    });
+}
+
+// init when the page loads
+async function init() {
+    audioContext = new AudioContext();
+    audioContext.suspend();
+
+    // Uncomment me to have a global chuck object for debugging
+    devChuck = await Chuck.init([], audioContext, undefined, "../src/");
+    devChuck.connect(audioContext.destination);
+    window.audioContext = audioContext;
+    window.devChuck = devChuck;
+
+    runButton.disabled = false;
+}
 
 // run all tests
 async function runTestSuite() {
     // Reset
-    Test.testScore = 0;
+    testScore = 0;
+    testSize = filteredTests.length;
+
     // clear all output boxes and results
-    for(const test of testSuite) {
-        var outputBox = document.getElementById("output-" + test.id);
-        outputBox.innerText = "";
-        var result = document.getElementById("result-" + test.id);
-        result.innerHTML = "--";
-        result.style.color = "black";
+    for (const test of testSuite) {
+        let outputBox = document.getElementById("output-" + test.id);
+        let result = document.getElementById("result-" + test.id);
+        if (outputBox) {
+            outputBox.innerHTML = "";
+        }
+        if (result) {
+            result.innerHTML = "--";
+            result.style.color = "black";
+        }
     }
 
-    parallelize = document.getElementById("parallelize").checked;
+    const parallelize = document.getElementById("parallelize").checked;
 
-    devChuck = await Chuck.init([], undefined, undefined, "../src/");
-
-    for(const test of testSuite) {
+    for (const test of filteredTests) {
         console.log("Running test " + test.id)
 
         if (parallelize) {
-            test.run(); 
+            test.run();
         } else {
             await test.run();
         }
     }
 }
 
-runButton.addEventListener("click", runTestSuite);
-    
+// MAIN
+window.addEventListener("load", init);
+
+filterButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    filterTests()
+});
+
+runButton.addEventListener("click", () => {
+    audioContext.resume();
+    runTestSuite()
+});
