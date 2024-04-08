@@ -1,5 +1,5 @@
 # WebChucK
-
+[![Node.js Build](https://github.com/ccrma/webchuck/actions/workflows/deploy.yml/badge.svg)](https://github.com/ccrma/webchuck/actions/workflows/deploy.yml)
 [![](https://data.jsdelivr.com/v1/package/npm/webchuck/badge)](https://www.jsdelivr.com/package/npm/webchuck)
 
 [site](https://chuck.stanford.edu/webchuck/) | [docs](https://chuck.stanford.edu/webchuck/docs) | [npm](https://www.npmjs.com/package/webchuck)
