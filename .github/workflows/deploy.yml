@@ -1,0 +1,48 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+name: Node.js Build
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+        
+    - run: npm ci
+    - run: npm run doc 
+    - run: npm run build 
+
+    - name: Deploy dist to production
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: burnett01/rsync-deployments@6.0.0
+      with:
+        switches: -avzr --delete
+        path: dist/
+        remote_path: ${{ secrets.PROD_IDE_LOCATION }}
+        remote_host: ${{ secrets.HOST }}
+        remote_user: ${{ secrets.SSH_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
+
+    - name: Deploy dist to dev
+      if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+      uses: burnett01/rsync-deployments@6.0.0
+      with:
+        switches: -avzr --delete
+        path: dist/
+        remote_path: ${{ secrets.DEV_IDE_LOCATION }}
+        remote_host: ${{ secrets.HOST }}
+        remote_user: ${{ secrets.SSH_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
