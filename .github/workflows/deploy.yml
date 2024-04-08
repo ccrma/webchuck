@@ -27,10 +27,10 @@ jobs:
 
     - name: Deploy dist to production
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      uses: burnett01/rsync-deployments@6.0.0
+      uses: burnett01/rsync-deployments@7.0.1
       with:
         switches: -avzr --delete
-        path: dist/
+        path: ./
         remote_path: ${{ secrets.PROD_WC_LOCATION }}
         remote_host: ${{ secrets.HOST }}
         remote_user: ${{ secrets.SSH_USER }}
@@ -38,10 +38,10 @@ jobs:
 
     - name: Deploy dist to dev
       if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-      uses: burnett01/rsync-deployments@6.0.0
+      uses: burnett01/rsync-deployments@7.0.1
       with:
         switches: -avzr --delete
-        path: dist/
+        path: ./
         remote_path: ${{ secrets.DEV_WC_LOCATION }}
         remote_host: ${{ secrets.HOST }}
         remote_user: ${{ secrets.SSH_USER }}
