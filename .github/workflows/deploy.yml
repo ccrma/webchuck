@@ -29,7 +29,7 @@ jobs:
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: burnett01/rsync-deployments@7.0.1
       with:
-        switches: -avzr --delete
+        switches: -avzr --delete --exclude=node_modules
         path: ./
         remote_path: ${{ secrets.PROD_WC_LOCATION }}
         remote_host: ${{ secrets.HOST }}
@@ -40,7 +40,7 @@ jobs:
       if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
       uses: burnett01/rsync-deployments@7.0.1
       with:
-        switches: -avzr --delete
+        switches: -avzr --delete --exclude=node_modules
         path: ./
         remote_path: ${{ secrets.DEV_WC_LOCATION }}
         remote_host: ${{ secrets.HOST }}
