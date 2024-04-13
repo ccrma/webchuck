@@ -29,7 +29,7 @@
     "exclude": "src/DeferredPromise.ts",
     "plugin": [],
     "sidebarLinks": { 
-      "Getting Started": "/docs",
+      "Getting Started": "./",
     },
   },
   "include": ["src/**/*.ts"],
