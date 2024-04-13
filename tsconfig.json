@@ -28,9 +28,9 @@
     },
     "exclude": "src/DeferredPromise.ts",
     "plugin": [],
-    "sidebarLinks": { 
-      "Getting Started": "./",
-    },
+    // "sidebarLinks": { 
+    //   "Getting Started": "./",
+    // },
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
