@@ -227,7 +227,7 @@ class Chuck extends window.AudioWorkletNode {
      * @example
      * ```ts
      * // Initialize ChucK with a list of files to preload
-     * theChuck = await Chuck.init([{ serverFilename: "./path/filename.ck", virtualFilename: "filename.ck" }...]);
+     * theChuck = await Chuck.init([{ serverFilename: "./path/filename.wav", virtualFilename: "filename.wav" }...]);
      * ```
      *
      * @example
@@ -244,7 +244,7 @@ class Chuck extends window.AudioWorkletNode {
      * theChuck = await Chuck.init([], undefined, undefined, "./src");
      * ```
      *
-     * @param filenamesToPreload Array of Files to preload into ChucK's filesystem `[{serverFilename: "./path/filename", virtualFilename: "filename"}...]`
+     * @param filenamesToPreload Array of auxiliary files to preload into ChucK's filesystem. These can be .wav files, .ck files, .etc. `[{serverFilename: "./path/filename.wav", virtualFilename: "filename.wav"}...]`
      * @param audioContext Optional parameter if you want to use your own AudioContext. **Note**: If an AudioContext is passed in, you will need to connect the ChucK instance to your own destination.
      * @param numOutChannels Optional custom number of output channels. Default is 2 channel stereo and the Web Audio API supports up to 32 channels.
      * @param whereIsChuck Optional custom url to your WebChucK `src` folder containing `webchuck.js` and `webchuck.wasm`. By default, `whereIsChuck` is {@link https://chuck.stanford.edu/webchuck/src | here}.
@@ -270,6 +270,7 @@ class Chuck extends window.AudioWorkletNode {
         if (defaultAudioContext) {
             chuck.connect(audioContext.destination); // default connection source
         }
+        audioContext.destination.channelCount = numOutChannels;
         await chuck.isReady.promise;
         return chuck;
     }

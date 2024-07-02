@@ -139,6 +139,7 @@ export default class Chuck extends window.AudioWorkletNode {
     if (defaultAudioContext) {
       chuck.connect(audioContext.destination); // default connection source
     }
+    audioContext.destination.channelCount = numOutChannels;
 
     await chuck.isReady.promise;
     return chuck;
