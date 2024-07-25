@@ -11,6 +11,9 @@
     <!-- Highlight.js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <!-- JSZip -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </head>
 
   <body>
@@ -216,14 +219,66 @@ theChuck.runCode(`
     1::second => now;
 `);</code></pre>
     </div>
-    <p>Note that many browsers do not let audio run without a user
-      interaction (e.g. button press). You can check for a suspended audio
-      context and resume like this:</p>
+    <p>Note that many browsers do not let audio run until there has been user
+      interaction (e.g. button press).</p>
     <div>
-      <pre><code>if (theChuck.context.state === 'suspended') {
-    theChuck.context.resume();
-}</code></pre>
+
+    <h4>Download Source</h4>
+    <p>Download ready-to-use compiled <a href="#" id="downloadZip">WebChucK source files</a> (JS + WASM) as a zip.</p>
+    <button type="button" class="btn btn-warning btn-md px-2 me-sm-3" id="downloadZipButton">Download</button>
+    <p>Unzip the file and place the entire <code>webchuck</code> directory into your project.</p>
+    <div>
+      <pre><code>// Import the webchuck bundle from `webchuck` directory
+import { Chuck } from './webchuck/wc-bundle.js'
+
+// Set src path to './webchuck/'
+const theChuck = await Chuck.init([], undefined, undefined, './webchuck/');
+</code></pre>
     </div>
+    <script>
+      async function downloadSrc(event) {
+        event.preventDefault();
+
+        const zip = new JSZip();
+
+        const fileUrls = [
+          './src/wc-bundle.js',
+          './src/webchuck.js',
+          './src/webchuck.wasm'
+        ];
+
+        // Fetch each file and add it to the zip
+        for (const url of fileUrls) {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch ${url}`);
+          }
+          if (url.endsWith(".js")) {
+              const content = await response.text();
+              zip.file(url.split('/').pop(), content);
+          } else {
+              const content = await response.arrayBuffer();
+              zip.file(url.split('/').pop(), content, { binary: true });
+          }
+        }
+
+        // Generate the zip file and trigger the download
+        zip.generateAsync({ type: 'blob' }).then(function(content) {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(content);
+          a.download = 'webchuck.zip';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }).catch(function(err) {
+          console.error('Failed to generate zip', err);
+        });
+      }
+
+      document.getElementById('downloadZip').addEventListener('click', downloadSrc);
+      document.getElementById('downloadZipButton').addEventListener('click', downloadSrc);
+    </script>
+    <p>Note: All files must be served in order for WebChucK to run locally.</p>
 
     <h2 id="documentation">Documentation</h2>
     <p>Getting Started Documentation Guide: <a href="./docs">here</a> </p>
