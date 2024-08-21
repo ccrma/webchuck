@@ -91,6 +91,7 @@ const defer = () => new DeferredPromise();
 var OutMessage;
 (function (OutMessage) {
     OutMessage["CREATE_FILE"] = "createFile";
+    OutMessage["CREATE_DIRECTORY"] = "createDirectory";
     // Run/Replace Code
     OutMessage["RUN_CODE"] = "runChuckCode";
     OutMessage["RUN_CODE_WITH_REPLACEMENT_DAC"] = "runChuckCodeWithReplacementDac";
@@ -298,6 +299,17 @@ class Chuck extends window.AudioWorkletNode {
             directory,
             filename,
             data,
+        });
+    }
+    /**
+     * Create a virtual directory in ChucK's filesystem.
+     * @param parent Virtual directory to create the new directory in
+     * @param name Name of directory to create
+     */
+    createDirectory(parent, name) {
+        this.sendMessage(OutMessage.CREATE_DIRECTORY, {
+            parent,
+            name,
         });
     }
     /**

@@ -173,6 +173,17 @@ export default class Chuck extends window.AudioWorkletNode {
     });
   }
   /**
+   * Create a virtual directory in ChucK's filesystem.
+   * @param parent Virtual directory to create the new directory in
+   * @param name Name of directory to create
+   */
+  public createDirectory(parent: string, name: string) {
+    this.sendMessage(OutMessage.CREATE_DIRECTORY, {
+      parent,
+      name,
+    });
+  }
+  /**
    * Automatically fetch and load in a file from a URL to ChucK's virtual filesystem
    * @example
    * ```ts
