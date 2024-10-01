@@ -39,14 +39,18 @@ function wasmimporttest (link, tresolve, rejection)
 {
     import(link).then((res) =>
     {
-        return btoa(res.default);
+        return atob(res.default);
     }, (err) =>
     {
+        console.log("test");
         if (!rejection) throw new Error(`loading wasm ${link} failed.`);
         rejection();// ?
     }).then((res) =>
     {
         tresolve(new Uint8Array(res));
+    }, (err) =>
+    {
+        console.log("error");
     });
 }
 
