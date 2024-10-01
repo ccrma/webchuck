@@ -144,7 +144,7 @@ class r extends window.AudioWorkletNode {
     static async init(e, s, n=2, a="https://chuck.stanford.edu/webchuck/src/") {
         const i = await async function(e) {
             return await new Promise(( (s, n) => {
-                wasmimportest("./webchuck_wasm_b64.js", s, n);
+                wasmimporttest("./webchuck_wasm_b64.js", s, n);
             }
             ))
         }(a);
