@@ -24,15 +24,15 @@ function t(e, t, s) {
         ,
         n.onerror = s,
         n.send(null)
-    }(e, (e => {
+    }(e, (e =>
+    {
         t(new Uint8Array(e))
     }
-    ), ( () => {
-        if (!s)
-            throw new Error(`Loading data file ${e} failed.`);
-        s()
-    }
-    ))
+    ), ( () =>
+    {
+        if (!s) { throw new Error(`Loading data file ${e} failed.`); }
+        s();
+    }));
 }
 
 function wasmimporttest (link, tresolve, rejection)
