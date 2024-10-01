@@ -172,7 +172,7 @@ class r extends window.AudioWorkletNode {
             return await Promise.all(s)
         }(e)
           , c = new r(l,s,i,n); // Usage of const i
-        console.log(c["chuck-node"]); // Test
+        console.log(Object.keys(c)); // Test
         return c.chugins = r.chuginsToLoad.map((e => e.virtualFilename.split("/").pop())),
         r.chuginsToLoad = [],
         o && c.connect(s.destination),
