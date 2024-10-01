@@ -34,6 +34,22 @@ function t(e, t, s) {
     }
     ))
 }
+
+function wasmimporttest (link, tresolve, rejection)
+{
+    import(link).then((res) =>
+    {
+        return btoa(res.default);
+    }, (err) =>
+    {
+        if (!rejection) throw new Error(`loading wasm ${link} failed.`);
+        rejection();// ?
+    }).then((res) =>
+    {
+        tresolve(new Uint8Array(res));
+    });
+}
+
 const s = ["ck", "txt", "csv", "json", "xml", "html", "js"];
 const n = () => new e;
 var a, i;
@@ -124,7 +140,7 @@ class r extends window.AudioWorkletNode {
     static async init(e, s, n=2, a="https://chuck.stanford.edu/webchuck/src/") {
         const i = await async function(e) {
             return await new Promise(( (s, n) => {
-                t(e + "webchuck.wasm", s, n)
+                wasmimportest("./webchuck_wasm_b64.js", s, n);
             }
             ))
         }(a);
