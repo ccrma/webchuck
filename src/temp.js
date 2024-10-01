@@ -39,10 +39,12 @@ function wasmimporttest (link, tresolve, rejection)
 {
     import(link).then((res) =>
     {
-        return atob(res.default);
+        console.log(res.default);
+        let r = atob(res.default);
+        return r;
     }, (err) =>
     {
-        console.log("test");
+        console.log(err);
         if (!rejection) throw new Error(`loading wasm ${link} failed.`);
         rejection();// ?
     }).then((res) =>
