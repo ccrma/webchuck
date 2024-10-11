@@ -17,59 +17,62 @@ fetch("blit2.ck").then((response) => response.text()).then((text) => {
     code = text;
 });
 
-var Chuck;
-import('https://cdn.jsdelivr.net/npm/webchuck/+esm').then(async (module) => {
-    Chuck = module.Chuck; // Chuck class
-    document.getElementById("try").disabled = false;
-});
-    
-var theChuck; 
-// Button to run ChucK code
-async function runChuckCode() {
-    // Create ChucK object if it doesn't exist
-    await Chuck;
-    if (!theChuck) {
-        theChuck = await Chuck.init([]);
-    }
-    theChuck.runCode(code); // Run ChucK code
-};
+var Chuck; // Class
+var theChuck; // instance
 
-const delay = 10; // Delay between each character typing (in milliseconds)
-var typeCallback;
+const tryButton = document.getElementById('try');
+
+var typeWriterCallback;
 function typeWriterAnimation(element, text, delay) {
   let charIndex = 0;
-
   function type() {
     if (charIndex < text.length) {
       element.textContent += text.charAt(charIndex);
       charIndex++;
-      typeCallback = setTimeout(type, delay);
+      typeWriterCallback = setTimeout(type, delay);
     }
   }
 
   type();
 }
-
 function stopTypeWriterAnimation() {
-  clearTimeout(typeCallback);
+  clearTimeout(typeWriterCallback);
 }
 
+// Button to run ChucK code
+async function runChuckCode() {
+    // Create ChucK object if it doesn't exist
+    if (!theChuck) return;
+    theChuck.runCode(code); // Run ChucK code
+};
 
 var play = false;
-document.getElementById("try").addEventListener("click", function() {
+tryButton.addEventListener("click", function() {
   const animationContainer = document.getElementById("animationContainer");
   if (play) {   
     animationContainer.textContent = "";
     theChuck.removeLastCode();
-    document.getElementById("try").textContent = "Try Me!";
+    tryButton.textContent = "Try Me!";
     stopTypeWriterAnimation();
   } else {
+    const delay = 10; // Delay between each character typing (in milliseconds)
     typeWriterAnimation(animationContainer, code, delay);
     runChuckCode();
-    document.getElementById("try").textContent = "Stop";
+    tryButton.textContent = "Stop";
   }
   play = !play;
 });
+
+window.addEventListener('load', async () => {
+  import('https://cdn.jsdelivr.net/npm/webchuck/+esm').then(async (module) => {
+      Chuck = module.Chuck; // Chuck class
+      theChuck = await Chuck.init([]); // Create Chuck object
+      tryButton.disabled = false;
+      tryButton.innerText = "Try Me!";
+
+  });
+});
+    
 
 //-----------------------------------------------------------------------------
 // Build WebChucK Bundle Zipper
