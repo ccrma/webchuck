@@ -37,6 +37,16 @@
     z-index: -99;
 }
 
+#version-id {
+    color: white;
+    /* text-decoration: none; */
+    transition: all 0.3s;
+}
+
+#version-id:hover {
+    color: orange;
+    text-decoration: underline;
+}
 .card {
   flex: 0 0 auto;
   width: 320px;
