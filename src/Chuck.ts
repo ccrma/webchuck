@@ -24,8 +24,10 @@ type DeferredPromisesMap = Record<number, DeferredPromise<unknown>>;
 type EventCallbacksMap = Record<number, () => void>;
 
 /**
- * WebChucK: ChucK Web Audio Node class.
- * Use **{@link init | Init}** to create a ChucK instance
+ * WebChucK extends the Web Audio `AudioWorkletNode` and provides an interface
+ * to interact with the ChucK Virtual Machine. 
+ * 
+ * Get started with **{@link init | init()}** to create a ChucK instance.
  */
 export default class Chuck extends window.AudioWorkletNode {
   private deferredPromises: DeferredPromisesMap = {};
@@ -41,7 +43,8 @@ export default class Chuck extends window.AudioWorkletNode {
   private chugins: string[] = [];
 
   /**
-   * Private internal constructor for a ChucK AudioWorklet Web Audio Node. Use public **{@link init| Init}** to create a ChucK instance.
+   * Private internal constructor for a ChucK AudioWorklet Web Audio Node. 
+   * Use public **{@link init| Init}** to create a ChucK instance.
    * @param preloadedFiles Array of Files to preload into ChucK's filesystem
    * @param audioContext AudioContext to connect to
    * @param wasm WebChucK WebAssembly binary
@@ -74,8 +77,11 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Initialize a ChucK Web Audio Node. By default, a new AudioContext is created and ChucK is connected to the AudioContext destination.
-   * **Note:** Init is overloaded to allow for custom AudioContext, custom number of output channels, and custom location of `whereIsChuck`. Skip an argument by passing in `undefined`.
+   * Initialize a ChucK AudioWorkletNode. By default, a new AudioContext is 
+   * created and ChucK is connected to the AudioContext destination.
+   * **Note:** init() is overloaded to allow for a custom AudioContext, 
+   * custom number of output channels, and custom location of `whereIsChuck`. 
+   * Skip an argument by passing in `undefined`.
    *
    * @example
    * ```ts
@@ -85,7 +91,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * @example
    * ```ts
    * // Initialize ChucK with a list of files to preload
-   * theChuck = await Chuck.init([{ serverFilename: "./path/filename.wav", virtualFilename: "filename.wav" }...]);
+   * theChuck = await Chuck.init([{serverFilename: "./path/filename.wav", virtualFilename: "filename.wav"}...]);
    * ```
    *
    * @example
