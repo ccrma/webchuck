@@ -62,6 +62,7 @@ export default class Gyro {
     await gyro.theChuck.runCode(Gyro_ck);
 
     // Enable mouse and keyboard
+    /*
     if (enableGyro) {
       // If iOS, request permission
       if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
@@ -76,8 +77,12 @@ export default class Gyro {
         gyro.enableGyro();
       }
     }
+    */
+    gyro.enableGyro();
     return gyro;
   }
+
+
 
   /**
    * @internal

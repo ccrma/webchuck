@@ -500,6 +500,10 @@ filterButton.addEventListener("click", (e) => {
 });
 
 runButton.addEventListener("click", () => {
+
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission();
+    }
     audioContext.resume();
     runTestSuite()
 });

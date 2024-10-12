@@ -1658,22 +1658,23 @@ class Gyro {
         await gyro.theChuck.runCode(GyroMsg_ck);
         await gyro.theChuck.runCode(Gyro_ck);
         // Enable mouse and keyboard
+        /*
         if (enableGyro) {
-            // If iOS, request permission
-            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                const permission = await DeviceOrientationEvent.requestPermission();
-                if (permission === 'granted') {
-                    gyro.enableGyro();
-                }
-                else {
-                    console.log("Gyroscope permission denied.");
-                }
+          // If iOS, request permission
+          if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+            const permission = await (DeviceOrientationEvent as any).requestPermission();
+            if (permission === 'granted') {
+              gyro.enableGyro();
+            } else {
+              console.log("Gyroscope permission denied.");
             }
-            else {
-                // just try to enable
-                gyro.enableGyro();
-            }
+          } else {
+            // just try to enable
+            gyro.enableGyro();
+          }
         }
+        */
+        gyro.enableGyro();
         return gyro;
     }
     /**
