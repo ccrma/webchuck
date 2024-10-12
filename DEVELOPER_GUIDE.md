@@ -68,9 +68,11 @@ View the documentation at `./docs/index.html`
 
 ## Deploy and Release
 
-To package and release a new version of WebChucK, make sure all changes are PR'ed onto the `main` branch. Then from main, tag the release and publish the package to NPM using:
+To package and release a new version of WebChucK, make sure all changes are PR'ed onto the `main` branch. From main, build source and documentation, tag the release and publish the package to NPM using:
 
 ```
+npm run build
+npm run doc
 npm version patch
 npm publish
 ```
