@@ -16,12 +16,15 @@
 import { defer, isPlaintextFile, loadWasm, preloadFiles } from "./utils";
 import { InMessage, OutMessage } from "./enums";
 /**
- * WebChucK: ChucK Web Audio Node class.
- * Use **{@link init | Init}** to create a ChucK instance
+ * WebChucK extends the Web Audio `AudioWorkletNode` and provides an interface
+ * to interact with the ChucK Virtual Machine.
+ *
+ * Get started with **{@link init | init()}** to create a ChucK instance.
  */
 export default class Chuck extends window.AudioWorkletNode {
     /**
-     * Private internal constructor for a ChucK AudioWorklet Web Audio Node. Use public **{@link init| Init}** to create a ChucK instance.
+     * Private internal constructor for a ChucK AudioWorklet Web Audio Node.
+     * Use public **{@link init| Init}** to create a ChucK instance.
      * @param preloadedFiles Array of Files to preload into ChucK's filesystem
      * @param audioContext AudioContext to connect to
      * @param wasm WebChucK WebAssembly binary
@@ -54,8 +57,11 @@ export default class Chuck extends window.AudioWorkletNode {
         Chuck.chuckID++;
     }
     /**
-     * Initialize a ChucK Web Audio Node. By default, a new AudioContext is created and ChucK is connected to the AudioContext destination.
-     * **Note:** Init is overloaded to allow for custom AudioContext, custom number of output channels, and custom location of `whereIsChuck`. Skip an argument by passing in `undefined`.
+     * Initialize a ChucK AudioWorkletNode. By default, a new AudioContext is
+     * created and ChucK is connected to the AudioContext destination.
+     * **Note:** init() is overloaded to allow for a custom AudioContext,
+     * custom number of output channels, and custom location of `whereIsChuck`.
+     * Skip an argument by passing in `undefined`.
      *
      * @example
      * ```ts
@@ -65,7 +71,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @example
      * ```ts
      * // Initialize ChucK with a list of files to preload
-     * theChuck = await Chuck.init([{ serverFilename: "./path/filename.wav", virtualFilename: "filename.wav" }...]);
+     * theChuck = await Chuck.init([{serverFilename: "./path/filename.wav", virtualFilename: "filename.wav"}...]);
      * ```
      *
      * @example
@@ -136,6 +142,17 @@ export default class Chuck extends window.AudioWorkletNode {
             directory,
             filename,
             data,
+        });
+    }
+    /**
+     * Create a virtual directory in ChucK's filesystem.
+     * @param parent Virtual directory to create the new directory in
+     * @param name Name of directory to create
+     */
+    createDirectory(parent, name) {
+        this.sendMessage(OutMessage.CREATE_DIRECTORY, {
+            parent,
+            name,
         });
     }
     /**

@@ -16,8 +16,9 @@
 <li><a href="Chuck.html">Chuck</a></li></ul>
 <h1>Class Chuck</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>WebChucK: ChucK Web Audio Node class.
-Use <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> to create a ChucK instance</p>
+<div class="tsd-comment tsd-typography"><p>WebChucK extends the Web Audio <code>AudioWorkletNode</code> and provides an interface
+to interact with the ChucK Virtual Machine. </p>
+<p>Get started with <strong><a href="Chuck.html#init" class="tsd-kind-method">init()</a></strong> to create a ChucK instance.</p>
 </div>
 <div class="tsd-comment tsd-typography"></div></section>
 <section class="tsd-panel tsd-hierarchy">
@@ -27,7 +28,7 @@ Use <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> 
 <ul class="tsd-hierarchy">
 <li><span class="target">Chuck</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L30">src/Chuck.ts:30</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L32">src/Chuck.ts:32</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -61,6 +62,7 @@ Use <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> 
 <a href="Chuck.html#loadChugin" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>load<wbr/>Chugin</span></a>
 <a href="Chuck.html#nextDeferID" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>next<wbr/>DeferID</span></a>
 <a href="Chuck.html#createFile" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>File</span></a>
+<a href="Chuck.html#createDirectory" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Directory</span></a>
 <a href="Chuck.html#loadFile" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>load<wbr/>File</span></a>
 <a href="Chuck.html#loadedChugins" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>loaded<wbr/>Chugins</span></a>
 <a href="Chuck.html#runCode" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>run<wbr/>Code</span></a>
@@ -118,7 +120,8 @@ Use <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> 
 <ul class="tsd-signatures tsd-is-private">
 <li class="tsd-signature tsd-anchor-link" id="constructor.new_Chuck"><span class="tsd-kind-constructor-signature">new <wbr/>Chuck</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">preloadedFiles</span>, <span class="tsd-kind-parameter">audioContext</span>, <span class="tsd-kind-parameter">wasm</span>, <span class="tsd-kind-parameter">numOutChannels</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Chuck.html" class="tsd-signature-type tsd-kind-class">Chuck</a><a href="#constructor.new_Chuck" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Private internal constructor for a ChucK AudioWorklet Web Audio Node. Use public <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> to create a ChucK instance.</p>
+<div class="tsd-comment tsd-typography"><p>Private internal constructor for a ChucK AudioWorklet Web Audio Node. 
+Use public <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> to create a ChucK instance.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -148,39 +151,39 @@ Use <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Overrides window.AudioWorkletNode.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L51">src/Chuck.ts:51</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L54">src/Chuck.ts:54</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="deferredPromises" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>deferred<wbr/>Promises</span><a href="#deferredPromises" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">deferred<wbr/>Promises</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">DeferredPromisesMap</span><span class="tsd-signature-symbol"> = {}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L31">src/Chuck.ts:31</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L33">src/Chuck.ts:33</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="deferredPromiseCounter" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>deferred<wbr/>Promise<wbr/>Counter</span><a href="#deferredPromiseCounter" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">deferred<wbr/>Promise<wbr/>Counter</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L32">src/Chuck.ts:32</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L34">src/Chuck.ts:34</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="eventCallbacks" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>event<wbr/>Callbacks</span><a href="#eventCallbacks" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">event<wbr/>Callbacks</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">EventCallbacksMap</span><span class="tsd-signature-symbol"> = {}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L33">src/Chuck.ts:33</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L35">src/Chuck.ts:35</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="eventCallbackCounter" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>event<wbr/>Callback<wbr/>Counter</span><a href="#eventCallbackCounter" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">event<wbr/>Callback<wbr/>Counter</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L34">src/Chuck.ts:34</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L36">src/Chuck.ts:36</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="isReady" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>is<wbr/>Ready</span><a href="#isReady" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">is<wbr/>Ready</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">default</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L35">src/Chuck.ts:35</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L37">src/Chuck.ts:37</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="chugins" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>chugins</span><a href="#chugins" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">chugins</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L41">src/Chuck.ts:41</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L43">src/Chuck.ts:43</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="onprocessorerror" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>onprocessorerror</span><a href="#onprocessorerror" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">onprocessorerror</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">this</span>, <span class="tsd-kind-parameter">ev</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span></div>
@@ -257,8 +260,11 @@ Use <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> 
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="init.init-1"><span class="tsd-kind-call-signature">init</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">filenamesToPreload</span>, <span class="tsd-kind-parameter">audioContext</span><span class="tsd-signature-symbol">?</span>, <span class="tsd-kind-parameter">numOutChannels</span><span class="tsd-signature-symbol">?</span>, <span class="tsd-kind-parameter">whereIsChuck</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Chuck.html" class="tsd-signature-type tsd-kind-class">Chuck</a><span class="tsd-signature-symbol">&gt;</span><a href="#init.init-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Initialize a ChucK Web Audio Node. By default, a new AudioContext is created and ChucK is connected to the AudioContext destination.
-<strong>Note:</strong> Init is overloaded to allow for custom AudioContext, custom number of output channels, and custom location of <code>whereIsChuck</code>. Skip an argument by passing in <code>undefined</code>.</p>
+<div class="tsd-comment tsd-typography"><p>Initialize a ChucK AudioWorkletNode. By default, a new AudioContext is 
+created and ChucK is connected to the AudioContext destination.
+<strong>Note:</strong> init() is overloaded to allow for a custom AudioContext, 
+custom number of output channels, and custom location of <code>whereIsChuck</code>. 
+Skip an argument by passing in <code>undefined</code>.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -289,7 +295,7 @@ Use <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> 
 <h4>Example</h4><pre><code class="language-ts"><span class="hl-4">// default initialization</span><br/><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">([]);</span>
 </code><button>Copy</button></pre>
 
-<h4>Example</h4><pre><code class="language-ts"><span class="hl-4">// Initialize ChucK with a list of files to preload</span><br/><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">([{ </span><span class="hl-0">serverFilename:</span><span class="hl-1"> </span><span class="hl-3">&quot;./path/filename.wav&quot;</span><span class="hl-1">, </span><span class="hl-0">virtualFilename:</span><span class="hl-1"> </span><span class="hl-3">&quot;filename.wav&quot;</span><span class="hl-1"> }...]);</span>
+<h4>Example</h4><pre><code class="language-ts"><span class="hl-4">// Initialize ChucK with a list of files to preload</span><br/><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">([{</span><span class="hl-0">serverFilename:</span><span class="hl-1"> </span><span class="hl-3">&quot;./path/filename.wav&quot;</span><span class="hl-1">, </span><span class="hl-0">virtualFilename:</span><span class="hl-1"> </span><span class="hl-3">&quot;filename.wav&quot;</span><span class="hl-1">}...]);</span>
 </code><button>Copy</button></pre>
 
 <h4>Example</h4><pre><code class="language-ts"><span class="hl-4">// Initialize ChucK with a local audioContext, connect ChucK to the context destination</span><br/><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-0">audioContext</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">AudioContext</span><span class="hl-1">();</span><br/><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">([], </span><span class="hl-0">audioContext</span><span class="hl-1">));</span><br/><span class="hl-0">theChuck</span><span class="hl-1">.</span><span class="hl-7">connect</span><span class="hl-1">(</span><span class="hl-0">audioContext</span><span class="hl-1">.</span><span class="hl-0">destination</span><span class="hl-1">);</span>
@@ -299,7 +305,7 @@ Use <strong><a href="Chuck.html#init" class="tsd-kind-method">Init</a></strong> 
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L111">src/Chuck.ts:111</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L117">src/Chuck.ts:117</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="loadChugin" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>load<wbr/>Chugin</span><a href="#loadChugin" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -323,7 +329,7 @@ A list of publicly available WebChugins to load can be found in the <a href="htt
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L218">src/Chuck.ts:218</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L235">src/Chuck.ts:235</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="nextDeferID" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>next<wbr/>DeferID</span><a href="#nextDeferID" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -336,7 +342,7 @@ Will create a Deferred promise that wraps a task for WebChucK to execute</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L153">src/Chuck.ts:153</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L159">src/Chuck.ts:159</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="createFile" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>File</span><a href="#createFile" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -367,7 +373,31 @@ Alternatively, you can use <a href="Chuck.html#loadFile" class="tsd-kind-method"
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L168">src/Chuck.ts:168</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L174">src/Chuck.ts:174</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="createDirectory" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>create<wbr/>Directory</span><a href="#createDirectory" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="createDirectory.createDirectory-1"><span class="tsd-kind-call-signature">create<wbr/>Directory</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">parent</span>, <span class="tsd-kind-parameter">name</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#createDirectory.createDirectory-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Create a virtual directory in ChucK&#39;s filesystem.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">parent</span>: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>Virtual directory to create the new directory in</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li>
+<h5><span class="tsd-kind-parameter">name</span>: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>Name of directory to create</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L186">src/Chuck.ts:186</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="loadFile" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>load<wbr/>File</span><a href="#loadFile" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -390,7 +420,7 @@ Alternatively, you can use <a href="Chuck.html#loadFile" class="tsd-kind-method"
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L184">src/Chuck.ts:184</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L201">src/Chuck.ts:201</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="loadedChugins" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>loaded<wbr/>Chugins</span><a href="#loadedChugins" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -402,7 +432,7 @@ Alternatively, you can use <a href="Chuck.html#loadFile" class="tsd-kind-method"
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L228">src/Chuck.ts:228</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L245">src/Chuck.ts:245</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="runCode" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>run<wbr/>Code</span><a href="#runCode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -425,7 +455,7 @@ Alternatively, you can use <a href="Chuck.html#loadFile" class="tsd-kind-method"
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L238">src/Chuck.ts:238</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L255">src/Chuck.ts:255</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="replaceCode" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>replace<wbr/>Code</span><a href="#replaceCode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -448,7 +478,7 @@ Alternatively, you can use <a href="Chuck.html#loadFile" class="tsd-kind-method"
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L268">src/Chuck.ts:268</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L285">src/Chuck.ts:285</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="removeLastCode" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove<wbr/>Last<wbr/>Code</span><a href="#removeLastCode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -460,7 +490,7 @@ Alternatively, you can use <a href="Chuck.html#loadFile" class="tsd-kind-method"
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L307">src/Chuck.ts:307</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L324">src/Chuck.ts:324</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="runFile" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>run<wbr/>File</span><a href="#runFile" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -484,7 +514,7 @@ Note that the file must already have been loaded via <a href="Chuck.html#init" c
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L327">src/Chuck.ts:327</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L344">src/Chuck.ts:344</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="runFileWithArgs" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>run<wbr/>File<wbr/>With<wbr/>Args</span><a href="#runFileWithArgs" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -513,7 +543,7 @@ e.g. Thie is the chuck command line equivalent of <code>chuck myFile:1:2:foo</co
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L362">src/Chuck.ts:362</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L379">src/Chuck.ts:379</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="replaceFile" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>replace<wbr/>File</span><a href="#replaceFile" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -534,7 +564,7 @@ Note that the file must already have been loaded via <a href="Chuck.html#init" c
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L402">src/Chuck.ts:402</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L419">src/Chuck.ts:419</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="replaceFileWithArgs" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>replace<wbr/>File<wbr/>With<wbr/>Args</span><a href="#replaceFileWithArgs" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -560,7 +590,7 @@ Note that the file must already have been loaded via <a href="Chuck.html#init" c
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L445">src/Chuck.ts:445</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L462">src/Chuck.ts:462</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="removeShred" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove<wbr/>Shred</span><a href="#removeShred" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -580,7 +610,7 @@ Note that the file must already have been loaded via <a href="Chuck.html#init" c
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L494">src/Chuck.ts:494</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L511">src/Chuck.ts:511</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="isShredActive" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>is<wbr/>Shred<wbr/>Active</span><a href="#isShredActive" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -600,7 +630,7 @@ Note that the file must already have been loaded via <a href="Chuck.html#init" c
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L508">src/Chuck.ts:508</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L525">src/Chuck.ts:525</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="signalEvent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>signal<wbr/>Event</span><a href="#signalEvent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -619,7 +649,7 @@ Note that the file must already have been loaded via <a href="Chuck.html#init" c
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L522">src/Chuck.ts:522</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L539">src/Chuck.ts:539</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="broadcastEvent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>broadcast<wbr/>Event</span><a href="#broadcastEvent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -638,7 +668,7 @@ Note that the file must already have been loaded via <a href="Chuck.html#init" c
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L530">src/Chuck.ts:530</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L547">src/Chuck.ts:547</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="listenForEventOnce" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>listen<wbr/>For<wbr/>Event<wbr/>Once</span><a href="#listenForEventOnce" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -670,7 +700,7 @@ happen at most once per call.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L541">src/Chuck.ts:541</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L558">src/Chuck.ts:558</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="startListeningForEvent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>start<wbr/>Listening<wbr/>For<wbr/>Event</span><a href="#startListeningForEvent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -704,7 +734,7 @@ specific event.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L559">src/Chuck.ts:559</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L576">src/Chuck.ts:576</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="stopListeningForEvent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>stop<wbr/>Listening<wbr/>For<wbr/>Event</span><a href="#stopListeningForEvent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -729,7 +759,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L575">src/Chuck.ts:575</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L592">src/Chuck.ts:592</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setInt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Int</span><a href="#setInt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -756,7 +786,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L589">src/Chuck.ts:589</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L606">src/Chuck.ts:606</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getInt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Int</span><a href="#getInt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -779,7 +809,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L599">src/Chuck.ts:599</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L616">src/Chuck.ts:616</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setFloat" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Float</span><a href="#setFloat" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -803,7 +833,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L613">src/Chuck.ts:613</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L630">src/Chuck.ts:630</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getFloat" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Float</span><a href="#getFloat" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -823,7 +853,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L622">src/Chuck.ts:622</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L639">src/Chuck.ts:639</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setString" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>String</span><a href="#setString" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -847,7 +877,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L636">src/Chuck.ts:636</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L653">src/Chuck.ts:653</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getString" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>String</span><a href="#getString" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -867,7 +897,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L645">src/Chuck.ts:645</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L662">src/Chuck.ts:662</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setIntArray" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Int<wbr/>Array</span><a href="#setIntArray" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -891,7 +921,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L660">src/Chuck.ts:660</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L677">src/Chuck.ts:677</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getIntArray" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Int<wbr/>Array</span><a href="#getIntArray" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -911,7 +941,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L669">src/Chuck.ts:669</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L686">src/Chuck.ts:686</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setIntArrayValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Int<wbr/>Array<wbr/>Value</span><a href="#setIntArrayValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -940,7 +970,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L684">src/Chuck.ts:684</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L701">src/Chuck.ts:701</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getIntArrayValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Int<wbr/>Array<wbr/>Value</span><a href="#getIntArrayValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -965,7 +995,7 @@ by <a href="Chuck.html#startListeningForEvent" class="tsd-kind-method">startList
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L698">src/Chuck.ts:698</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L715">src/Chuck.ts:715</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setAssociativeIntArrayValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Associative<wbr/>Int<wbr/>Array<wbr/>Value</span><a href="#setAssociativeIntArrayValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -998,7 +1028,7 @@ Note that &quot;associative array&quot; is ChucK&#39;s version of a dictionary w
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L716">src/Chuck.ts:716</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L733">src/Chuck.ts:733</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getAssociativeIntArrayValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Associative<wbr/>Int<wbr/>Array<wbr/>Value</span><a href="#getAssociativeIntArrayValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1024,7 +1054,7 @@ e.g. theChucK.getAssociateIntArrayValue(&quot;MY_INT_ASSOCIATIVE_ARRAY&quot;, &q
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L731">src/Chuck.ts:731</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L748">src/Chuck.ts:748</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setFloatArray" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Float<wbr/>Array</span><a href="#setFloatArray" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1048,7 +1078,7 @@ e.g. theChucK.getAssociateIntArrayValue(&quot;MY_INT_ASSOCIATIVE_ARRAY&quot;, &q
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L747">src/Chuck.ts:747</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L764">src/Chuck.ts:764</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getFloatArray" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Float<wbr/>Array</span><a href="#getFloatArray" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1071,7 +1101,7 @@ e.g. theChucK.getAssociateIntArrayValue(&quot;MY_INT_ASSOCIATIVE_ARRAY&quot;, &q
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L757">src/Chuck.ts:757</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L774">src/Chuck.ts:774</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setFloatArrayValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Float<wbr/>Array<wbr/>Value</span><a href="#setFloatArrayValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1100,7 +1130,7 @@ e.g. theChucK.getAssociateIntArrayValue(&quot;MY_INT_ASSOCIATIVE_ARRAY&quot;, &q
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L772">src/Chuck.ts:772</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L789">src/Chuck.ts:789</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getFloatArrayValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Float<wbr/>Array<wbr/>Value</span><a href="#getFloatArrayValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1128,7 +1158,7 @@ e.g. theChucK.getAssociateIntArrayValue(&quot;MY_INT_ASSOCIATIVE_ARRAY&quot;, &q
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L787">src/Chuck.ts:787</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L804">src/Chuck.ts:804</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setAssociativeFloatArrayValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Associative<wbr/>Float<wbr/>Array<wbr/>Value</span><a href="#setAssociativeFloatArrayValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1161,7 +1191,7 @@ Note that &quot;associative array&quot; is ChucK&#39;s version of a dictionary w
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L805">src/Chuck.ts:805</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L822">src/Chuck.ts:822</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getAssociativeFloatArrayValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Associative<wbr/>Float<wbr/>Array<wbr/>Value</span><a href="#getAssociativeFloatArrayValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1189,7 +1219,7 @@ Note that &quot;associative array&quot; is ChucK&#39;s version of a dictionary w
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L820">src/Chuck.ts:820</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L837">src/Chuck.ts:837</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setParamInt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Param<wbr/>Int</span><a href="#setParamInt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1214,7 +1244,7 @@ e.g. &quot;SAMPLE_RATE&quot;, &quot;INPUT_CHANNELS&quot;, &quot;OUTPUT_CHANNELS&
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L837">src/Chuck.ts:837</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L854">src/Chuck.ts:854</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getParamInt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Param<wbr/>Int</span><a href="#getParamInt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1235,7 +1265,7 @@ e.g. &quot;SAMPLE_RATE&quot;, &quot;INPUT_CHANNELS&quot;, &quot;OUTPUT_CHANNELS&
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L846">src/Chuck.ts:846</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L863">src/Chuck.ts:863</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setParamFloat" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Param<wbr/>Float</span><a href="#setParamFloat" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1259,7 +1289,7 @@ e.g. &quot;SAMPLE_RATE&quot;, &quot;INPUT_CHANNELS&quot;, &quot;OUTPUT_CHANNELS&
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L860">src/Chuck.ts:860</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L877">src/Chuck.ts:877</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getParamFloat" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Param<wbr/>Float</span><a href="#getParamFloat" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1279,7 +1309,7 @@ e.g. &quot;SAMPLE_RATE&quot;, &quot;INPUT_CHANNELS&quot;, &quot;OUTPUT_CHANNELS&
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L868">src/Chuck.ts:868</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L885">src/Chuck.ts:885</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setParamString" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Param<wbr/>String</span><a href="#setParamString" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1303,7 +1333,7 @@ e.g. &quot;SAMPLE_RATE&quot;, &quot;INPUT_CHANNELS&quot;, &quot;OUTPUT_CHANNELS&
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L882">src/Chuck.ts:882</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L899">src/Chuck.ts:899</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getParamString" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Param<wbr/>String</span><a href="#getParamString" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1324,7 +1354,7 @@ e.g. &quot;VERSION&quot;.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L891">src/Chuck.ts:891</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L908">src/Chuck.ts:908</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="now" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>now</span><a href="#now" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1336,7 +1366,7 @@ e.g. &quot;VERSION&quot;.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L905">src/Chuck.ts:905</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L922">src/Chuck.ts:922</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="clearChuckInstance" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>clear<wbr/>Chuck<wbr/>Instance</span><a href="#clearChuckInstance" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1347,7 +1377,7 @@ e.g. &quot;VERSION&quot;.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L915">src/Chuck.ts:915</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L932">src/Chuck.ts:932</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="clearGlobals" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>clear<wbr/>Globals</span><a href="#clearGlobals" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1358,7 +1388,7 @@ e.g. &quot;VERSION&quot;.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L922">src/Chuck.ts:922</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L939">src/Chuck.ts:939</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="chuckPrint" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>chuck<wbr/>Print</span><a href="#chuckPrint" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -1382,7 +1412,7 @@ Set your own method to display ChucK output or even use ChucK output as a messag
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/618fee8/src/Chuck.ts#L943">src/Chuck.ts:943</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/be8f315/src/Chuck.ts#L960">src/Chuck.ts:960</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="addEventListener" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>add<wbr/>Event<wbr/>Listener</span><a href="#addEventListener" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -1653,6 +1683,7 @@ Set your own method to display ChucK output or even use ChucK output as a messag
 <li><a href="#loadChugin" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>load<wbr/>Chugin</span></a></li>
 <li><a href="#nextDeferID" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>next<wbr/>DeferID</span></a></li>
 <li><a href="#createFile" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>File</span></a></li>
+<li><a href="#createDirectory" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Directory</span></a></li>
 <li><a href="#loadFile" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>load<wbr/>File</span></a></li>
 <li><a href="#loadedChugins" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>loaded<wbr/>Chugins</span></a></li>
 <li><a href="#runCode" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>run<wbr/>Code</span></a></li>

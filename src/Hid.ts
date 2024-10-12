@@ -10,9 +10,9 @@ enum HidMsgType {
 
 //TODO: Update the latest mouse.ck and kb.ck files
 /**
- * Introducing HID (Human Interface Device) support for WebChucK. HID wraps
+ * HID (Human Interface Device) support for WebChucK. HID wraps
  * JavaScript mouse/keyboard event listeners enabling mouse and keyboard
- * communication with the native {@link https://chuck.stanford.edu/doc/reference/io.html#Hid | HID}
+ * input via the {@link https://chuck.stanford.edu/doc/reference/io.html#Hid | HID}
  * class in ChucK.
  *
  * To get started with HID:
