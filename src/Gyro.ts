@@ -64,7 +64,7 @@ export default class Gyro {
     // Enable mouse and keyboard
     if (enableGyro) {
       // If iOS, request permission
-      if (typeof (DeviceOrientationEvent as any).prototype.requestPermission === 'function') {
+      if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
         const permission = await (DeviceOrientationEvent as any).requestPermission();
         if (permission === 'granted') {
           gyro.enableGyro();
@@ -72,6 +72,7 @@ export default class Gyro {
           console.log("Gyroscope permission denied.");
         }
       } else {
+        // just try to enable
         gyro.enableGyro();
       }
     }
