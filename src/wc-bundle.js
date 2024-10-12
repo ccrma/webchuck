@@ -1659,7 +1659,18 @@ class Gyro {
         await gyro.theChuck.runCode(Gyro_ck);
         // Enable mouse and keyboard
         if (enableGyro) {
-            gyro.enableGyro();
+            if (typeof DeviceOrientationEvent.prototype.requestPermission === 'function') {
+                const permission = await DeviceOrientationEvent.requestPermission();
+                if (permission === 'granted') {
+                    gyro.enableGyro();
+                }
+                else {
+                    console.log("Gyroscope permission denied.");
+                }
+            }
+            else {
+                console.log("No gyroscope available.");
+            }
         }
         return gyro;
     }
