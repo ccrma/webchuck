@@ -49,7 +49,7 @@ export default class Gyro {
         // Enable mouse and keyboard
         if (enableGyro) {
             // If iOS, request permission
-            if (typeof DeviceOrientationEvent.prototype.requestPermission === 'function') {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 const permission = await DeviceOrientationEvent.requestPermission();
                 if (permission === 'granted') {
                     gyro.enableGyro();
@@ -59,6 +59,7 @@ export default class Gyro {
                 }
             }
             else {
+                // just try to enable
                 gyro.enableGyro();
             }
         }
