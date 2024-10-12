@@ -63,15 +63,16 @@ export default class Gyro {
 
     // Enable mouse and keyboard
     if (enableGyro) {
+      // If iOS, request permission
       if (typeof (DeviceOrientationEvent as any).prototype.requestPermission === 'function') {
-            const permission = await (DeviceOrientationEvent as any).requestPermission();
-            if (permission === 'granted') {
-              gyro.enableGyro();
-            } else {
-              console.log("Gyroscope permission denied.");
-            }
+        const permission = await (DeviceOrientationEvent as any).requestPermission();
+        if (permission === 'granted') {
+          gyro.enableGyro();
+        } else {
+          console.log("Gyroscope permission denied.");
+        }
       } else {
-        console.log("No gyroscope available.")
+        gyro.enableGyro();
       }
     }
     return gyro;
@@ -99,7 +100,6 @@ export default class Gyro {
   enableGyro() {
     //document.addEventListener("reading", this.boundHandleGyroReading);
     window.addEventListener("deviceorientation", this.boundHandleOrientation);
-
   }
 
   /**

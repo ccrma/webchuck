@@ -48,6 +48,7 @@ export default class Gyro {
         await gyro.theChuck.runCode(Gyro_ck);
         // Enable mouse and keyboard
         if (enableGyro) {
+            // If iOS, request permission
             if (typeof DeviceOrientationEvent.prototype.requestPermission === 'function') {
                 const permission = await DeviceOrientationEvent.requestPermission();
                 if (permission === 'granted') {
@@ -58,7 +59,7 @@ export default class Gyro {
                 }
             }
             else {
-                console.log("No gyroscope available.");
+                gyro.enableGyro();
             }
         }
         return gyro;
