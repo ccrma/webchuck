@@ -1516,4 +1516,199 @@ function clamp(val, min, max) {
     return Math.min(Math.max(val, min), max);
 }
 
-export { Chuck, DeferredPromise, HID };
+const GyroMsg_ck = `
+public class GyroMsg {
+    float gyroX;
+    float gyroY;
+    float gyroZ;
+
+    function float getGyroX() {
+        return gyroX;
+    }
+
+    function float getGyroY() {
+        return gyroY;
+    }
+
+    function float getGyroZ() {
+        return gyroZ;
+    }
+
+    function void _copy(GyroMsg localMsg) {
+        localMsg.gyroX => gyroX;
+        localMsg.gyroY => gyroY;
+        localMsg.gyroZ => gyroZ;
+    }
+}
+`;
+const Gyro_ck = `
+global Event _gyroReading;
+global int _gyroActive;
+
+global float _gyroX;
+global float _gyroY;
+global float _gyroZ;
+
+public class Gyro extends Event {
+
+    0 => int isGyroOpen;
+    0 => int active;
+
+    string deviceName; 
+
+    // GyroMsg Queue
+    GyroMsg _gyroMsgQueue[0];
+
+    function string name() {
+        return deviceName;
+    }
+
+    function int openGyro(int num) {
+        if (num < 0) {
+            false => active;
+        } else {
+            "js gyro" => deviceName;
+            true => active;
+        }
+        active => isGyroOpen => _gyroActive;
+        spork ~ _gyroListener();
+        return active;
+    }
+
+
+    // Pop the first GyroMsg from the queue
+    // Write it to msg and return 1
+    function int recv(GyroMsg msg) {
+        // is empty
+        if (_gyroMsgQueue.size() <= 0) {
+            return 0;
+        }
+
+        // pop the first GyroMsg to msg, return true
+        _gyroMsgQueue[0] @=> GyroMsg localMsg;
+        msg._copy(localMsg);    
+        _gyroMsgQueue.popFront();
+        return 1;
+    }
+
+    // Gyro Listener
+    // Get variables from JS and write to the GyroMsg 
+    function void _gyroListener() {
+        GyroMsg @ msg;
+        while(true){
+            new GyroMsg @=> msg;
+            _gyroReading => now;
+
+            _gyroX => msg.gyroX;
+            _gyroY => msg.gyroY;
+            _gyroZ => msg.gyroZ;
+
+            _gyroMsgQueue << msg;
+            this.broadcast();
+        }
+    }
+}
+`;
+
+//TODO: Update the latest mouse.ck and kb.ck files
+/**
+ * Introducing HID (Human Interface Device) support for WebChucK. HID wraps
+ * JavaScript mouse/keyboard event listeners enabling mouse and keyboard
+ * communication with the native {@link https://chuck.stanford.edu/doc/reference/io.html#Hid | HID}
+ * class in ChucK.
+ *
+ * To get started with HID:
+ * @example
+ * ```ts
+ * import { Chuck, HID } from "webchuck";
+ *
+ * const theChuck = await Chuck.init([]);
+ * const hid = await HID.init(theChuck); // Initialize HID with mouse and keyboard
+ * ```
+ */
+class Gyro {
+    /** @internal */
+    constructor(theChuck) {
+        this._gyroActive = false;
+        // Initialize members
+        this.theChuck = theChuck;
+        this.boundHandleOrientation = this.handleOrientation.bind(this);
+    }
+    /**
+     * Initialize HID functionality in your WebChucK instance.
+     * This adds a `Hid` and `HidMsg` class to the ChucK Virtual Machine (VM).
+     * Mouse and keyboard event listeners are added if `enableMouse` and `enableKeyboard` are true (default).
+     * @example
+     * ```ts
+     * theChuck = await Chuck.init([]);
+     * hid = await HID.init(theChuck); // Initialize HID with mouse and keyboard
+     * ```
+     * @example
+     * ```ts
+     * theChuck = await Chuck.init([]);
+     * hid = await HID.init(theChuck, false, true); // Initialize HID, no mouse, only keyboard
+     * ```
+     * @param theChuck WebChucK instance
+     * @param enableMouse boolean to enable mouse HID
+     * @param enableKeyboard boolean to enable keyboard HID
+     */
+    static async init(theChuck, enableGyro = true) {
+        const gyro = new Gyro(theChuck);
+        // Add Gyro and GyroMsg classes to ChucK VM
+        await gyro.theChuck.runCode(GyroMsg_ck);
+        await gyro.theChuck.runCode(Gyro_ck);
+        // Enable mouse and keyboard
+        if (enableGyro) {
+            gyro.enableGyro();
+        }
+        return gyro;
+    }
+    /**
+     * @internal
+     * Check if gyro is active
+     */
+    async gyroActive() {
+        const x = await this.theChuck.getInt("_gyroActive");
+        this._gyroActive = x == 1;
+    }
+    /**
+     * Enable Mouse HID Javascript event listeners for HID.
+     * Adds a mousemove, mousedown, mouseup, and wheel listener to the document.
+     * This will also disable the context menu on right click.
+     * @example
+     * ```ts
+     * // If mouse HID is not yet enabled
+     * hid.enableMouse();
+     * ```
+     */
+    enableGyro() {
+        //document.addEventListener("reading", this.boundHandleGyroReading);
+        window.addEventListener("deviceorientation", this.boundHandleOrientation);
+    }
+    /**
+     * Disable Mouse HID Javascript event listeners
+     * @example
+     * ```ts
+     * // If mouse HID is enabled
+     * hid.disableMouse();
+     * ```
+     */
+    disableGyro() {
+        window.removeEventListener("deviceorientation", this.boundHandleOrientation);
+    }
+    //-----------------------------------------
+    // JAVASCRIPT HID EVENT HANDLERS
+    //-----------------------------------------
+    /** @internal */
+    handleOrientation(event) {
+        this.gyroActive();
+        if (this._gyroActive) {
+            this.theChuck.setFloat("_gyroX", event.alpha ? event.alpha : 0.0);
+            this.theChuck.setFloat("_gyroY", event.beta ? event.beta : 0.0);
+            this.theChuck.setFloat("_gyroZ", event.gamma ? event.gamma : 0.0);
+            this.theChuck.broadcastEvent("_gyroReading");
+        }
+    }
+}
+
+export { Chuck, DeferredPromise, Gyro, HID };
