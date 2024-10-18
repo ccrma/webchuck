@@ -1,6 +1,7 @@
 export var OutMessage;
 (function (OutMessage) {
     OutMessage["CREATE_FILE"] = "createFile";
+    OutMessage["CREATE_DIRECTORY"] = "createDirectory";
     // Run/Replace Code
     OutMessage["RUN_CODE"] = "runChuckCode";
     OutMessage["RUN_CODE_WITH_REPLACEMENT_DAC"] = "runChuckCodeWithReplacementDac";

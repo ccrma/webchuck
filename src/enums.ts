@@ -1,5 +1,6 @@
 export enum OutMessage {
   CREATE_FILE = "createFile",
+  CREATE_DIRECTORY = "createDirectory",
 
   // Run/Replace Code
   RUN_CODE = "runChuckCode",
