@@ -1,4 +1,4 @@
-import Chuck from "./Chuck";
+import Chuck from "../Chuck";
 import { Hid_ck, HidMsg_ck } from "./hidCk";
 
 enum HidMsgType {

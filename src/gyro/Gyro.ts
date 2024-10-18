@@ -1,4 +1,4 @@
-import Chuck from "./Chuck";
+import Chuck from "../Chuck";
 import { Gyro_ck, GyroMsg_ck } from "./gyroCk";
 
 

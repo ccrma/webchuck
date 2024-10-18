@@ -1,4 +1,4 @@
-import Chuck from "./Chuck";
+import Chuck from "../Chuck";
 import { Accel_ck, AccelMsg_ck } from "./accelCk";
 
 
