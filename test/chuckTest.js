@@ -1,7 +1,7 @@
 //=======================================================================
 // WebChucK Test Suite
 //=======================================================================
-import { Chuck, HID, Gyro} from '../src/wc-bundle.js';
+import { Chuck, HID, Gyro, Accel} from '../src/wc-bundle.js';
 
 /** WebChucK Test Class */
 class Test {
@@ -348,7 +348,7 @@ const testSuite = [
         return outputBox.innerText.includes("PASSED");
     }),
 
-    /*new Test(16, "Gyro", async () => {
+    new Test(16, "Gyro", async () => {
         const aChuck = await Chuck.init([], undefined, undefined, "../src/");
         const outputBox = document.getElementById("output-" + 16);
         aChuck.chuckPrint = (output) => {
@@ -360,7 +360,21 @@ const testSuite = [
         aChuck.runFile("gyro.ck");
 
         return true;
-    }),*/
+    }),
+
+    new Test(17, "Accel", async () => {
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 17);
+        aChuck.chuckPrint = (output) => {
+            outputBox.innerHTML = output + "<br>"; // += for additive 
+        }
+
+        let accel = await Accel.init(aChuck);
+        await aChuck.loadFile("./testFiles/accel.ck");
+        aChuck.runFile("accel.ck");
+
+        return true;
+    }),
 
 
     new Test(99, "Chuck VM operations and parameters", async () => {
@@ -499,12 +513,15 @@ filterButton.addEventListener("click", (e) => {
     filterTests()
 });
 
-runButton.addEventListener("click", () => {
+runButton.addEventListener("click", async () => {
 
-    // Added to request device orientation event permissions (Mike). Needs to be on button press. 
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+         await DeviceMotionEvent.requestPermission();
+    } 
+
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission();
-    }
+         await DeviceOrientationEvent.requestPermission();
+    } 
 
     audioContext.resume();
     runTestSuite()

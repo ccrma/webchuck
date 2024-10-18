@@ -1,32 +1,32 @@
 //-----------------------------------------------------------------------------
-// name: gyro.ck
+// name: accel.ck
 // desc: interface with "deviceorientation" JS events (on web, on mobile) and read x, y, z values
 //
 // author: Mike Mulshine 
 //-----------------------------------------------------------------------------
 
-Gyro gy;
-GyroMsg msg;
+Accel ac;
+AccelMsg msg;
 
 0 => int device;
 
-// open gyro 
-if( !gy.openGyro( device ) ) me.exit();
-<<< "gyro '" + gy.name() + "' ready", "" >>>;
+// open accel 
+if( !ac.openAccel( device ) ) me.exit();
+<<< "accel '" + ac.name() + "' ready", "" >>>;
 
 <<< "only on mobile" >>>;
 
 // infinite event loop
 while( true )
 {
-    // wait on gyro event
-    gy => now;
+    // wait on accel event
+    ac => now;
 
     // get one or more messages
-    while( gy.recv( msg ) )
+    while( ac.recv( msg ) )
     {
-        // print gyro values
-        <<< msg.getGyroX() + " " + msg.getGyroY() + " " + msg.getGyroZ() >>>;
+        // print accel values
+        <<< msg.getAccelX() + " " + msg.getAccelY() + " " + msg.getAccelZ() >>>;
     }
 }
 

@@ -1,17 +1,16 @@
 import Chuck from "./Chuck";
 /**
- * Introducing HID (Human Interface Device) support for WebChucK. HID wraps
- * JavaScript mouse/keyboard event listeners enabling mouse and keyboard
- * communication with the native {@link https://chuck.stanford.edu/doc/reference/io.html#Hid | HID}
- * class in ChucK.
+ * Introducing Gyro (gyroerometer, on mobile) support for WebChucK. Gyro wraps
+ * JavaScript DeviceMotionEvent listeners easing access to mobile device gyroerometers
+ * in WebChucK code.
  *
- * To get started with HID:
+ * To get started with Gyro:
  * @example
  * ```ts
- * import { Chuck, HID } from "webchuck";
+ * import { Chuck, Gyro } from "webchuck";
  *
  * const theChuck = await Chuck.init([]);
- * const hid = await HID.init(theChuck); // Initialize HID with mouse and keyboard
+ * const gyro = await Gyro.init(theChuck); // Initialize Gyro
  * ```
  */
 export default class Gyro {
@@ -21,22 +20,13 @@ export default class Gyro {
     /** @internal */
     constructor(theChuck: Chuck);
     /**
-     * Initialize HID functionality in your WebChucK instance.
-     * This adds a `Hid` and `HidMsg` class to the ChucK Virtual Machine (VM).
-     * Mouse and keyboard event listeners are added if `enableMouse` and `enableKeyboard` are true (default).
+     * Initialize Gyro functionality in your WebChucK instance.
+     * This adds a `Gyro` and `GyroMsg` class to the ChucK Virtual Machine (VM).
+     * Gyroerometer event (DeviceMotionEvent) listeners are added if `enableGyro` is true (default).
      * @example
      * ```ts
      * theChuck = await Chuck.init([]);
-     * hid = await HID.init(theChuck); // Initialize HID with mouse and keyboard
-     * ```
-     * @example
-     * ```ts
-     * theChuck = await Chuck.init([]);
-     * hid = await HID.init(theChuck, false, true); // Initialize HID, no mouse, only keyboard
-     * ```
-     * @param theChuck WebChucK instance
-     * @param enableMouse boolean to enable mouse HID
-     * @param enableKeyboard boolean to enable keyboard HID
+     * gyro = await Gyro.init(theChuck); // Initialize Gyro
      */
     static init(theChuck: Chuck, enableGyro?: boolean): Promise<Gyro>;
     /**
@@ -45,24 +35,22 @@ export default class Gyro {
      */
     gyroActive(): Promise<void>;
     /**
-     * Enable Mouse HID Javascript event listeners for HID.
-     * Adds a mousemove, mousedown, mouseup, and wheel listener to the document.
-     * This will also disable the context menu on right click.
+     * Enable Javascript event (DeviceMotionEvent) listeners for Gyro
      * @example
      * ```ts
-     * // If mouse HID is not yet enabled
-     * hid.enableMouse();
+     * // If gyro is not yet enabled
+     * gyro.enableGyro();
      * ```
      */
     enableGyro(): void;
     /**
-     * Disable Mouse HID Javascript event listeners
-     * @example
-     * ```ts
-     * // If mouse HID is enabled
-     * hid.disableMouse();
-     * ```
-     */
+    * Disable Javascript event (DeviceMotionEvent) listeners for Gyro
+    * @example
+    * ```ts
+    * // If gyro is enabled
+    * gyro.disableGyro();
+    * ```
+    */
     disableGyro(): void;
     /** @internal */
     private handleOrientation;

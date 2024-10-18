@@ -49,7 +49,7 @@ public class Gyro extends Event {
         if (num < 0) {
             false => active;
         } else {
-            "js gyro" => deviceName;
+            "js DeviceOrientationEvent" => deviceName;
             true => active;
         }
         active => isGyroOpen => _gyroActive;
