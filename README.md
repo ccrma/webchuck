@@ -20,7 +20,8 @@ Try out WebChucK in action through [WebChucK IDE](https://chuck.stanford.edu/ide
 
 ### NPM 
 
-Install WebChucK via npm and use it with TypeScript:
+Install WebChucK via [npm](https://www.npmjs.com/package/webchuck). WebChucK also
+supports TypeScript:
 
 ```
 npm install webchuck
@@ -51,7 +52,7 @@ if (theChuck.context.state === "suspended") {
 
 ### CDN 
 
-You can also embed WebChucK as a JS module into your `index.html`. 
+You can also embed WebChucK as a JavaScript module into your `index.html`. 
 
 ```html
 <html>
@@ -59,9 +60,13 @@ You can also embed WebChucK as a JS module into your `index.html`.
     <script type="module" defer>
       import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
 
+      let theChuck; // global variable
+
       document.getElementById('action').addEventListener('click', async () => {
-        // Initialize default ChucK object, if not already initialized
-        window.theChuck ??= await Chuck.init([]);
+        // Initialize default ChucK object
+        if (theChuck === undefined) {
+          theChuck = await Chuck.init([]);
+        }
         // Run ChucK code
         theChuck.runCode(`
           SinOsc sin => dac;
@@ -77,7 +82,10 @@ You can also embed WebChucK as a JS module into your `index.html`.
 </html>
 ```
 
-You now have a WebChucK instance in the global variable `theChuck`. Read the [API reference](https://chuck.stanford.edu/webchuck/docs) to see how to communicate between JS and ChucK e.g. removing shreds, syncing variables, monitoring the VM etc.
+`theChuck` contains the ChucK Virtual Machine for running code, removing shreds,
+syncing global variables, and more! Read the 
+[documentation](https://chuck.stanford.edu/webchuck/docs/classes/Chuck.html)
+for the full API reference.
 
 ## Documentation
 

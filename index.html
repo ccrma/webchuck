@@ -182,16 +182,20 @@
 
     <h2 id="usage">Getting Started</h2>
     <h4>CDN</h4>
-    <p>Embed WebChucK as a JS module into your <code>index.html</code>.</p>
+    <p>Embed WebChucK as a JavaScript module into your <code>index.html</code>.</p>
     <div>
       <pre><code class="language-html">&lt;html&gt;
   &lt;head&gt;
     &lt;script type="module" defer&gt;
       import { Chuck } from 'https://cdn.jsdelivr.net/npm/webchuck/+esm';
 
+      let theChuck; // global variable
+
       document.getElementById('action').addEventListener('click', async () => {
-        // Initialize default ChucK object, if not already initialized
-        window.theChuck ??= await Chuck.init([]);
+        // Initialize default ChucK object
+        if (theChuck === undefined) {
+          theChuck = await Chuck.init([]);
+        }
         // Run ChucK code
         theChuck.runCode(`
           SinOsc sin => dac;
@@ -206,10 +210,15 @@
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
     </div>
-    <p><code>theChuck</code> will be available as a global variable.</p>
+    <p><code>theChuck</code> contains the ChucK Virtual Machine for running code, removing shreds, 
+      syncing global variables, and more! Read the
+      <a href="https://chuck.stanford.edu/webchuck/docs/classes/Chuck.html" target="_blank">documentation</a>
+      for the full API reference.
+    </p>
+
 
     <h4>NPM</h4>
-    <p>Install WebChucK via npm. WebChucK can also be used with TypeScript.</p>
+    <p>Install WebChucK via <a href="https://www.npmjs.com/package/webchuck" target="_blank">npm</a>. WebChucK also supports TypeScript.</p>
     <pre><code class="language-bash">$ npm install webchuck</code></pre>
     <div>
       <pre><code>import { Chuck } from 'webchuck'
@@ -225,7 +234,7 @@ theChuck.runCode(`
 `);</code></pre>
     </div>
     <p>Note that many browsers do not let audio run until there has been user
-      interaction (e.g. button press).</p>
+      interaction (e.g. button press). You can check for a suspended audio context and resume like this: </p>
       <div>
         <pre><code>if (theChuck.context.state === "suspended") {
   theChuck.context.resume();
