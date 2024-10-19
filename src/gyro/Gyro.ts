@@ -19,6 +19,27 @@ import { Gyro_ck, GyroMsg_ck } from "./gyroCk";
  * The "deviceorientation" event gives motion of the device around the three axes (x, y, and z) represented as degrees from 0 to 360.
  * More on the "deviceorientation" event can be found online {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientation_event | here }.
  * 
+ * iOS devices require that the web developer ask permission from the user to access sensors after a button push. This looks like: 
+ * 
+ * ```ts
+ * import { Chuck, Gyro} from '../webchuck/src/wc-bundle.js';
+ * 
+ * let theChuck = await Chuck.init([]); // context suspended
+ * let gyro = await Gyro.init(theChuck);
+ * 
+ * let runButton = document.getElementById("run");
+ * runButton.disabled = false;
+ * 
+ * runButton.addEventListener("click", async () => {
+ *   if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+ *     await DeviceOrientationEvent.requestPermission();
+ *   } 
+ * 
+ *   await theChuck.loadFile("./yourChuckCode.ck");
+ *   theChuck.runFile("yourChuckCode.ck");
+ * 
+ * });
+ * ```
  */
 export default class Gyro {
   // Private members

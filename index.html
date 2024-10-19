@@ -226,6 +226,12 @@ theChuck.runCode(`
     </div>
     <p>Note that many browsers do not let audio run until there has been user
       interaction (e.g. button press).</p>
+      <div>
+        <pre><code>if (theChuck.context.state === "suspended") {
+  theChuck.context.resume();
+}</code></pre>
+      </div>
+
     <div>
 
     <h4>Download Source</h4>

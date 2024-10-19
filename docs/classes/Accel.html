@@ -26,13 +26,16 @@ in WebChucK code. </p>
 </code><button>Copy</button></pre>
 <p>The &quot;devicemotion&quot; event gives acceleration of the device on the three axes: x, y, and z. Acceleration is expressed in m/s².
 More on the &quot;devicemotion&quot; event can be found online <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicemotion_event">here</a>.</p>
+<p>iOS devices require that the web developer ask permission from the user to access sensors after a button push. For example: </p>
+<pre><code class="language-ts"><span class="hl-2">import</span><span class="hl-1"> { </span><span class="hl-0">Chuck</span><span class="hl-1">, </span><span class="hl-0">Accel</span><span class="hl-1">} </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&#39;../webchuck/src/wc-bundle.js&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-0">theChuck</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Chuck</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">([]); </span><span class="hl-4">// context suspended</span><br/><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-0">accel</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">Accel</span><span class="hl-1">.</span><span class="hl-7">init</span><span class="hl-1">(</span><span class="hl-0">theChuck</span><span class="hl-1">);</span><br/><br/><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-0">runButton</span><span class="hl-1"> = </span><span class="hl-0">document</span><span class="hl-1">.</span><span class="hl-7">getElementById</span><span class="hl-1">(</span><span class="hl-3">&quot;run&quot;</span><span class="hl-1">);</span><br/><span class="hl-0">runButton</span><span class="hl-1">.</span><span class="hl-0">disabled</span><span class="hl-1"> = </span><span class="hl-5">false</span><span class="hl-1">;</span><br/><br/><span class="hl-0">runButton</span><span class="hl-1">.</span><span class="hl-7">addEventListener</span><span class="hl-1">(</span><span class="hl-3">&quot;click&quot;</span><span class="hl-1">, </span><span class="hl-5">async</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-2">if</span><span class="hl-1"> (</span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-0">DeviceMotionEvent</span><span class="hl-1">.</span><span class="hl-0">requestPermission</span><span class="hl-1"> === </span><span class="hl-3">&#39;function&#39;</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">DeviceMotionEvent</span><span class="hl-1">.</span><span class="hl-7">requestPermission</span><span class="hl-1">();</span><br/><span class="hl-1">  } </span><br/><br/><span class="hl-1">  </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">theChuck</span><span class="hl-1">.</span><span class="hl-7">loadFile</span><span class="hl-1">(</span><span class="hl-3">&quot;./yourChuckCode.ck&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">  </span><span class="hl-0">theChuck</span><span class="hl-1">.</span><span class="hl-7">runFile</span><span class="hl-1">(</span><span class="hl-3">&quot;yourChuckCode.ck&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
 </div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">Accel</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/556bc52/src/accel/Accel.ts#L23">src/accel/Accel.ts:23</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/889cca4/src/accel/Accel.ts#L44">src/accel/Accel.ts:44</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -56,12 +59,12 @@ More on the &quot;devicemotion&quot; event can be found online <a href="https://
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>the<wbr/>Chuck</span><a href="#theChuck" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">the<wbr/>Chuck</span><span class="tsd-signature-symbol">:</span> <a href="Chuck.html" class="tsd-signature-type tsd-kind-class">Chuck</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/556bc52/src/accel/Accel.ts#L25">src/accel/Accel.ts:25</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/889cca4/src/accel/Accel.ts#L46">src/accel/Accel.ts:46</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="_accelActive" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>_accel<wbr/>Active</span><a href="#_accelActive" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">_accel<wbr/>Active</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/556bc52/src/accel/Accel.ts#L26">src/accel/Accel.ts:26</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/889cca4/src/accel/Accel.ts#L47">src/accel/Accel.ts:47</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="boundHandleMotion" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>bound<wbr/>Handle<wbr/>Motion</span><a href="#boundHandleMotion" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">bound<wbr/>Handle<wbr/>Motion</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
@@ -71,7 +74,7 @@ More on the &quot;devicemotion&quot; event can be found online <a href="https://
 <li class="tsd-parameter-signature">
 <ul class="tsd-signatures"></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/556bc52/src/accel/Accel.ts#L28">src/accel/Accel.ts:28</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/889cca4/src/accel/Accel.ts#L49">src/accel/Accel.ts:49</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="init" class="tsd-anchor"></a>
@@ -96,7 +99,7 @@ Accelerometer event (DeviceMotionEvent) listeners are added if <code>enableAccel
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/556bc52/src/accel/Accel.ts#L48">src/accel/Accel.ts:48</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/889cca4/src/accel/Accel.ts#L69">src/accel/Accel.ts:69</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="enableAccel" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>enable<wbr/>Accel</span><a href="#enableAccel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -110,7 +113,7 @@ Accelerometer event (DeviceMotionEvent) listeners are added if <code>enableAccel
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/556bc52/src/accel/Accel.ts#L81">src/accel/Accel.ts:81</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/889cca4/src/accel/Accel.ts#L102">src/accel/Accel.ts:102</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="disableAccel" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>disable<wbr/>Accel</span><a href="#disableAccel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -124,7 +127,7 @@ Accelerometer event (DeviceMotionEvent) listeners are added if <code>enableAccel
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/556bc52/src/accel/Accel.ts#L95">src/accel/Accel.ts:95</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/ccrma/webchuck/blob/889cca4/src/accel/Accel.ts#L116">src/accel/Accel.ts:116</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

@@ -19,6 +19,27 @@ import { Accel_ck, AccelMsg_ck } from "./accelCk";
  * The "devicemotion" event gives acceleration of the device on the three axes: x, y, and z. Acceleration is expressed in m/s².
  * More on the "devicemotion" event can be found online {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/devicemotion_event | here }.
  * 
+ * iOS devices require that the web developer ask permission from the user to access sensors after a button push. For example: 
+ * 
+ * ```ts
+ * import { Chuck, Accel} from '../webchuck/src/wc-bundle.js';
+ * 
+ * let theChuck = await Chuck.init([]); // context suspended
+ * let accel = await Accel.init(theChuck);
+ * 
+ * let runButton = document.getElementById("run");
+ * runButton.disabled = false;
+ * 
+ * runButton.addEventListener("click", async () => {
+ *   if (typeof DeviceMotionEvent.requestPermission === 'function') {
+ *     await DeviceMotionEvent.requestPermission();
+ *   } 
+ * 
+ *   await theChuck.loadFile("./yourChuckCode.ck");
+ *   theChuck.runFile("yourChuckCode.ck");
+ * 
+ * });
+ * ```
  */
 export default class Accel {
   // Private members

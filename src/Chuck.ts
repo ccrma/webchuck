@@ -25,8 +25,8 @@ type EventCallbacksMap = Record<number, () => void>;
 
 /**
  * WebChucK extends the Web Audio `AudioWorkletNode` and provides an interface
- * to interact with the ChucK Virtual Machine. 
- * 
+ * to interact with the ChucK Virtual Machine.
+ *
  * Get started with **{@link init | init()}** to create a ChucK instance.
  */
 export default class Chuck extends window.AudioWorkletNode {
@@ -43,7 +43,7 @@ export default class Chuck extends window.AudioWorkletNode {
   private chugins: string[] = [];
 
   /**
-   * Private internal constructor for a ChucK AudioWorklet Web Audio Node. 
+   * Private internal constructor for a ChucK AudioWorklet Web Audio Node.
    * Use public **{@link init| Init}** to create a ChucK instance.
    * @param preloadedFiles Array of Files to preload into ChucK's filesystem
    * @param audioContext AudioContext to connect to
@@ -77,10 +77,10 @@ export default class Chuck extends window.AudioWorkletNode {
   }
 
   /**
-   * Initialize a ChucK AudioWorkletNode. By default, a new AudioContext is 
+   * Initialize a ChucK AudioWorkletNode. By default, a new AudioContext is
    * created and ChucK is connected to the AudioContext destination.
-   * **Note:** init() is overloaded to allow for a custom AudioContext, 
-   * custom number of output channels, and custom location of `whereIsChuck`. 
+   * **Note:** init() is overloaded to allow for a custom AudioContext,
+   * custom number of output channels, and custom location of `whereIsChuck`.
    * Skip an argument by passing in `undefined`.
    *
    * @example
