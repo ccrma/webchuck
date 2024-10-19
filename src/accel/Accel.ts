@@ -15,6 +15,10 @@ import { Accel_ck, AccelMsg_ck } from "./accelCk";
  * const theChuck = await Chuck.init([]);
  * const accel = await Accel.init(theChuck); // Initialize Accel
  * ```
+ * 
+ * The "devicemotion" event gives acceleration of the device on the three axes: x, y, and z. Acceleration is expressed in m/s².
+ * More on the "devicemotion" event can be found online {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/devicemotion_event | here }.
+ * 
  */
 export default class Accel {
   // Private members
@@ -51,22 +55,6 @@ export default class Accel {
     await accel.theChuck.runCode(Accel_ck);
 
     // Enable mouse and keyboard
-    /*
-    if (enableAccel) {
-      // If iOS, request permission
-      if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-        const permission = await (DeviceOrientationEvent as any).requestPermission();
-        if (permission === 'granted') {
-          accel.enableAccel();
-        } else {
-          console.log("Accelscope permission denied.");
-        }
-      } else {
-        // just try to enable
-        accel.enableAccel();
-      }
-    }
-    */
     accel.enableAccel();
     return accel;
   }

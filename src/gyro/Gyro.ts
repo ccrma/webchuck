@@ -15,6 +15,10 @@ import { Gyro_ck, GyroMsg_ck } from "./gyroCk";
  * const theChuck = await Chuck.init([]);
  * const gyro = await Gyro.init(theChuck); // Initialize Gyro
  * ```
+ * 
+ * The "deviceorientation" event gives motion of the device around the three axes (x, y, and z) represented as degrees from 0 to 360.
+ * More on the "deviceorientation" event can be found online {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientation_event | here }.
+ * 
  */
 export default class Gyro {
   // Private members
@@ -51,22 +55,6 @@ export default class Gyro {
     await gyro.theChuck.runCode(Gyro_ck);
 
     // Enable mouse and keyboard
-    /*
-    if (enableGyro) {
-      // If iOS, request permission
-      if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-        const permission = await (DeviceOrientationEvent as any).requestPermission();
-        if (permission === 'granted') {
-          gyro.enableGyro();
-        } else {
-          console.log("Gyroscope permission denied.");
-        }
-      } else {
-        // just try to enable
-        gyro.enableGyro();
-      }
-    }
-    */
     gyro.enableGyro();
     return gyro;
   }
