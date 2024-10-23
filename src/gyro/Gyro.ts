@@ -3,8 +3,8 @@ import { Gyro_ck, GyroMsg_ck } from "./gyroCk";
 
 
 /**
- * Introducing Gyro (gyroerometer, on mobile) support for WebChucK. Gyro wraps
- * JavaScript DeviceMotionEvent listeners easing access to mobile device gyroerometers
+ * Introducing Gyro (gyroscope, on mobile) support for WebChucK. Gyro wraps
+ * JavaScript DeviceOrientationEvent listeners easing access to mobile device gyroscope
  * in WebChucK code. 
  *
  * To get started with Gyro:
@@ -22,7 +22,7 @@ import { Gyro_ck, GyroMsg_ck } from "./gyroCk";
  * iOS devices require that the web developer ask permission from the user to access sensors after a button push. This looks like: 
  * 
  * ```ts
- * import { Chuck, Gyro} from '../webchuck/src/wc-bundle.js';
+ * import { Chuck, Gyro } from "webchuck";
  * 
  * let theChuck = await Chuck.init([]); // context suspended
  * let gyro = await Gyro.init(theChuck);
@@ -60,7 +60,7 @@ export default class Gyro {
   /**
    * Initialize Gyro functionality in your WebChucK instance.
    * This adds a `Gyro` and `GyroMsg` class to the ChucK Virtual Machine (VM).
-   * Gyroerometer event (DeviceMotionEvent) listeners are added if `enableGyro` is true (default).
+   * Gyrscope event (DeviceOrientationEvent) listeners are added if `enableGyro` is true (default).
    * @example
    * ```ts
    * theChuck = await Chuck.init([]);
@@ -76,7 +76,7 @@ export default class Gyro {
     await gyro.theChuck.runCode(Gyro_ck);
 
     // Enable mouse and keyboard
-    gyro.enableGyro();
+    if (enableGyro) gyro.enableGyro();
     return gyro;
   }
 
@@ -92,7 +92,7 @@ export default class Gyro {
   }
 
   /**
-   * Enable Javascript event (DeviceMotionEvent) listeners for Gyro
+   * Enable Javascript event (DeviceOrientationEvent) listeners for Gyro
    * @example
    * ```ts
    * // If gyro is not yet enabled
@@ -100,13 +100,11 @@ export default class Gyro {
    * ```
    */
   enableGyro() {
-    // consider using "deviceorientationabsolute" 
-    // https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event 
     window.addEventListener("deviceorientation", this.boundHandleOrientation);
   }
 
    /**
-   * Disable Javascript event (DeviceMotionEvent) listeners for Gyro
+   * Disable Javascript event (DeviceOrientationEvent) listeners for Gyro
    * @example
    * ```ts
    * // If gyro is enabled

@@ -22,7 +22,7 @@ import { Accel_ck, AccelMsg_ck } from "./accelCk";
  * iOS devices require that the web developer ask permission from the user to access sensors after a button push. For example: 
  * 
  * ```ts
- * import { Chuck, Accel} from '../webchuck/src/wc-bundle.js';
+ * import { Chuck, Accel } from "webchuck";
  * 
  * let theChuck = await Chuck.init([]); // context suspended
  * let accel = await Accel.init(theChuck);
@@ -76,7 +76,7 @@ export default class Accel {
     await accel.theChuck.runCode(Accel_ck);
 
     // Enable mouse and keyboard
-    accel.enableAccel();
+    if (enableAccel) accel.enableAccel();
     return accel;
   }
 
