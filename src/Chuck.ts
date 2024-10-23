@@ -195,7 +195,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * ```ts
    * theChuck.loadFile("./myFile.ck");
    * ```
-   * @param url path or url to a file to fetch and load file
+   * @param url Path or url to a file to fetch and load file
    * @returns Promise of fetch request
    */
   public async loadFile(url: string): Promise<void> {
@@ -223,9 +223,10 @@ export default class Chuck extends window.AudioWorkletNode {
   // ================== WebChugins ================== //
   /**
    * Load a single WebChugin (.chug.wasm) via url into WebChucK.
-   * A list of publicly available WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
+   * A list of publicly available WebChugins to load can be found in the {@link https://ccrma.stanford.edu/~tzfeng/static/webchugins/ | webchugins} folder.
+   * Call this per chugin that you want to load.
    * **Note:** WebChugins must be loaded before `theChuck` is initialized.
-   * @param url url to webchugin to load
+   * @param url URL to webchugin to load
    * @example
    * ```ts
    * Chuck.loadChugin("https://url/to/myChugin.chug.wasm");
@@ -373,7 +374,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * e.g. Thie is the chuck command line equivalent of `chuck myFile:1:2:foo`
    * @example theChuck.runFileWithArgs("myFile.ck", "1:2:foo");
    * @param filename ChucK file to be run
-   * @param colonSeparatedArgs arguments to pass to the file separated by colons
+   * @param colonSeparatedArgs Arguments to pass to the file separated by colons
    * @returns Promise to running shred ID
    */
   public runFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<number> {
@@ -413,7 +414,7 @@ export default class Chuck extends window.AudioWorkletNode {
   /**
    * Replace the last currently running shred with a Chuck file to execute.
    * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
-   * @param filename file to be replace last
+   * @param filename File to replace last shred
    * @returns Promise to replaced shred ID
    */
   public replaceFile(filename: string): Promise<{ oldShred: number; newShred: number }> {
@@ -455,8 +456,8 @@ export default class Chuck extends window.AudioWorkletNode {
   /**
    * Replace the last running shred with a file to execute, passing arguments.
    * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
-   * @param filename file to be replace last running shred
-   * @param colonSeparatedArgs arguments to pass in to file
+   * @param filename File to be replace last running shred
+   * @param colonSeparatedArgs Arguments to pass in to file
    * @returns Promise to shred ID
    */
   public replaceFileWithArgs(
@@ -505,7 +506,7 @@ export default class Chuck extends window.AudioWorkletNode {
   // ================== Shred =================== //
   /**
    * Remove a shred from ChucK VM by ID
-   * @param shred shred ID to be removed
+   * @param shred Shred ID to be removed
    * @returns Promise to shred ID if removed successfully, otherwise "removing code failed"
    */
   public removeShred(shred: number | string): Promise<number> {
@@ -553,7 +554,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * or broadcast()). Once signaled, the callback function is invoked. This can
    * happen at most once per call.
    * @param variable ChucK global event variable to be signaled
-   * @param callback javascript callback function
+   * @param callback JavaScript callback function
    */
   public listenForEventOnce(variable: string, callback: () => void) {
     const callbackID = this.eventCallbackCounter++;
@@ -570,8 +571,8 @@ export default class Chuck extends window.AudioWorkletNode {
    * invoked. This continues until {@link stopListeningForEvent} is called on the
    * specific event.
    * @param variable ChucK global event variable to be signaled
-   * @param callback javascript callback function
-   * @returns javascript callback ID
+   * @param callback JavaScript callback function
+   * @returns JavaScript callback ID
    */
   public startListeningForEvent(variable: string, callback: () => void): number {
     const callbackID = this.eventCallbackCounter++;
@@ -587,7 +588,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * Stop listening to a specific ChucK event, undoing the process started
    * by {@link startListeningForEvent}.
    * @param variable ChucK global event variable to be signaled
-   * @param callbackID callback ID returned by {@link startListeningForEvent}
+   * @param callbackID Callback ID returned by {@link startListeningForEvent}
    */
   public stopListeningForEvent(variable: string, callbackID: number) {
     this.sendMessage(OutMessage.STOP_LISTENING_FOR_EVENT, {
