@@ -1535,4 +1535,400 @@ function clamp(val, min, max) {
     return Math.min(Math.max(val, min), max);
 }
 
-export { Chuck, DeferredPromise, HID };
+const GyroMsg_ck = `
+public class GyroMsg {
+    float gyroX;
+    float gyroY;
+    float gyroZ;
+
+    function float getGyroX() {
+        return gyroX;
+    }
+
+    function float getGyroY() {
+        return gyroY;
+    }
+
+    function float getGyroZ() {
+        return gyroZ;
+    }
+
+    function void _copy(GyroMsg localMsg) {
+        localMsg.gyroX => gyroX;
+        localMsg.gyroY => gyroY;
+        localMsg.gyroZ => gyroZ;
+    }
+}
+`;
+const Gyro_ck = `
+global Event _gyroReading;
+global int _gyroActive;
+
+global float _gyroX;
+global float _gyroY;
+global float _gyroZ;
+
+public class Gyro extends Event {
+
+    0 => int isGyroOpen;
+    0 => int active;
+
+    string deviceName; 
+
+    // GyroMsg Queue
+    GyroMsg _gyroMsgQueue[0];
+
+    function string name() {
+        return deviceName;
+    }
+
+    function int openGyro(int num) {
+        if (num < 0) {
+            false => active;
+        } else {
+            "js DeviceOrientationEvent" => deviceName;
+            true => active;
+        }
+        active => isGyroOpen => _gyroActive;
+        spork ~ _gyroListener();
+        return active;
+    }
+
+
+    // Pop the first GyroMsg from the queue
+    // Write it to msg and return 1
+    function int recv(GyroMsg msg) {
+        // is empty
+        if (_gyroMsgQueue.size() <= 0) {
+            return 0;
+        }
+
+        // pop the first GyroMsg to msg, return true
+        _gyroMsgQueue[0] @=> GyroMsg localMsg;
+        msg._copy(localMsg);    
+        _gyroMsgQueue.popFront();
+        return 1;
+    }
+
+    // Gyro Listener
+    // Get variables from JS and write to the GyroMsg 
+    function void _gyroListener() {
+        GyroMsg @ msg;
+        while(true){
+            new GyroMsg @=> msg;
+            _gyroReading => now;
+
+            _gyroX => msg.gyroX;
+            _gyroY => msg.gyroY;
+            _gyroZ => msg.gyroZ;
+
+            _gyroMsgQueue << msg;
+            this.broadcast();
+        }
+    }
+}
+`;
+
+/**
+ * Introducing Gyro (gyroerometer, on mobile) support for WebChucK. Gyro wraps
+ * JavaScript DeviceMotionEvent listeners easing access to mobile device gyroerometers
+ * in WebChucK code.
+ *
+ * To get started with Gyro:
+ * @example
+ * ```ts
+ * import { Chuck, Gyro } from "webchuck";
+ *
+ * const theChuck = await Chuck.init([]);
+ * const gyro = await Gyro.init(theChuck); // Initialize Gyro
+ * ```
+ */
+class Gyro {
+    /** @internal */
+    constructor(theChuck) {
+        this._gyroActive = false;
+        // Initialize members
+        this.theChuck = theChuck;
+        this.boundHandleOrientation = this.handleOrientation.bind(this);
+    }
+    /**
+     * Initialize Gyro functionality in your WebChucK instance.
+     * This adds a `Gyro` and `GyroMsg` class to the ChucK Virtual Machine (VM).
+     * Gyroerometer event (DeviceMotionEvent) listeners are added if `enableGyro` is true (default).
+     * @example
+     * ```ts
+     * theChuck = await Chuck.init([]);
+     * gyro = await Gyro.init(theChuck); // Initialize Gyro
+     */
+    static async init(theChuck, enableGyro = true) {
+        const gyro = new Gyro(theChuck);
+        // Add Gyro and GyroMsg classes to ChucK VM
+        await gyro.theChuck.runCode(GyroMsg_ck);
+        await gyro.theChuck.runCode(Gyro_ck);
+        // Enable mouse and keyboard
+        /*
+        if (enableGyro) {
+          // If iOS, request permission
+          if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+            const permission = await (DeviceOrientationEvent as any).requestPermission();
+            if (permission === 'granted') {
+              gyro.enableGyro();
+            } else {
+              console.log("Gyroscope permission denied.");
+            }
+          } else {
+            // just try to enable
+            gyro.enableGyro();
+          }
+        }
+        */
+        gyro.enableGyro();
+        return gyro;
+    }
+    /**
+     * @internal
+     * Check if gyro is active
+     */
+    async gyroActive() {
+        const x = await this.theChuck.getInt("_gyroActive");
+        this._gyroActive = x == 1;
+    }
+    /**
+     * Enable Javascript event (DeviceMotionEvent) listeners for Gyro
+     * @example
+     * ```ts
+     * // If gyro is not yet enabled
+     * gyro.enableGyro();
+     * ```
+     */
+    enableGyro() {
+        // consider using "deviceorientationabsolute" 
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event 
+        window.addEventListener("deviceorientation", this.boundHandleOrientation);
+    }
+    /**
+    * Disable Javascript event (DeviceMotionEvent) listeners for Gyro
+    * @example
+    * ```ts
+    * // If gyro is enabled
+    * gyro.disableGyro();
+    * ```
+    */
+    disableGyro() {
+        window.removeEventListener("deviceorientation", this.boundHandleOrientation);
+    }
+    //-----------------------------------------
+    // JAVASCRIPT HID EVENT HANDLERS
+    //-----------------------------------------
+    /** @internal */
+    handleOrientation(event) {
+        this.gyroActive();
+        if (this._gyroActive) {
+            this.theChuck.setFloat("_gyroX", event.alpha ? event.alpha : 0.0);
+            this.theChuck.setFloat("_gyroY", event.beta ? event.beta : 0.0);
+            this.theChuck.setFloat("_gyroZ", event.gamma ? event.gamma : 0.0);
+            this.theChuck.broadcastEvent("_gyroReading");
+        }
+    }
+}
+
+const AccelMsg_ck = `
+public class AccelMsg {
+    float accelX;
+    float accelY;
+    float accelZ;
+
+    function float getAccelX() {
+        return accelX;
+    }
+
+    function float getAccelY() {
+        return accelY;
+    }
+
+    function float getAccelZ() {
+        return accelZ;
+    }
+
+    function void _copy(AccelMsg localMsg) {
+        localMsg.accelX => accelX;
+        localMsg.accelY => accelY;
+        localMsg.accelZ => accelZ;
+    }
+}
+`;
+const Accel_ck = `
+global Event _accelReading;
+global int _accelActive;
+
+global float _accelX;
+global float _accelY;
+global float _accelZ;
+
+public class Accel extends Event {
+
+    0 => int isAccelOpen;
+    0 => int active;
+
+    string deviceName; 
+
+    // AccelMsg Queue
+    AccelMsg _accelMsgQueue[0];
+
+    function string name() {
+        return deviceName;
+    }
+
+    function int openAccel(int num) {
+        if (num < 0) {
+            false => active;
+        } else {
+            "js DeviceMotionEvent" => deviceName;
+            true => active;
+        }
+        active => isAccelOpen => _accelActive;
+        spork ~ _accelListener();
+        return active;
+    }
+
+
+    // Pop the first AccelMsg from the queue
+    // Write it to msg and return 1
+    function int recv(AccelMsg msg) {
+        // is empty
+        if (_accelMsgQueue.size() <= 0) {
+            return 0;
+        }
+
+        // pop the first AccelMsg to msg, return true
+        _accelMsgQueue[0] @=> AccelMsg localMsg;
+        msg._copy(localMsg);    
+        _accelMsgQueue.popFront();
+        return 1;
+    }
+
+    // Accel Listener
+    // Get variables from JS and write to the AccelMsg 
+    function void _accelListener() {
+        AccelMsg @ msg;
+        while(true){
+            new AccelMsg @=> msg;
+            _accelReading => now;
+
+            _accelX => msg.accelX;
+            _accelY => msg.accelY;
+            _accelZ => msg.accelZ;
+
+            _accelMsgQueue << msg;
+            this.broadcast();
+        }
+    }
+}
+`;
+
+/**
+ * Introducing Accel (accelerometer, on mobile) support for WebChucK. Accel wraps
+ * JavaScript DeviceMotionEvent listeners easing access to mobile device accelerometers
+ * in WebChucK code.
+ *
+ * To get started with Accel:
+ * @example
+ * ```ts
+ * import { Chuck, Accel } from "webchuck";
+ *
+ * const theChuck = await Chuck.init([]);
+ * const accel = await Accel.init(theChuck); // Initialize Accel
+ * ```
+ */
+class Accel {
+    /** @internal */
+    constructor(theChuck) {
+        this._accelActive = false;
+        // Initialize members
+        this.theChuck = theChuck;
+        this.boundHandleMotion = this.handleMotion.bind(this);
+    }
+    /**
+     * Initialize Accel functionality in your WebChucK instance.
+     * This adds a `Accel` and `AccelMsg` class to the ChucK Virtual Machine (VM).
+     * Accelerometer event (DeviceMotionEvent) listeners are added if `enableAccel` is true (default).
+     * @example
+     * ```ts
+     * theChuck = await Chuck.init([]);
+     * accel = await Accel.init(theChuck); // Initialize Accel
+     */
+    static async init(theChuck, enableAccel = true) {
+        const accel = new Accel(theChuck);
+        // Add Accel and AccelMsg classes to ChucK VM
+        await accel.theChuck.runCode(AccelMsg_ck);
+        await accel.theChuck.runCode(Accel_ck);
+        // Enable mouse and keyboard
+        /*
+        if (enableAccel) {
+          // If iOS, request permission
+          if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+            const permission = await (DeviceOrientationEvent as any).requestPermission();
+            if (permission === 'granted') {
+              accel.enableAccel();
+            } else {
+              console.log("Accelscope permission denied.");
+            }
+          } else {
+            // just try to enable
+            accel.enableAccel();
+          }
+        }
+        */
+        accel.enableAccel();
+        return accel;
+    }
+    /**
+     * @internal
+     * Check if accel is active
+     */
+    async accelActive() {
+        const x = await this.theChuck.getInt("_accelActive");
+        this._accelActive = x == 1;
+    }
+    /**
+     * Enable Javascript event (DeviceMotionEvent) listeners for Accel
+     * @example
+     * ```ts
+     * // If accel is not yet enabled
+     * accel.enableAccel();
+     * ```
+     */
+    enableAccel() {
+        // consider using "deviceorientationabsolute" 
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event 
+        window.addEventListener("devicemotion", this.boundHandleMotion);
+    }
+    /**
+    * Disable Javascript event (DeviceMotionEvent) listeners for Accel
+    * @example
+    * ```ts
+    * // If accel is enabled
+    * accel.disableAccel();
+    * ```
+    */
+    disableAccel() {
+        window.removeEventListener("devicemotion", this.boundHandleMotion);
+    }
+    //-----------------------------------------
+    // JAVASCRIPT HID EVENT HANDLERS
+    //-----------------------------------------
+    /** @internal */
+    handleMotion(event) {
+        this.accelActive();
+        if (this._accelActive) {
+            if (event.acceleration != null) {
+                this.theChuck.setFloat("_accelX", event.acceleration.x ? event.acceleration.x : 0.0);
+                this.theChuck.setFloat("_accelY", event.acceleration.y ? event.acceleration.y : 0.0);
+                this.theChuck.setFloat("_accelZ", event.acceleration.z ? event.acceleration.z : 0.0);
+                this.theChuck.broadcastEvent("_accelReading");
+            }
+        }
+    }
+}
+
+export { Accel, Chuck, DeferredPromise, Gyro, HID };
