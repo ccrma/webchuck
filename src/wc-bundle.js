@@ -180,10 +180,35 @@ var InMessage;
  *  - Private: Private methods like sendMessage and receiveMessage handle messaging between the Chuck class and the AudioWorklet.
  */
 /**
- * WebChucK extends the Web Audio `AudioWorkletNode` and provides an interface
- * to interact with the ChucK Virtual Machine.
+ * WebChucK extends the Web Audio `AudioWorkletNode` class and provides an
+ * interface to interact with the ChucK Virtual Machine. Use
+ * **{@link init | init()}** to create a ChucK instance.
  *
- * Get started with **{@link init | init()}** to create a ChucK instance.
+ * `theChuck` is a global variable that is used in the examples below. `init()`
+ * will create a ChucK instance and an AudioContext if one is not provided.
+ *
+ * ```ts
+ * import { Chuck } from "webchuck";
+ *
+ * let theChuck; // global variable
+ *
+ * document.getElementById("start").addEventListener("click", async () => {
+ *   if (theChuck === undefined) {
+ *     theChuck = await Chuck.init([]);
+ *   }
+ *   theChuck.runCode("SinOsc osc => dac; 1::second => now;");
+ * });
+ * ```
+ *
+ * Note that many browsers do not let audio run until there has been user
+ * interaction (e.g. button press). You can check for a suspended audio context
+ * and resume like this:
+ *
+ * ```ts
+ * if (theChuck.context.state === "suspended") {
+ *   theChuck.context.resume();
+ * }
+ * ```
  */
 class Chuck extends window.AudioWorkletNode {
     /**
@@ -224,7 +249,7 @@ class Chuck extends window.AudioWorkletNode {
      * Initialize a ChucK AudioWorkletNode. By default, a new AudioContext is
      * created and ChucK is connected to the AudioContext destination.
      * **Note:** init() is overloaded to allow for a custom AudioContext,
-     * custom number of output channels, and custom location of `whereIsChuck`.
+     * custom number of output channels, and custom URL location of `whereIsChuck`.
      * Skip an argument by passing in `undefined`.
      *
      * @example
@@ -325,7 +350,7 @@ class Chuck extends window.AudioWorkletNode {
      * ```ts
      * theChuck.loadFile("./myFile.ck");
      * ```
-     * @param url path or url to a file to fetch and load file
+     * @param url Path or url to a file to fetch and load file
      * @returns Promise of fetch request
      */
     async loadFile(url) {
@@ -355,9 +380,10 @@ class Chuck extends window.AudioWorkletNode {
     // ================== WebChugins ================== //
     /**
      * Load a single WebChugin (.chug.wasm) via url into WebChucK.
-     * A list of publicly available WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
+     * A list of publicly available WebChugins to load can be found in the {@link https://ccrma.stanford.edu/~tzfeng/static/webchugins/ | webchugins} folder.
+     * Call this per chugin that you want to load.
      * **Note:** WebChugins must be loaded before `theChuck` is initialized.
-     * @param url url to webchugin to load
+     * @param url URL to webchugin to load
      * @example
      * ```ts
      * Chuck.loadChugin("https://url/to/myChugin.chug.wasm");
@@ -489,7 +515,7 @@ class Chuck extends window.AudioWorkletNode {
      * e.g. Thie is the chuck command line equivalent of `chuck myFile:1:2:foo`
      * @example theChuck.runFileWithArgs("myFile.ck", "1:2:foo");
      * @param filename ChucK file to be run
-     * @param colonSeparatedArgs arguments to pass to the file separated by colons
+     * @param colonSeparatedArgs Arguments to pass to the file separated by colons
      * @returns Promise to running shred ID
      */
     runFileWithArgs(filename, colonSeparatedArgs) {
@@ -523,7 +549,7 @@ class Chuck extends window.AudioWorkletNode {
     /**
      * Replace the last currently running shred with a Chuck file to execute.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
-     * @param filename file to be replace last
+     * @param filename File to replace last shred
      * @returns Promise to replaced shred ID
      */
     replaceFile(filename) {
@@ -554,8 +580,8 @@ class Chuck extends window.AudioWorkletNode {
     /**
      * Replace the last running shred with a file to execute, passing arguments.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
-     * @param filename file to be replace last running shred
-     * @param colonSeparatedArgs arguments to pass in to file
+     * @param filename File to be replace last running shred
+     * @param colonSeparatedArgs Arguments to pass in to file
      * @returns Promise to shred ID
      */
     replaceFileWithArgs(filename, colonSeparatedArgs) {
@@ -589,7 +615,7 @@ class Chuck extends window.AudioWorkletNode {
     // ================== Shred =================== //
     /**
      * Remove a shred from ChucK VM by ID
-     * @param shred shred ID to be removed
+     * @param shred Shred ID to be removed
      * @returns Promise to shred ID if removed successfully, otherwise "removing code failed"
      */
     removeShred(shred) {
@@ -633,7 +659,7 @@ class Chuck extends window.AudioWorkletNode {
      * or broadcast()). Once signaled, the callback function is invoked. This can
      * happen at most once per call.
      * @param variable ChucK global event variable to be signaled
-     * @param callback javascript callback function
+     * @param callback JavaScript callback function
      */
     listenForEventOnce(variable, callback) {
         const callbackID = this.eventCallbackCounter++;
@@ -649,8 +675,8 @@ class Chuck extends window.AudioWorkletNode {
      * invoked. This continues until {@link stopListeningForEvent} is called on the
      * specific event.
      * @param variable ChucK global event variable to be signaled
-     * @param callback javascript callback function
-     * @returns javascript callback ID
+     * @param callback JavaScript callback function
+     * @returns JavaScript callback ID
      */
     startListeningForEvent(variable, callback) {
         const callbackID = this.eventCallbackCounter++;
@@ -665,7 +691,7 @@ class Chuck extends window.AudioWorkletNode {
      * Stop listening to a specific ChucK event, undoing the process started
      * by {@link startListeningForEvent}.
      * @param variable ChucK global event variable to be signaled
-     * @param callbackID callback ID returned by {@link startListeningForEvent}
+     * @param callbackID Callback ID returned by {@link startListeningForEvent}
      */
     stopListeningForEvent(variable, callbackID) {
         this.sendMessage(OutMessage.STOP_LISTENING_FOR_EVENT, {
@@ -1630,17 +1656,39 @@ public class Gyro extends Event {
 `;
 
 /**
- * Introducing Gyro (gyroerometer, on mobile) support for WebChucK. Gyro wraps
- * JavaScript DeviceMotionEvent listeners easing access to mobile device gyroerometers
- * in WebChucK code.
+ * Introducing Gyro (gyroscope, on mobile) support for WebChucK. Gyro wraps
+ * JavaScript `DeviceOrientationEvent` listeners easing access to mobile device
+ * gyroscope in WebChucK code.
  *
  * To get started with Gyro:
- * @example
+ *
  * ```ts
  * import { Chuck, Gyro } from "webchuck";
  *
  * const theChuck = await Chuck.init([]);
  * const gyro = await Gyro.init(theChuck); // Initialize Gyro
+ * ```
+ *
+ * The `deviceorientation` event gives motion of the device around the three
+ * axes (x, y, and z) represented in degrees from 0 to 360. More on the
+ * `deviceorientation` event can be found online
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientation_event | here }.
+ *
+ * iOS devices require that the web developer ask permission from the user
+ * to access sensors after a button push. This looks like:
+ *
+ * ```ts
+ * let runButton = document.getElementById("run");
+ *
+ * runButton.addEventListener("click", async () => {
+ *   // Request iOS gyroscope permission
+ *   if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+ *     await DeviceOrientationEvent.requestPermission();
+ *   }
+ *
+ *   await theChuck.loadFile("./yourChuckCode.ck");
+ *   theChuck.runFile("yourChuckCode.ck");
+ * });
  * ```
  */
 class Gyro {
@@ -1654,7 +1702,9 @@ class Gyro {
     /**
      * Initialize Gyro functionality in your WebChucK instance.
      * This adds a `Gyro` and `GyroMsg` class to the ChucK Virtual Machine (VM).
-     * Gyroerometer event (DeviceMotionEvent) listeners are added if `enableGyro` is true (default).
+     * Gyrscope event (DeviceOrientationEvent) listeners are added if `enableGyro`
+     * is true (default).
+     *
      * @example
      * ```ts
      * theChuck = await Chuck.init([]);
@@ -1666,23 +1716,8 @@ class Gyro {
         await gyro.theChuck.runCode(GyroMsg_ck);
         await gyro.theChuck.runCode(Gyro_ck);
         // Enable mouse and keyboard
-        /*
-        if (enableGyro) {
-          // If iOS, request permission
-          if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-            const permission = await (DeviceOrientationEvent as any).requestPermission();
-            if (permission === 'granted') {
-              gyro.enableGyro();
-            } else {
-              console.log("Gyroscope permission denied.");
-            }
-          } else {
-            // just try to enable
+        if (enableGyro)
             gyro.enableGyro();
-          }
-        }
-        */
-        gyro.enableGyro();
         return gyro;
     }
     /**
@@ -1694,7 +1729,7 @@ class Gyro {
         this._gyroActive = x == 1;
     }
     /**
-     * Enable Javascript event (DeviceMotionEvent) listeners for Gyro
+     * Enable Javascript event (DeviceOrientationEvent) listeners for Gyro
      * @example
      * ```ts
      * // If gyro is not yet enabled
@@ -1702,18 +1737,16 @@ class Gyro {
      * ```
      */
     enableGyro() {
-        // consider using "deviceorientationabsolute" 
-        // https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event 
         window.addEventListener("deviceorientation", this.boundHandleOrientation);
     }
     /**
-    * Disable Javascript event (DeviceMotionEvent) listeners for Gyro
-    * @example
-    * ```ts
-    * // If gyro is enabled
-    * gyro.disableGyro();
-    * ```
-    */
+     * Disable Javascript event (DeviceOrientationEvent) listeners for Gyro
+     * @example
+     * ```ts
+     * // If gyro is enabled
+     * gyro.disableGyro();
+     * ```
+     */
     disableGyro() {
         window.removeEventListener("deviceorientation", this.boundHandleOrientation);
     }
@@ -1827,17 +1860,39 @@ public class Accel extends Event {
 `;
 
 /**
- * Introducing Accel (accelerometer, on mobile) support for WebChucK. Accel wraps
- * JavaScript DeviceMotionEvent listeners easing access to mobile device accelerometers
- * in WebChucK code.
+ * Introducing Accel (accelerometer, on mobile) support for WebChucK. Accel
+ * wraps JavaScript `DeviceMotionEvent` listeners easing access to mobile device
+ * accelerometers in WebChucK code.
  *
  * To get started with Accel:
- * @example
+ *
  * ```ts
  * import { Chuck, Accel } from "webchuck";
  *
  * const theChuck = await Chuck.init([]);
  * const accel = await Accel.init(theChuck); // Initialize Accel
+ * ```
+ *
+ * The `devicemotion` event gives the acceleration of the device on the
+ * three axes: x, y, and z. Acceleration is expressed in m/s².
+ * More on the `devicemotion` event can be found online
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/devicemotion_event | here }.
+ *
+ * iOS devices require that the web developer ask permission from the user to
+ * access sensors after a button push. This looks like:
+ *
+ * ```ts
+ * let runButton = document.getElementById("run");
+ *
+ * runButton.addEventListener("click", async () => {
+ *   // Request iOS accelerometer permission
+ *   if (typeof DeviceMotionEvent.requestPermission === 'function') {
+ *     await DeviceMotionEvent.requestPermission();
+ *   }
+ *
+ *   await theChuck.loadFile("./yourChuckCode.ck");
+ *   theChuck.runFile("yourChuckCode.ck");
+ * });
  * ```
  */
 class Accel {
@@ -1863,23 +1918,8 @@ class Accel {
         await accel.theChuck.runCode(AccelMsg_ck);
         await accel.theChuck.runCode(Accel_ck);
         // Enable mouse and keyboard
-        /*
-        if (enableAccel) {
-          // If iOS, request permission
-          if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-            const permission = await (DeviceOrientationEvent as any).requestPermission();
-            if (permission === 'granted') {
-              accel.enableAccel();
-            } else {
-              console.log("Accelscope permission denied.");
-            }
-          } else {
-            // just try to enable
+        if (enableAccel)
             accel.enableAccel();
-          }
-        }
-        */
-        accel.enableAccel();
         return accel;
     }
     /**
@@ -1899,18 +1939,18 @@ class Accel {
      * ```
      */
     enableAccel() {
-        // consider using "deviceorientationabsolute" 
-        // https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event 
+        // consider using "deviceorientationabsolute"
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event
         window.addEventListener("devicemotion", this.boundHandleMotion);
     }
     /**
-    * Disable Javascript event (DeviceMotionEvent) listeners for Accel
-    * @example
-    * ```ts
-    * // If accel is enabled
-    * accel.disableAccel();
-    * ```
-    */
+     * Disable Javascript event (DeviceMotionEvent) listeners for Accel
+     * @example
+     * ```ts
+     * // If accel is enabled
+     * accel.disableAccel();
+     * ```
+     */
     disableAccel() {
         window.removeEventListener("devicemotion", this.boundHandleMotion);
     }

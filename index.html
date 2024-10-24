@@ -75,7 +75,7 @@
     <p>WebChucK brings <a href="https://chuck.stanford.edu" target="_blank">ChucK</a>, the
       strongly-timed audio programming language, to the web! ChucK’s C++
       source code has been compiled with Emscripten to WebAssembly (WASM) to run via
-      the <code>AudioWorkletNode</code> interface of the Web Audio API. With
+      the <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioWorkletNode" target="_blank"><code>AudioWorkletNode</code></a> interface of the Web Audio API. With
       near-native performance, WebChucK runs on modern desktop browsers as
       well as tablets and mobile devices! Bring together ChucK’s real-time
       sound synthesis engine and the interconnectivity of the web to create
@@ -212,7 +212,7 @@
     </div>
     <p><code>theChuck</code> contains the ChucK Virtual Machine for running code, removing shreds, 
       syncing global variables, and more! Read the
-      <a href="https://chuck.stanford.edu/webchuck/docs/classes/Chuck.html" target="_blank">documentation</a>
+      <a href="./docs/classes/Chuck.html" target="_blank">documentation</a>
       for the full API reference.
     </p>
 
@@ -259,7 +259,7 @@ const theChuck = await Chuck.init([], undefined, undefined, './webchuck/');
 
     <h2 id="documentation">Documentation</h2>
     <p>Read the <a href="./docs">Getting Started</a> guide to set up your project.</p>
-    <p>Click below for full WebChucK API reference documentation (how to WebChucK & JS):</p>
+    <p>Click below for full WebChucK API reference documentation (how to WebChucK & JavaScript):</p>
     <a href="./docs/classes/Chuck.html">
       <button type="button" class="btn btn-warning btn-md px-4 me-sm-3">Read the documentation</button>
     </a>
@@ -270,7 +270,7 @@ const theChuck = await Chuck.init([], undefined, undefined, './webchuck/');
 
 
     <div class="px-4 pt-0 my-2 text-center border-top">
-      <p>View source on <a href="https://github.com/ccrma/webchuck">GitHub</a></p>
+      <p>View WebChucK source on <a href="https://github.com/ccrma/webchuck">GitHub</a></p>
     </div>
 
     <br>
@@ -280,6 +280,7 @@ const theChuck = await Chuck.init([], undefined, undefined, './webchuck/');
     <br>
     <br>
 
+    <!-- Bootstrap 5.3.0 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
       crossorigin="anonymous"></script>

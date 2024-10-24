@@ -1,16 +1,38 @@
 import Chuck from "../Chuck";
 /**
- * Introducing Accel (accelerometer, on mobile) support for WebChucK. Accel wraps
- * JavaScript DeviceMotionEvent listeners easing access to mobile device accelerometers
- * in WebChucK code.
+ * Introducing Accel (accelerometer, on mobile) support for WebChucK. Accel
+ * wraps JavaScript `DeviceMotionEvent` listeners easing access to mobile device
+ * accelerometers in WebChucK code.
  *
  * To get started with Accel:
- * @example
+ *
  * ```ts
  * import { Chuck, Accel } from "webchuck";
  *
  * const theChuck = await Chuck.init([]);
  * const accel = await Accel.init(theChuck); // Initialize Accel
+ * ```
+ *
+ * The `devicemotion` event gives the acceleration of the device on the
+ * three axes: x, y, and z. Acceleration is expressed in m/s².
+ * More on the `devicemotion` event can be found online
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/devicemotion_event | here }.
+ *
+ * iOS devices require that the web developer ask permission from the user to
+ * access sensors after a button push. This looks like:
+ *
+ * ```ts
+ * let runButton = document.getElementById("run");
+ *
+ * runButton.addEventListener("click", async () => {
+ *   // Request iOS accelerometer permission
+ *   if (typeof DeviceMotionEvent.requestPermission === 'function') {
+ *     await DeviceMotionEvent.requestPermission();
+ *   }
+ *
+ *   await theChuck.loadFile("./yourChuckCode.ck");
+ *   theChuck.runFile("yourChuckCode.ck");
+ * });
  * ```
  */
 export default class Accel {
@@ -44,13 +66,13 @@ export default class Accel {
      */
     enableAccel(): void;
     /**
-    * Disable Javascript event (DeviceMotionEvent) listeners for Accel
-    * @example
-    * ```ts
-    * // If accel is enabled
-    * accel.disableAccel();
-    * ```
-    */
+     * Disable Javascript event (DeviceMotionEvent) listeners for Accel
+     * @example
+     * ```ts
+     * // If accel is enabled
+     * accel.disableAccel();
+     * ```
+     */
     disableAccel(): void;
     /** @internal */
     private handleMotion;

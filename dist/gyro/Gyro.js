@@ -1,16 +1,38 @@
 import { Gyro_ck, GyroMsg_ck } from "./gyroCk";
 /**
- * Introducing Gyro (gyroerometer, on mobile) support for WebChucK. Gyro wraps
- * JavaScript DeviceMotionEvent listeners easing access to mobile device gyroerometers
- * in WebChucK code.
+ * Introducing Gyro (gyroscope, on mobile) support for WebChucK. Gyro wraps
+ * JavaScript `DeviceOrientationEvent` listeners easing access to mobile device
+ * gyroscope in WebChucK code.
  *
  * To get started with Gyro:
- * @example
+ *
  * ```ts
  * import { Chuck, Gyro } from "webchuck";
  *
  * const theChuck = await Chuck.init([]);
  * const gyro = await Gyro.init(theChuck); // Initialize Gyro
+ * ```
+ *
+ * The `deviceorientation` event gives motion of the device around the three
+ * axes (x, y, and z) represented in degrees from 0 to 360. More on the
+ * `deviceorientation` event can be found online
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientation_event | here }.
+ *
+ * iOS devices require that the web developer ask permission from the user
+ * to access sensors after a button push. This looks like:
+ *
+ * ```ts
+ * let runButton = document.getElementById("run");
+ *
+ * runButton.addEventListener("click", async () => {
+ *   // Request iOS gyroscope permission
+ *   if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+ *     await DeviceOrientationEvent.requestPermission();
+ *   }
+ *
+ *   await theChuck.loadFile("./yourChuckCode.ck");
+ *   theChuck.runFile("yourChuckCode.ck");
+ * });
  * ```
  */
 export default class Gyro {
@@ -24,7 +46,9 @@ export default class Gyro {
     /**
      * Initialize Gyro functionality in your WebChucK instance.
      * This adds a `Gyro` and `GyroMsg` class to the ChucK Virtual Machine (VM).
-     * Gyroerometer event (DeviceMotionEvent) listeners are added if `enableGyro` is true (default).
+     * Gyrscope event (DeviceOrientationEvent) listeners are added if `enableGyro`
+     * is true (default).
+     *
      * @example
      * ```ts
      * theChuck = await Chuck.init([]);
@@ -36,23 +60,8 @@ export default class Gyro {
         await gyro.theChuck.runCode(GyroMsg_ck);
         await gyro.theChuck.runCode(Gyro_ck);
         // Enable mouse and keyboard
-        /*
-        if (enableGyro) {
-          // If iOS, request permission
-          if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-            const permission = await (DeviceOrientationEvent as any).requestPermission();
-            if (permission === 'granted') {
-              gyro.enableGyro();
-            } else {
-              console.log("Gyroscope permission denied.");
-            }
-          } else {
-            // just try to enable
+        if (enableGyro)
             gyro.enableGyro();
-          }
-        }
-        */
-        gyro.enableGyro();
         return gyro;
     }
     /**
@@ -64,7 +73,7 @@ export default class Gyro {
         this._gyroActive = x == 1;
     }
     /**
-     * Enable Javascript event (DeviceMotionEvent) listeners for Gyro
+     * Enable Javascript event (DeviceOrientationEvent) listeners for Gyro
      * @example
      * ```ts
      * // If gyro is not yet enabled
@@ -72,18 +81,16 @@ export default class Gyro {
      * ```
      */
     enableGyro() {
-        // consider using "deviceorientationabsolute" 
-        // https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event 
         window.addEventListener("deviceorientation", this.boundHandleOrientation);
     }
     /**
-    * Disable Javascript event (DeviceMotionEvent) listeners for Gyro
-    * @example
-    * ```ts
-    * // If gyro is enabled
-    * gyro.disableGyro();
-    * ```
-    */
+     * Disable Javascript event (DeviceOrientationEvent) listeners for Gyro
+     * @example
+     * ```ts
+     * // If gyro is enabled
+     * gyro.disableGyro();
+     * ```
+     */
     disableGyro() {
         window.removeEventListener("deviceorientation", this.boundHandleOrientation);
     }

@@ -24,10 +24,35 @@ type DeferredPromisesMap = Record<number, DeferredPromise<unknown>>;
 type EventCallbacksMap = Record<number, () => void>;
 
 /**
- * WebChucK extends the Web Audio `AudioWorkletNode` and provides an interface
- * to interact with the ChucK Virtual Machine.
+ * WebChucK extends the Web Audio `AudioWorkletNode` class and provides an
+ * interface to interact with the ChucK Virtual Machine. Use
+ * **{@link init | init()}** to create a ChucK instance.
  *
- * Get started with **{@link init | init()}** to create a ChucK instance.
+ * `theChuck` is a global variable that is used in the examples below. `init()`
+ * will create a ChucK instance and an AudioContext if one is not provided.
+ *
+ * ```ts
+ * import { Chuck } from "webchuck";
+ *
+ * let theChuck; // global variable
+ *
+ * document.getElementById("start").addEventListener("click", async () => {
+ *   if (theChuck === undefined) {
+ *     theChuck = await Chuck.init([]);
+ *   }
+ *   theChuck.runCode("SinOsc osc => dac; 1::second => now;");
+ * });
+ * ```
+ *
+ * Note that many browsers do not let audio run until there has been user
+ * interaction (e.g. button press). You can check for a suspended audio context
+ * and resume like this:
+ *
+ * ```ts
+ * if (theChuck.context.state === "suspended") {
+ *   theChuck.context.resume();
+ * }
+ * ```
  */
 export default class Chuck extends window.AudioWorkletNode {
   private deferredPromises: DeferredPromisesMap = {};
@@ -80,7 +105,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * Initialize a ChucK AudioWorkletNode. By default, a new AudioContext is
    * created and ChucK is connected to the AudioContext destination.
    * **Note:** init() is overloaded to allow for a custom AudioContext,
-   * custom number of output channels, and custom location of `whereIsChuck`.
+   * custom number of output channels, and custom URL location of `whereIsChuck`.
    * Skip an argument by passing in `undefined`.
    *
    * @example

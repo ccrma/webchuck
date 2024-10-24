@@ -1,7 +1,7 @@
 //=======================================================================
 // WebChucK Test Suite
 //=======================================================================
-import { Chuck, HID, Gyro, Accel} from '../src/wc-bundle.js';
+import { Chuck, HID, Gyro, Accel } from '../src/wc-bundle.js';
 
 /** WebChucK Test Class */
 class Test {
@@ -348,7 +348,7 @@ const testSuite = [
         return outputBox.innerText.includes("PASSED");
     }),
 
-    new Test(16, "Gyro", async () => {
+    new Test(16, "Gyro - Gyroscope", async () => {
         const aChuck = await Chuck.init([], undefined, undefined, "../src/");
         const outputBox = document.getElementById("output-" + 16);
         aChuck.chuckPrint = (output) => {
@@ -362,7 +362,7 @@ const testSuite = [
         return true;
     }),
 
-    new Test(17, "Accel", async () => {
+    new Test(17, "Accel - Accelerometer", async () => {
         const aChuck = await Chuck.init([], undefined, undefined, "../src/");
         const outputBox = document.getElementById("output-" + 17);
         aChuck.chuckPrint = (output) => {

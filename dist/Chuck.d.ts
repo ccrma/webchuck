@@ -1,9 +1,34 @@
 import type { Filename } from "./utils";
 /**
- * WebChucK extends the Web Audio `AudioWorkletNode` and provides an interface
- * to interact with the ChucK Virtual Machine.
+ * WebChucK extends the Web Audio `AudioWorkletNode` class and provides an
+ * interface to interact with the ChucK Virtual Machine. Use
+ * **{@link init | init()}** to create a ChucK instance.
  *
- * Get started with **{@link init | init()}** to create a ChucK instance.
+ * `theChuck` is a global variable that is used in the examples below. `init()`
+ * will create a ChucK instance and an AudioContext if one is not provided.
+ *
+ * ```ts
+ * import { Chuck } from "webchuck";
+ *
+ * let theChuck; // global variable
+ *
+ * document.getElementById("start").addEventListener("click", async () => {
+ *   if (theChuck === undefined) {
+ *     theChuck = await Chuck.init([]);
+ *   }
+ *   theChuck.runCode("SinOsc osc => dac; 1::second => now;");
+ * });
+ * ```
+ *
+ * Note that many browsers do not let audio run until there has been user
+ * interaction (e.g. button press). You can check for a suspended audio context
+ * and resume like this:
+ *
+ * ```ts
+ * if (theChuck.context.state === "suspended") {
+ *   theChuck.context.resume();
+ * }
+ * ```
  */
 export default class Chuck extends window.AudioWorkletNode {
     private deferredPromises;
@@ -30,7 +55,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * Initialize a ChucK AudioWorkletNode. By default, a new AudioContext is
      * created and ChucK is connected to the AudioContext destination.
      * **Note:** init() is overloaded to allow for a custom AudioContext,
-     * custom number of output channels, and custom location of `whereIsChuck`.
+     * custom number of output channels, and custom URL location of `whereIsChuck`.
      * Skip an argument by passing in `undefined`.
      *
      * @example
@@ -92,15 +117,16 @@ export default class Chuck extends window.AudioWorkletNode {
      * ```ts
      * theChuck.loadFile("./myFile.ck");
      * ```
-     * @param url path or url to a file to fetch and load file
+     * @param url Path or url to a file to fetch and load file
      * @returns Promise of fetch request
      */
     loadFile(url: string): Promise<void>;
     /**
      * Load a single WebChugin (.chug.wasm) via url into WebChucK.
-     * A list of publicly available WebChugins to load can be found in the {@link https://chuck.stanford.edu/chugins/ | webchugins} folder.
+     * A list of publicly available WebChugins to load can be found in the {@link https://ccrma.stanford.edu/~tzfeng/static/webchugins/ | webchugins} folder.
+     * Call this per chugin that you want to load.
      * **Note:** WebChugins must be loaded before `theChuck` is initialized.
-     * @param url url to webchugin to load
+     * @param url URL to webchugin to load
      * @example
      * ```ts
      * Chuck.loadChugin("https://url/to/myChugin.chug.wasm");
@@ -183,7 +209,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * e.g. Thie is the chuck command line equivalent of `chuck myFile:1:2:foo`
      * @example theChuck.runFileWithArgs("myFile.ck", "1:2:foo");
      * @param filename ChucK file to be run
-     * @param colonSeparatedArgs arguments to pass to the file separated by colons
+     * @param colonSeparatedArgs Arguments to pass to the file separated by colons
      * @returns Promise to running shred ID
      */
     runFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<number>;
@@ -200,7 +226,7 @@ export default class Chuck extends window.AudioWorkletNode {
     /**
      * Replace the last currently running shred with a Chuck file to execute.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
-     * @param filename file to be replace last
+     * @param filename File to replace last shred
      * @returns Promise to replaced shred ID
      */
     replaceFile(filename: string): Promise<{
@@ -222,8 +248,8 @@ export default class Chuck extends window.AudioWorkletNode {
     /**
      * Replace the last running shred with a file to execute, passing arguments.
      * Note that the file must already have been loaded via {@link init | filenamesToPreload}, {@link createFile}, or {@link loadFile}
-     * @param filename file to be replace last running shred
-     * @param colonSeparatedArgs arguments to pass in to file
+     * @param filename File to be replace last running shred
+     * @param colonSeparatedArgs Arguments to pass in to file
      * @returns Promise to shred ID
      */
     replaceFileWithArgs(filename: string, colonSeparatedArgs: string): Promise<{
@@ -245,7 +271,7 @@ export default class Chuck extends window.AudioWorkletNode {
     }>;
     /**
      * Remove a shred from ChucK VM by ID
-     * @param shred shred ID to be removed
+     * @param shred Shred ID to be removed
      * @returns Promise to shred ID if removed successfully, otherwise "removing code failed"
      */
     removeShred(shred: number | string): Promise<number>;
@@ -270,7 +296,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * or broadcast()). Once signaled, the callback function is invoked. This can
      * happen at most once per call.
      * @param variable ChucK global event variable to be signaled
-     * @param callback javascript callback function
+     * @param callback JavaScript callback function
      */
     listenForEventOnce(variable: string, callback: () => void): void;
     /**
@@ -279,15 +305,15 @@ export default class Chuck extends window.AudioWorkletNode {
      * invoked. This continues until {@link stopListeningForEvent} is called on the
      * specific event.
      * @param variable ChucK global event variable to be signaled
-     * @param callback javascript callback function
-     * @returns javascript callback ID
+     * @param callback JavaScript callback function
+     * @returns JavaScript callback ID
      */
     startListeningForEvent(variable: string, callback: () => void): number;
     /**
      * Stop listening to a specific ChucK event, undoing the process started
      * by {@link startListeningForEvent}.
      * @param variable ChucK global event variable to be signaled
-     * @param callbackID callback ID returned by {@link startListeningForEvent}
+     * @param callbackID Callback ID returned by {@link startListeningForEvent}
      */
     stopListeningForEvent(variable: string, callbackID: number): void;
     /**
