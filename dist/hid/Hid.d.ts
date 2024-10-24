@@ -1,4 +1,4 @@
-import Chuck from "./Chuck";
+import Chuck from "../Chuck";
 /**
  * HID (Human Interface Device) support for WebChucK. HID wraps
  * JavaScript mouse/keyboard event listeners enabling mouse and keyboard

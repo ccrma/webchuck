@@ -3,16 +3,17 @@
   "version": "1.2.8",
   "description": "WebChucK is a package for running ChucK code in the browser",
   "main": "dist/index.js",
+  "type": "module",
   "types": "dist/index.d.ts",
   "files": [
     "dist/**/*"
   ],
   "scripts": {
-    "build": "tsc && rollup dist/index.js --file src/wc-bundle.js --format esm",
+    "build": "tsc && rollup -c",
     "test": "npm run build && bash ./test.sh",
     "clean": "rm -rf dist/ && rm -rf docs/ && rm -rf src/wc-bundle.js",
     "doc": "typedoc --out docs src/index.ts",
-    "format": "prettier --write src/*.ts",
+    "format": "prettier --write src/**/*.ts",
     "prepare": "npm run build",
     "postversion": "git push && git push --tags"
   },
@@ -26,8 +27,8 @@
   "homepage": "https://chuck.stanford.edu/webchuck",
   "author": "ChucK Team",
   "contributors": [
-    "Cole Simmons",
     "Terry Feng",
+    "Cole Simmons",
     "CCRMA"
   ],
   "keywords": [

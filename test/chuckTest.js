@@ -1,7 +1,7 @@
 //=======================================================================
 // WebChucK Test Suite
 //=======================================================================
-import { Chuck, HID } from '../src/wc-bundle.js';
+import { Chuck, HID, Gyro, Accel } from '../src/wc-bundle.js';
 
 /** WebChucK Test Class */
 class Test {
@@ -312,7 +312,6 @@ const testSuite = [
         aChuck.chuckPrint = (output) => {
             outputBox.innerHTML = output + "<br>";
         }
-
         let hid = await HID.init(aChuck);
         await aChuck.loadFile("./testFiles/kb.ck")
         aChuck.runFile("kb.ck")
@@ -347,6 +346,34 @@ const testSuite = [
         aChuck.runCode(`<<< "PASSED", "" >>>;`);
         await new Promise(resolve => setTimeout(resolve, 750));
         return outputBox.innerText.includes("PASSED");
+    }),
+
+    new Test(16, "Gyro - Gyroscope", async () => {
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 16);
+        aChuck.chuckPrint = (output) => {
+            outputBox.innerHTML = output + "<br>"; // += for additive 
+        }
+
+        let gyro = await Gyro.init(aChuck);
+        await aChuck.loadFile("./testFiles/gyro.ck");
+        aChuck.runFile("gyro.ck");
+
+        return true;
+    }),
+
+    new Test(17, "Accel - Accelerometer", async () => {
+        const aChuck = await Chuck.init([], undefined, undefined, "../src/");
+        const outputBox = document.getElementById("output-" + 17);
+        aChuck.chuckPrint = (output) => {
+            outputBox.innerHTML = output + "<br>"; // += for additive 
+        }
+
+        let accel = await Accel.init(aChuck);
+        await aChuck.loadFile("./testFiles/accel.ck");
+        aChuck.runFile("accel.ck");
+
+        return true;
     }),
 
 
@@ -486,7 +513,16 @@ filterButton.addEventListener("click", (e) => {
     filterTests()
 });
 
-runButton.addEventListener("click", () => {
+runButton.addEventListener("click", async () => {
+
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+         await DeviceMotionEvent.requestPermission();
+    } 
+
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+         await DeviceOrientationEvent.requestPermission();
+    } 
+
     audioContext.resume();
     runTestSuite()
 });
