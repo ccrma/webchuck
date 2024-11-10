@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebChucK Load Test</title>
+</head>
+
+<body>
+  <h1>WebChucK Load Speed Test</h1>
+  <p id="load-time">loading...</p>
+  <button id="action" disabled>Start and Play</button>
+
+  <script type="module">
+
+    const start = performance.now();
+    import { Chuck } from '../src/wc-bundle.js';
+    const theChuck = await Chuck.init([]);
+    const end = performance.now();
+    // print in milliseconds
+    const time = (end - start).toFixed(2);
+    document.getElementById('load-time').textContent = `load time: ${time} ms`;
+
+
+
+    document.getElementById('action').disabled = false;
+
+    document.getElementById('action').addEventListener('click', async () => {
+      // Initialize default ChucK object
+      if (theChuck.context.state === "suspended") {
+        await theChuck.context.resume();
+      }
+      // Run ChucK code
+      theChuck.runCode(`
+          SinOsc sin => dac;
+          440 => sin.freq;
+          1::second => now;
+        `);
+    });
+  </script>
+</body>
+
+</html>

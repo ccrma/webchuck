@@ -120,17 +120,19 @@ export default class Chuck extends window.AudioWorkletNode {
      * @returns WebChucK ChucK instance
      */
     static async init(filenamesToPreload, audioContext, numOutChannels = 2, whereIsChuck = "https://chuck.stanford.edu/webchuck/src/") {
-        const wasm = await loadWasm(whereIsChuck);
         let defaultAudioContext = false;
-        // If an audioContext is not given, create a default one
+        // If audioContext is undefined, create new AudioContext
         if (audioContext === undefined) {
             audioContext = new AudioContext();
             defaultAudioContext = true;
         }
-        await audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js");
         // Add Chugins to filenamesToPreload
         filenamesToPreload = filenamesToPreload.concat(Chuck.chuginsToLoad);
-        const preloadedFiles = await preloadFiles(filenamesToPreload);
+        const [wasm, _, preloadedFiles] = await Promise.all([
+            loadWasm(whereIsChuck),
+            audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js"),
+            preloadFiles(filenamesToPreload),
+        ]);
         const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
         // Remember the chugins that were loaded
         chuck.chugins = Chuck.chuginsToLoad.map((chugin) => chugin.virtualFilename.split("/").pop());

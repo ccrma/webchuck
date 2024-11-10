@@ -78,7 +78,7 @@ export async function preloadFiles(filenamesToPreload: Filename[]): Promise<File
 }
 
 export async function loadWasm(whereIsChuck: string): Promise<ArrayBuffer> {
-  return await new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     asyncLoadFile(whereIsChuck + "webchuck.wasm", resolve, reject);
   });
 }

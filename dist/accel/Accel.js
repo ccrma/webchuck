@@ -101,7 +101,7 @@ export default class Accel {
     handleMotion(event) {
         this.accelActive();
         if (this._accelActive) {
-            if (event.acceleration != null) {
+            if (event.acceleration !== null) {
                 this.theChuck.setFloat("_accelX", event.acceleration.x ? event.acceleration.x : 0.0);
                 this.theChuck.setFloat("_accelY", event.acceleration.y ? event.acceleration.y : 0.0);
                 this.theChuck.setFloat("_accelZ", event.acceleration.z ? event.acceleration.z : 0.0);

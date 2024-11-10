@@ -145,20 +145,21 @@ export default class Chuck extends window.AudioWorkletNode {
     numOutChannels: number = 2,
     whereIsChuck: string = "https://chuck.stanford.edu/webchuck/src/", // default Chuck src location
   ): Promise<Chuck> {
-    const wasm = await loadWasm(whereIsChuck);
-
     let defaultAudioContext: boolean = false;
     // If an audioContext is not given, create a default one
     if (audioContext === undefined) {
       audioContext = new AudioContext();
       defaultAudioContext = true;
     }
-    await audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js");
 
     // Add Chugins to filenamesToPreload
     filenamesToPreload = filenamesToPreload.concat(Chuck.chuginsToLoad);
 
-    const preloadedFiles = await preloadFiles(filenamesToPreload);
+    const [wasm, _, preloadedFiles] = await Promise.all([
+      loadWasm(whereIsChuck),
+      audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js"),
+      preloadFiles(filenamesToPreload),
+    ]);
 
     const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
 
