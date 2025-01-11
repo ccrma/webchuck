@@ -78,7 +78,7 @@ async function preloadFiles(filenamesToPreload) {
     return await Promise.all(promises);
 }
 async function loadWasm(whereIsChuck) {
-    return await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         asyncLoadFile(whereIsChuck + "webchuck.wasm", resolve, reject);
     });
 }
@@ -284,17 +284,19 @@ class Chuck extends window.AudioWorkletNode {
      * @returns WebChucK ChucK instance
      */
     static async init(filenamesToPreload, audioContext, numOutChannels = 2, whereIsChuck = "https://chuck.stanford.edu/webchuck/src/") {
-        const wasm = await loadWasm(whereIsChuck);
         let defaultAudioContext = false;
-        // If an audioContext is not given, create a default one
+        // If audioContext is undefined, create new AudioContext
         if (audioContext === undefined) {
             audioContext = new AudioContext();
             defaultAudioContext = true;
         }
-        await audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js");
         // Add Chugins to filenamesToPreload
         filenamesToPreload = filenamesToPreload.concat(Chuck.chuginsToLoad);
-        const preloadedFiles = await preloadFiles(filenamesToPreload);
+        const [wasm, _, preloadedFiles] = await Promise.all([
+            loadWasm(whereIsChuck),
+            audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js"),
+            preloadFiles(filenamesToPreload),
+        ]);
         const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
         // Remember the chugins that were loaded
         chuck.chugins = Chuck.chuginsToLoad.map((chugin) => chugin.virtualFilename.split("/").pop());
@@ -1961,7 +1963,7 @@ class Accel {
     handleMotion(event) {
         this.accelActive();
         if (this._accelActive) {
-            if (event.acceleration != null) {
+            if (event.acceleration !== null) {
                 this.theChuck.setFloat("_accelX", event.acceleration.x ? event.acceleration.x : 0.0);
                 this.theChuck.setFloat("_accelY", event.acceleration.y ? event.acceleration.y : 0.0);
                 this.theChuck.setFloat("_accelZ", event.acceleration.z ? event.acceleration.z : 0.0);

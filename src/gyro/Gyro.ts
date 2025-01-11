@@ -57,7 +57,7 @@ export default class Gyro {
    * This adds a `Gyro` and `GyroMsg` class to the ChucK Virtual Machine (VM).
    * Gyrscope event (DeviceOrientationEvent) listeners are added if `enableGyro`
    * is true (default).
-   * 
+   *
    * @example
    * ```ts
    * theChuck = await Chuck.init([]);
