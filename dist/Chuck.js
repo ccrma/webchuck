@@ -121,7 +121,7 @@ export default class Chuck extends window.AudioWorkletNode {
      */
     static async init(filenamesToPreload, audioContext, numOutChannels = 2, whereIsChuck = "https://chuck.stanford.edu/webchuck/src/") {
         let defaultAudioContext = false;
-        // If audioContext is undefined, create new AudioContext
+        // If an audioContext is not given, create a default one
         if (audioContext === undefined) {
             audioContext = new AudioContext();
             defaultAudioContext = true;
