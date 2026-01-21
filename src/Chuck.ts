@@ -239,7 +239,7 @@ export default class Chuck extends window.AudioWorkletNode {
         if (isText) {
           this.createFile("", filename, data as string);
         } else {
-          this.createFile("", filename, new Uint8Array(data as ArrayBuffer));
+          this.createFile("", filename, data as ArrayBuffer);
         }
       })
       .catch((err) => {

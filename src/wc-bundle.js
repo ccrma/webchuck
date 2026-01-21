@@ -372,7 +372,7 @@ class Chuck extends window.AudioWorkletNode {
                 this.createFile("", filename, data);
             }
             else {
-                this.createFile("", filename, new Uint8Array(data));
+                this.createFile("", filename, data);
             }
         })
             .catch((err) => {
