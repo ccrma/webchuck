@@ -197,7 +197,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param filename Name of file to create
    * @param data Data to write to the file
    */
-  public createFile(directory: string, filename: string, data: string | ArrayBuffer) {
+  public createFile(directory: string, filename: string, data: string | Uint8Array) {
     this.sendMessage(OutMessage.CREATE_FILE, {
       directory,
       filename,
@@ -239,7 +239,7 @@ export default class Chuck extends window.AudioWorkletNode {
         if (isText) {
           this.createFile("", filename, data as string);
         } else {
-          this.createFile("", filename, data as ArrayBuffer);
+          this.createFile("", filename, new Uint8Array(data as ArrayBuffer));
         }
       })
       .catch((err) => {

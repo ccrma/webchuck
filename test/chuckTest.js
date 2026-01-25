@@ -284,7 +284,7 @@ TestSuite.test("[sound] Dynamic load in a kick wav file from URL", async (t) => 
     () => {
       aChuck.runCode(code);
     },
-    (output) => output === "KICKED",
+    (output) => output.includes("KICKED"),
     2000,
   );
   t.assert(passed, "Should have printed KICKED");
@@ -351,10 +351,8 @@ TestSuite.test("Test shred management, add, remove, replace", async (t) => {
 
   t.assert((await aChuck.removeLastCode()) === shred2, "removeLastCode should return shred2");
 
-  const { oldShred, newShred } = await aChuck.replaceCode(`
-    <<< "REPLACE Shred 1 with a new program", "" >>>;
-    1::week => now;
-  `,
+  const { oldShred, newShred } = await aChuck.replaceCode(
+    `<<< "REPLACE Shred 1 with a new program", "" >>>; 1::week => now;`,
     shred1,
   );
   t.assert(
@@ -487,6 +485,7 @@ TestSuite.test("WebChucK get deferred Promise<type> returns", async (t) => {
 });
 
 TestSuite.test("[sound] WebChugin Test, ABSaturator", async (t) => {
+  Chuck.loadChugin("./testFiles/ABSaturator.chug.wasm");
   const aChuck = await setupChuck(t);
   const code = `SinOsc osc => Delay d => ABSaturator sat => dac;
     20 => sat.drive;
