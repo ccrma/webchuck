@@ -29,4 +29,3 @@ while( true )
         <<< msg.getGyroX() + " " + msg.getGyroY() + " " + msg.getGyroZ() >>>;
     }
 }
-
