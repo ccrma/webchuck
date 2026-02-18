@@ -104,7 +104,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param filename Name of file to create
      * @param data Data to write to the file
      */
-    createFile(directory: string, filename: string, data: string | ArrayBuffer): void;
+    createFile(directory: string, filename: string, data: string | Uint8Array): void;
     /**
      * Create a virtual directory in ChucK's filesystem.
      * @param parent Virtual directory to create the new directory in
@@ -272,7 +272,8 @@ export default class Chuck extends window.AudioWorkletNode {
     /**
      * Remove a shred from ChucK VM by ID
      * @param shred Shred ID to be removed
-     * @returns Promise to shred ID if removed successfully, otherwise "removing code failed"
+     * @returns Promise to shred ID if removed successfully, otherwise rejects
+     * with "Removing code failed"
      */
     removeShred(shred: number | string): Promise<number>;
     /**

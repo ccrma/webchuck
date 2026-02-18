@@ -454,7 +454,8 @@ export default class Chuck extends window.AudioWorkletNode {
     /**
      * Remove a shred from ChucK VM by ID
      * @param shred Shred ID to be removed
-     * @returns Promise to shred ID if removed successfully, otherwise "removing code failed"
+     * @returns Promise to shred ID if removed successfully, otherwise rejects
+     * with "Removing code failed"
      */
     removeShred(shred) {
         const callbackID = this.nextDeferID();

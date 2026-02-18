@@ -197,7 +197,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param filename Name of file to create
    * @param data Data to write to the file
    */
-  public createFile(directory: string, filename: string, data: string | ArrayBuffer) {
+  public createFile(directory: string, filename: string, data: string | Uint8Array) {
     this.sendMessage(OutMessage.CREATE_FILE, {
       directory,
       filename,
@@ -533,7 +533,8 @@ export default class Chuck extends window.AudioWorkletNode {
   /**
    * Remove a shred from ChucK VM by ID
    * @param shred Shred ID to be removed
-   * @returns Promise to shred ID if removed successfully, otherwise "removing code failed"
+   * @returns Promise to shred ID if removed successfully, otherwise rejects
+   * with "Removing code failed"
    */
   public removeShred(shred: number | string): Promise<number> {
     const callbackID = this.nextDeferID();

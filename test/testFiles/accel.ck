@@ -29,4 +29,3 @@ while( true )
         <<< msg.getAccelX() + " " + msg.getAccelY() + " " + msg.getAccelZ() >>>;
     }
 }
-
