@@ -1,6 +1,6 @@
 {
   "name": "webchuck",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "WebChucK is a package for running ChucK code in the browser",
   "main": "dist/index.js",
   "type": "module",
