@@ -113,6 +113,17 @@ export default class Chuck extends window.AudioWorkletNode {
    * // default initialization
    * theChuck = await Chuck.init([]);
    * ```
+   * 
+   * @example
+   * ```ts
+   * // Handle initialization errors gracefully
+   * try {
+   *   theChuck = await Chuck.init([]);
+   * } catch (err) {
+   *   console.error("Failed to initialize Chuck:", err);
+   * }
+   * ```
+   * 
    * @example
    * ```ts
    * // Initialize ChucK with a list of files to preload
@@ -138,6 +149,7 @@ export default class Chuck extends window.AudioWorkletNode {
    * @param numOutChannels Optional custom number of output channels. Default is 2 channel stereo and the Web Audio API supports up to 32 channels.
    * @param whereIsChuck Optional custom url to your WebChucK `src` folder containing `webchuck.js` and `webchuck.wasm`. By default, `whereIsChuck` is {@link https://chuck.stanford.edu/webchuck/src | here}.
    * @returns WebChucK ChucK instance
+   * @throws Error if loading WebChucK WASM, adding the AudioWorklet module, or preloading files fails.
    */
   public static async init(
     filenamesToPreload: Filename[],
@@ -155,11 +167,19 @@ export default class Chuck extends window.AudioWorkletNode {
     // Add Chugins to filenamesToPreload
     filenamesToPreload = filenamesToPreload.concat(Chuck.chuginsToLoad);
 
-    const [wasm, _, preloadedFiles] = await Promise.all([
-      loadWasm(whereIsChuck),
-      audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js"),
-      preloadFiles(filenamesToPreload),
-    ]);
+    let wasm: ArrayBuffer;
+    let preloadedFiles: File[];
+    try {
+      const results = await Promise.all([
+        loadWasm(whereIsChuck),
+        audioContext.audioWorklet.addModule(whereIsChuck + "webchuck.js"),
+        preloadFiles(filenamesToPreload),
+      ]);
+      wasm = results[0] as ArrayBuffer;
+      preloadedFiles = results[2] as File[];
+    } catch (err) {
+      throw err;
+    }
 
     const chuck = new Chuck(preloadedFiles, audioContext, wasm, numOutChannels);
 

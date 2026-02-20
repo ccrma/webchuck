@@ -63,6 +63,17 @@ export default class Chuck extends window.AudioWorkletNode {
      * // default initialization
      * theChuck = await Chuck.init([]);
      * ```
+     *
+     * @example
+     * ```ts
+     * // Handle initialization errors gracefully
+     * try {
+     *   theChuck = await Chuck.init([]);
+     * } catch (err) {
+     *   console.error("Failed to initialize Chuck:", err);
+     * }
+     * ```
+     *
      * @example
      * ```ts
      * // Initialize ChucK with a list of files to preload
@@ -88,6 +99,7 @@ export default class Chuck extends window.AudioWorkletNode {
      * @param numOutChannels Optional custom number of output channels. Default is 2 channel stereo and the Web Audio API supports up to 32 channels.
      * @param whereIsChuck Optional custom url to your WebChucK `src` folder containing `webchuck.js` and `webchuck.wasm`. By default, `whereIsChuck` is {@link https://chuck.stanford.edu/webchuck/src | here}.
      * @returns WebChucK ChucK instance
+     * @throws Error if loading WebChucK WASM, adding the AudioWorklet module, or preloading files fails.
      */
     static init(filenamesToPreload: Filename[], audioContext?: AudioContext, numOutChannels?: number, whereIsChuck?: string): Promise<Chuck>;
     /**

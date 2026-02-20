@@ -8,10 +8,12 @@ import { Chuck, HID, Gyro, Accel } from "../src/wc-bundle.js";
  * @param {Test} t Test instance
  * @param {Array} preloadFiles Files to preload
  * @param {AudioContext} audioContext Optional AudioContext
+ * @param {string} whereIsChuck Optional custom url to your WebChucK `src` folder
  * @returns {Promise<Chuck>}
+ * @throws Error if Chuck.init fails. Caller is responsible for cleaning up any created AudioContext.
  */
-async function setupChuck(t, preloadFiles = [], audioContext = undefined) {
-  const aChuck = await Chuck.init(preloadFiles, audioContext, undefined, "../src/");
+async function setupChuck(t, preloadFiles = [], audioContext = undefined, whereIsChuck = "../src/") {
+  const aChuck = await Chuck.init(preloadFiles, audioContext, undefined, whereIsChuck);
   t.setChuckPrint(aChuck);
   t.addTeardown(() => aChuck.context.close());
   return aChuck;
@@ -607,6 +609,40 @@ TestSuite.test("Accel - Accelerometer", async (t) => {
   t.assert(passed, "Should have received accel input");
 });
 
+TestSuite.test("Is WebChucK available globally?", async (t) => {
+  try {
+    t.print("Testing if we can load WebChucK WASM + JS from Stanford CCRMA...");
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Timeout: Remote CDN unavailable")), 5000),
+    );
+    const aChuck = await Promise.race([
+      Chuck.init([], undefined, undefined, "https://chuck.stanford.edu/webchuck/src/"),
+      timeout,
+    ]);
+    t.setChuckPrint(aChuck);
+    t.addTeardown(() => aChuck.context.close());
+    t.print("WebChucK WASM + JS is available and running!");
+  } catch (e) {
+    t.print("WebChucK WASM + JS is not available: " + e);
+    t.assert(false, "WebChucK WASM + JS is not available: " + e);
+  }
+});
+
+TestSuite.test("WebChucK malformed URL: Catch error success", async (t) => {
+  let errorThrown = false;
+
+  try {
+    // Try to initialize with an invalid URL that will fail to load WASM
+    const aChuck = await Chuck.init([], undefined, undefined, "https://invalid-url-that-does-not-exist.example.com/");
+    t.print("ERROR: Should have thrown an error");
+  } catch (err) {
+    errorThrown = true;
+    t.print("Caught WebChucK expected error: " + (err?.message || err));
+  }
+
+  t.assert(errorThrown, "Should have thrown an error for invalid URL");
+});
+
 TestSuite.test("ChucK VM operations, parameters, and version", async (t) => {
   const aChuck = await setupChuck(t);
 
@@ -616,6 +652,7 @@ TestSuite.test("ChucK VM operations, parameters, and version", async (t) => {
   t.print("output channels: " + (await aChuck.getParamInt("OUTPUT_CHANNELS")));
   t.print("now: " + (await aChuck.now()));
 });
+
 
 //==============================================================================
 // WebChucK Test Suite Main
