@@ -1,14 +1,19 @@
 //-----------------------------------------------------------------------------
 // Version Updater
 //-----------------------------------------------------------------------------
-// fetch the version from package.json and update the version number in the footer
-fetch('./package.json').then(response => response.json()).then(data => {
-  const version = data.version;
+function updateVersion(version) {
   const versionElement = document.getElementById('version-id');
   versionElement.textContent = version;
   versionElement.href = `https://github.com/ccrma/webchuck/releases/tag/v` + version;
-});
+}
 
+// fetch the version from package.json and update the version number in the footer
+// fetch('./package.json').then(response => response.json()).then(data => {
+  // updateVersion(data.version);
+// });
+
+// hardcode latest version number
+updateVersion("1.2.11");
 
 
 //-----------------------------------------------------------------------------
